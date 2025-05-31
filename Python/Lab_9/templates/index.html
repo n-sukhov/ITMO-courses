@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заметки</title>
+    <style>
+        body {
+            font-family: Courier, monospace;;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #FFA500;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .note {
+            background-color: white;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            word-wrap: break-word;
+        }
+        .note.important {
+            font-weight: bold;
+            border-color: #FFA500;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        form input, form button {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 15px;
+        }
+        form button {
+            background-color: #FFA500;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #FFA500;
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <h1>Мои заметки</h1>
+    </header>
+    <div class="container">
+        <form action="/add" method="POST">
+            <input type="text" name="text" placeholder="Введите текст заметки" required>
+            <label>
+                <input type="checkbox" name="important"> Важная
+            </label>
+            <button type="submit">Добавить заметку</button>
+        </form>
+
+        <h2>Список заметок:</h2>
+        {% for note in notes %}
+        <div class="note {% if note.important %}important{% endif %}">
+            <a href="/delete/{{ note.id }}" style="color: red; text-decoration: none; display: inline-block; margin-bottom: 0px;">Удалить</a>
+            <p>{{ note.text }}</p>
+        </div>
+        {% endfor %}        
+    </div>
+</body>
+</html>
