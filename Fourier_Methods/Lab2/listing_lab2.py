@@ -20,8 +20,7 @@ def draw_plots(rows, cols, width, height, subplot_data):
 
     for idx, data in enumerate(flat_data):
         if idx >= len(axes):
-            raise ValueError(f"Too many subplots provided in \
-                'subplot_data': expected at most {rows * cols}, got more.")
+            raise ValueError(f"Too many subplots provided in 'subplot_data': expected at most {rows * cols}, got more.")
         if not data:
             continue
 
@@ -314,5 +313,80 @@ subplot_data3 = [[Re_gw_plot], [Im_gw_plot], [abs_gw_plot]]
 
 # %%
 draw_plots(rows=3, cols=1, width=9, height=12, subplot_data=subplot_data3)
+
+# %% [markdown]
+# # Задание 3
+
+# %%
+import librosa
+y, sr = librosa.load("Аккорд (17).mp3", sr=None)
+
+# %%
+time = np.linspace(0, len(y) / sr, num=len(y))
+
+subplot_data = [[(
+    [time],
+    [y],
+    ["Аудиосигнал"],
+    "t, sec",
+    "Amplitude",
+    ["blue"],
+    ["-"],
+    [1]
+)]]
+
+draw_plots(rows=1, cols=1, width=10, height=4, subplot_data=subplot_data)
+
+# %%
+V = 2000
+dv = 1
+v = np.arange(0, V + dv, dv)
+
+Y = np.zeros_like(v, dtype=np.complex128)
+
+for k in range(len(v)):
+    Y[k] = np.trapz(y * np.exp(-1j * 2 * np.pi * v[k] * time), time)
+
+# %%
+subplot_data = [[(
+    [v], [np.abs(Y)],
+    ["|Y(f)|"],
+    "v, sec^(-1)", "Amplitude",
+    ["red"], ["-"], [1.5]
+)]]
+
+draw_plots(rows=1, cols=1, width=10, height=4, subplot_data=subplot_data)
+
+
+# %%
+amplitudes = np.abs(Y)
+mask = (amplitudes > 0.0005) & (v >= 250) & (v <= 1800)
+
+significant_freqs = v[mask]
+significant_amps = amplitudes[mask]
+
+for freq, amp in zip(significant_freqs, significant_amps):
+    print(f"{freq:.2f} Гц — амплитуда: {amp:.6f}")
+
+
+# %%
+note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+
+def freq_to_note(freq):
+    n = int(round(12 * np.log2(freq / 440.0)))
+    note = note_names[(n + 9) % 12]
+    octave = 4 + ((n + 9) // 12)
+    return f"{note}{octave}"
+
+frequencies = significant_freqs
+
+seen_notes = set()
+
+for f in frequencies:
+    note = freq_to_note(f)
+    if note not in seen_notes:
+        print(f"{f:.2f} Гц — {note}")
+        seen_notes.add(note)
+
 
 
