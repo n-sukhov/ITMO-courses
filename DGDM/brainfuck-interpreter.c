@@ -17,14 +17,16 @@ int main(int argc, char** argv) {
         printf("Error: Input file must have .bf or .b extension\n");
         return 1;
     }
-    FILE* bf_file = fopen(argv[1], "r");
+    FILE* bf_file = fopen(argv[1], "rb");
     if (bf_file) {
         fseek(bf_file, 0, SEEK_END);
         unsigned int bf_file_size = ftell(bf_file);
         fseek(bf_file, 0, SEEK_SET);
+
         char* bf_code_buffer = malloc(bf_file_size);
-        fread(bf_code_buffer, bf_file_size, 1, bf_file);
+        fread(bf_code_buffer, 1, bf_file_size, bf_file);
         interpret(bf_code_buffer, bf_file_size);
+        free(bf_code_buffer);
         fclose(bf_file);
     }
     else {
