@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <string.h> 
+#include <stdlib.h>
 
 #define MEM_SIZE_CELLS 30000
 
-void interpret(char* start, size_t len, unsigned char* memory, size_t mem_size);
+void interpret(const unsigned char* start, const size_t len, unsigned char* memory, const size_t mem_size);
 
 unsigned char memory[MEM_SIZE_CELLS] = {0};
 
@@ -22,7 +23,7 @@ int main(int argc, char** argv) {
         fseek(bf_file, 0, SEEK_END);
         unsigned int bf_file_size = ftell(bf_file);
         fseek(bf_file, 0, SEEK_SET);
-        char* bf_code_buffer = malloc(bf_file_size);
+        unsigned char* bf_code_buffer = malloc(bf_file_size);
         if (!bf_code_buffer) {
             printf("Memory allocation failed.");
             fclose(bf_file);
@@ -45,9 +46,9 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void interpret(char* start, size_t len, unsigned char* memory, size_t mem_size) {
-    char* cell_ptr = memory;
-    for (char* command = start; command != start + len; ++command) {
+void interpret(const unsigned char* start, const size_t len, unsigned char* memory, const size_t mem_size) {
+    unsigned char* cell_ptr = memory;
+    for (const unsigned char* command = start; command != start + len; ++command) {
         switch(*command) {
             case '>':
                 ++cell_ptr;
