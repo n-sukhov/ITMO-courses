@@ -76,8 +76,24 @@ void interpret(char* start, size_t len, unsigned char* memory, size_t mem_size) 
                 *cell_ptr = getchar();
                 break;
             case '[':
+                if (*cell_ptr == 0) {
+                    int bracket_depth = 1;
+                    while (bracket_depth) {
+                        ++command;
+                        if (*command == '[') ++bracket_depth;
+                        else if (*command == ']') --bracket_depth;
+                    }
+                }
                 break;
             case ']':
+                if (*cell_ptr != 0) {
+                    int bracket_depth = 1;
+                    while (bracket_depth) {
+                        --command;
+                        if (*command == '[') --bracket_depth;
+                        else if (*command == ']') ++bracket_depth;
+                    }
+                }
                 break;
         }
     }
