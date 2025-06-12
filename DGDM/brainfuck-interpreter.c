@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
         return 1;
     }
     bool char_mode = true;
-    if (argv[1] == "-d") char_mode = false;
+    if (!strcmp(argv[1], "-d")) char_mode = false;
     FILE* bf_file = fopen(argv[2], "rb");
     if (bf_file) {
         fseek(bf_file, 0, SEEK_END);
