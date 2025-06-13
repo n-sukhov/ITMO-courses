@@ -1,0 +1,6 @@
+#!/bin/bash
+
+read -p "Put number a (0-255): " a
+echo -n "Result of a%17: "
+printf "%d" "$a" | ./brainfuck-interpreter -d task_2.bf
+echo

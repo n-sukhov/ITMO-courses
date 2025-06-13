@@ -1,0 +1,6 @@
+#!/bin/bash
+
+read -p "Put numbers a and b (0-255) separated by a space: " a b
+echo -n "Result of (a+b)^2: "
+printf "%d %d" "$a" "$b" | ./brainfuck-interpreter -d task_1.bf
+echo
