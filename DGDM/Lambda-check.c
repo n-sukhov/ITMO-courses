@@ -14,7 +14,7 @@ void test_lambda(const char *str);
 
 int main() {
     const char* lambda_tests[] = {
-        "λx.x",
+        "λx.xyz",
         "λx.y",
         "λx.λy.x",
         "λx.(λy.x)",
@@ -49,7 +49,7 @@ bool parse_expression(const char **ptr) {
     }
     else {
         if (!is_valid_variable(*p)) return false;
-        while (is_valid_variable(*p)) p++;
+        p++;
     }
     
     *ptr = p;
@@ -63,7 +63,7 @@ bool parse_abstraction(const char **ptr) {
     p += 2;
     
     if (!is_valid_variable(*p)) return false;
-    while (is_valid_variable(*p)) p++;
+    p++;
     
     if (*p != '.') return false;
     p++;
