@@ -40,7 +40,7 @@ void print_expr(Expr* e);
 void run_tests();
 
 void skip_whitespace() {
-    while (isspace(input[pos])) ++pos;
+    while (isspace(input[pos])) pos++;
 }
 
 int is_lambda(const char* s) {
@@ -50,14 +50,14 @@ int is_lambda(const char* s) {
 Expr* parse_var() {
     Expr* e = malloc(sizeof(Expr));
     e->type = VAR;
-    e->var = input[++pos];
+    e->var = input[pos++];
     return e;
 }
 
 Expr* parse_paren() {
-    ++pos;
+    pos++;
     Expr* e = parse_expr();
-    ++pos;
+    pos++;
     return e;
 }
 
@@ -70,8 +70,8 @@ Expr* parse_simple_expr() {
 
 Expr* parse_abs() {
     pos += 2;
-    char param = input[++pos];
-    ++pos;
+    char param = input[pos++];
+    pos++;
     Expr* body = parse_expr();
     Expr* e = malloc(sizeof(Expr));
     e->type = ABS;
