@@ -44,9 +44,9 @@ bool parse_expression(const char **ptr) {
         if (*p != ')') return false;
         ++p;
     } 
-    else if (is_lambda(p))
+    else if (is_lambda(p)) {
         if (!parse_abstraction(&p)) return false;
-
+    }
     else {
         if (!is_valid_variable(*p)) return false;
         ++p;
@@ -63,7 +63,7 @@ bool parse_expression(const char **ptr) {
             if (!parse_expression(&q)) break;
             if (*q != ')') break;
             ++q;
-        }
+        } 
         else if (is_lambda(q)) break;
         else if (is_valid_variable(*q)) ++q;
         else break;
