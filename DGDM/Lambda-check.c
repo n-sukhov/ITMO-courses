@@ -39,17 +39,36 @@ bool parse_expression(const char **ptr) {
     const char *p = *ptr;
     
     if (*p == '(') {
-        p++;
+        ++p;
         if (!parse_expression(&p)) return false;
         if (*p != ')') return false;
-        p++;
+        ++p;
     } 
-    else if (is_lambda(p)) {
+    else if (is_lambda(p))
         if (!parse_abstraction(&p)) return false;
-    }
+
     else {
         if (!is_valid_variable(*p)) return false;
-        p++;
+        ++p;
+    }
+
+    while (*p == ' ') ++p;
+    
+    while (true) {
+        const char *q = p;
+        while (*p == ' ') ++p;
+
+        if (*q == '(') {
+            ++q;
+            if (!parse_expression(&q)) break;
+            if (*q != ')') break;
+            ++q;
+        }
+        else if (is_lambda(q)) break;
+        else if (is_valid_variable(*q)) ++q;
+        else break;
+
+        p = q;
     }
     
     *ptr = p;
@@ -63,10 +82,10 @@ bool parse_abstraction(const char **ptr) {
     p += 2;
     
     if (!is_valid_variable(*p)) return false;
-    p++;
-    
+    while (is_valid_variable(*p)) ++p;
+
     if (*p != '.') return false;
-    p++;
+    ++p;
     
     if (!parse_expression(&p)) return false;
     
