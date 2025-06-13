@@ -27,7 +27,7 @@ int main() {
         "(λx.x)"
     };
     const size_t num_tests = sizeof(lambda_tests) / sizeof(lambda_tests[0]);
-    
+    printf("Lambda-expressions:\n");
     for (size_t i = 0; i < num_tests; ++i) {
         test_lambda(lambda_tests[i]);
     }
@@ -81,7 +81,7 @@ bool is_valid_lambda_expression(const char *str) {
 }
 
 void test_lambda(const char *str) {
-    printf("'%.*s' is %sa valid lambda expression\n",
-           (int)strcspn(str, "\n"), str,
-           is_valid_lambda_expression(str) ? "" : "NOT ");
+    printf("%-7s: %.*s\n",
+        is_valid_lambda_expression(str) ? "OK" : "NOT OK",
+        (int)strcspn(str, "\n"), str);
 }
