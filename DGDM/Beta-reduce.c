@@ -19,8 +19,8 @@ int pos = 0;
 
 #define MAX_REDUCE_DEPTH 1000
 
-void skip_whitespace();
-int is_lambda(const char* s);
+void skip_whitespace() { while (isspace(input[pos])) pos++; }
+int is_lambda(const char* s) { return (unsigned char)s[0] == 0xCE && (unsigned char)s[1] == 0xBB; }
 Expr* parse_expr();
 Expr* parse_simple_expr();
 Expr* parse_abs();
@@ -31,20 +31,17 @@ void free_expr(Expr* e);
 bool expr_equal(Expr* a, Expr* b);
 bool is_free_var(Expr* e, char var);
 Expr* alpha_rename(Expr* e, char old_var, char new_var);
-bool is_redex(Expr* e);
+bool is_redex(Expr* e) { return e && e->type == APP && e->app.left && e->app.left->type == ABS; }
 Expr* substitute(Expr* body, char var, Expr* val);
 Expr* beta_reduce_one_step(Expr* e);
 Expr* beta_reduce_full(Expr* e);
 void print_expr_internal(Expr* e, bool needs_parens);
-void print_expr(Expr* e);
+void print_expr(Expr* e) { print_expr_internal(e, false); }
 void run_tests();
 
-void skip_whitespace() {
-    while (isspace(input[pos])) pos++;
-}
-
-int is_lambda(const char* s) {
-    return (unsigned char)s[0] == 0xCE && (unsigned char)s[1] == 0xBB;
+int main() {
+    run_tests();
+    return 0;
 }
 
 Expr* parse_var() {
@@ -155,10 +152,6 @@ Expr* alpha_rename(Expr* e, char old_var, char new_var) {
         c->app.right = alpha_rename(e->app.right, old_var, new_var);
     }
     return c;
-}
-
-bool is_redex(Expr* e) {
-    return e && e->type == APP && e->app.left && e->app.left->type == ABS;
 }
 
 Expr* substitute(Expr* body, char var, Expr* val) {
@@ -288,10 +281,6 @@ void print_expr_internal(Expr* e, bool needs_parens) {
     }
 }
 
-void print_expr(Expr* e) {
-    print_expr_internal(e, false);
-}
-
 void run_tests() {
     const char* tests[] = {
         "(λx.x) y",
@@ -318,9 +307,4 @@ void run_tests() {
         free_expr(expr);
         free_expr(reduced);
     }
-}
-
-int main() {
-    run_tests();
-    return 0;
 }
