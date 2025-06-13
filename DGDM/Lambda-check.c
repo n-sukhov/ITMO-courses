@@ -14,17 +14,68 @@ void test_lambda(const char *str);
 
 int main() {
     const char* lambda_tests[] = {
-        "λx.xyz",
+        "λx.x",
         "λx.y",
+        "λx.xy",
+        "λx.xyz",
         "λx.λy.x",
-        "λx.(λy.x)",
         "λxy.x",
+        "λxyz.xz(yz)",
+
+        "(λx.x)",
+        "λx.(x y)",
+        "λx.(λy.x)",
+        "(λx.x)y",
+        "(λx.xy)(λy.yz)",
+        "λx.(y (z x))",
+        
+        "x y z",
+        "λx.x y z",
+        "λf.λx.f (f x)",
+        "(λx.x x)(λx.x x)",
+        "λx.(λy.(x y)) z",
+        
+        "λf.(λx.f (x x))(λx.f (x x))",
+        "λab.a",
+        "λab.b",
+        "λabc.ac(bc)",
+        "λab.bab",
+        
         "λx..y",
         "x.λy",
         "λx.(y",
         "λ1.1",
-        "λx.(λy.(x y))",
-        "(λx.x)"
+        "λx.λy.",
+        "λx.(y))",
+        "λx x.x",
+        "λx.(y z",
+        "λx..",
+        "",
+        ".",
+        "λ.",
+        "x y. z",
+        "λx.(y z))",
+        "λx.()",
+        "λx.(λy.)",
+        
+        "(λsz.z)(λsz.s(sz))",
+        "λmnfx.mf(nfx)",
+        "λnfx.f(nfx)",
+        "λfx.x",
+        "λfx.fx",
+        "λfx.f(fx)",
+
+        "λx.λy.λz.z y x",
+        "λx.(λy.y)(λz.z)",
+        "λ_.λ_._",
+        "λx.λx.x",
+        "λa.a(λb.b)b",
+        
+        "(λx.λy.λz.x y z)(λa.a)(λb.b)(λc.c)",
+        "λf.(λx.f(λy.x x y))(λx.f(λy.x x y))",
+        "(λxyz.xz(yz))(λab.a)(λcd.c)",
+        "λx.(λy.(λz.(x y) z))",
+        "(λx.x x)(λy.y y y)"
     };
     const size_t num_tests = sizeof(lambda_tests) / sizeof(lambda_tests[0]);
     printf("Lambda-expressions:\n");
@@ -82,7 +133,7 @@ bool parse_abstraction(const char **ptr) {
     p += 2;
     
     if (!is_valid_variable(*p)) return false;
-    while (is_valid_variable(*p)) ++p;
+    ++p;
 
     if (*p != '.') return false;
     ++p;
