@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.fft import fft, fftfreq, fftshift
 from scipy import signal
 %matplotlib widget
+np.random.seed(17)
 
 # %% [markdown]
 # Util-функции
@@ -94,11 +95,9 @@ c = 0
 d = 10
 plots_11 = []
 
-t_start, t_end = 0, 20
-num_points = 2 ** 15
-t = np.linspace(t_start, t_end, num_points)
+N = 2 ** 15
+t = np.linspace(0, 20, N)
 dt = t[1] - t[0]
-N = len(t)
 
 time_subplot_data = []
 spectrum_subplot_data = []
@@ -141,12 +140,12 @@ for i, a in enumerate(a_range):
         time_row.append(time_plot)
 
         spectrum_plot = [
-            [freq_g[omega_mask], freq_u[omega_mask], freq_y[omega_mask]],
-            [2.0 / N * func_g[omega_mask],
-             2.0 / N * func_u[omega_mask],
+            [freq_u[omega_mask], freq_g[omega_mask], freq_y[omega_mask]],
+            [2.0 / N * func_u[omega_mask],
+             2.0 / N * func_g[omega_mask],
              2.0 / N * func_y[omega_mask]
             ],
-            ['|g_hat(ω)|', '|u_hat(ω)|', 'y_hat(ω)|'],
+            ['|u_hat(ω)|', '|g_hat(ω)|', 'y_hat(ω)|'],
             'ω', 'Amplitude',
             ['b', "#09FF00", 'r'],
             ['-', ':', '-'],
@@ -214,13 +213,13 @@ draw_plots(
 
 # %%
 a1 = 0
-a2 = 5
-b2 = 4
-a = 4
+a2 = b2 = 100
+
+a = 1
 b = 0
-c_range = [0, 0.5, 2]
+c_range = [0.08, 0.15, 0.2]
 d_range = [5, 10, 20]
-b1_range = [5, 14.14, 20]
+b1_range = [2, 10, 20] 
 
 N = 2 ** 15
 t = np.linspace(0, 20, N)
@@ -248,7 +247,7 @@ for i, b1 in enumerate(b1_range):
             freq_y, func_y = calc_spectrum(y_signal, dt)
             
             w = freq_g
-            W_mag = np.abs((1j*w)**2 + a1*(1j*w) + a2) / np.abs((1j*w)**2 + b1*(1j*w) + b2)#???
+            W_mag = np.abs((1j*w)**2 + a1*(1j*w) + a2) / np.abs((1j*w)**2 + b1*(1j*w) + b2)
             
             afc_mask = (freq_g >= 0) & (freq_g < 30)
             omega_mask = np.abs(freq_g) < 30
@@ -269,15 +268,15 @@ for i, b1 in enumerate(b1_range):
             time_row.append(time_plot)
             
             spectrum_plot = [
-                [freq_g[omega_mask], freq_u[omega_mask], freq_y[omega_mask]],
-                [2.0 / N * func_g[omega_mask],
-                 2.0 / N * func_u[omega_mask],
+                [freq_u[omega_mask], freq_g[omega_mask], freq_y[omega_mask]],
+                [2.0 / N * func_u[omega_mask],
+                 2.0 / N * func_g[omega_mask],
                  2.0 / N * func_y[omega_mask]],
-                ['|g_hat(ω)|', '|u_hat(ω)|', 'y_hat(ω)|'],
+                ['|u_hat(ω)|', '|g_hat(ω)|', 'y_hat(ω)|'],
                 'ω', 'Amplitude',
-                ['b', "#07BE01", 'r'],
+                ['b', "#089D03", 'r'],
                 ['-', ':', '-'],
-                [1.0, 1.0, 1.0],
+                [1.0, 1.2, 1.0],
                 [None] * 3,
                 [None] * 3,
                 f'b1={b1}, c={c}, d={d}',
@@ -285,21 +284,17 @@ for i, b1 in enumerate(b1_range):
             spectrum_row.append(spectrum_plot)
             
             if c == c_range[0] and d == d_range[0]:
-                min_idx = np.argmin(W_mag[afc_mask])
-                notch_freq = freq_g[afc_mask][min_idx]
-                notch_amp = W_mag[afc_mask][min_idx]
-                
                 freq_response_plot = [
-                    [freq_g[afc_mask], [notch_freq, notch_freq], [0, notch_freq]],
-                    [W_mag[afc_mask], [0, notch_amp], [notch_amp, notch_amp]],
-                    ['|W(iω)|', f"ω_0={notch_freq:.1f}", None],
+                    [freq_g[afc_mask]],
+                    [W_mag[afc_mask]],
+                    ['|W(iω)|'],
                     'ω', '|W(iω)|',
-                    ['m', 'b', 'b'],
-                    ['-', '--', '--'],
-                    [1.5, 0.9, 0.9],
-                    [None] * 3,
-                    [None] * 3,
-                    f'b1={b1} (ζ={b1/(2*np.sqrt(b2)):.2f})',
+                    ['m'],
+                    ['-'],
+                    [1.5],
+                    [None],
+                    [None],
+                    f'b1={b1}',
                 ]
                 freq_response_row.append(freq_response_plot)
     
