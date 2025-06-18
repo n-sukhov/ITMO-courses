@@ -1,7 +1,7 @@
 # %%
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.fft import fft, ifft, fftfreq, fftshift, ifftshift
+from scipy.fft import fft, fftfreq, fftshift
 from scipy import signal
 %matplotlib widget
 
@@ -74,8 +74,8 @@ def draw_plots(rows, cols, width, height, subplot_data, legend_loc="best", legen
     plt.show()
 
 # %%
-g = lambda t: 7 if (1 <= t <= 4) else 0
-u = lambda t, b, c, d: g(t) + b * np.random.uniform(-1, 1) + c * np.sin(d * t)
+g = lambda t, a: a if (1 <= t <= 4) else 0
+u = lambda t, a, b, c, d: g(t, a) + b * np.random.uniform(-1, 1) + c * np.sin(d * t)
 
 # %% [markdown]
 # # Задание 1.1
@@ -83,90 +83,93 @@ u = lambda t, b, c, d: g(t) + b * np.random.uniform(-1, 1) + c * np.sin(d * t)
 # %%
 W_1 = lambda T, p: 1 / (T * p + 1)
 
+def calc_spectrum(signal):
+    spectrum = fftshift(np.abs(fft(signal)))
+    freq = 2 * np.pi * fftshift(fftfreq(len(signal), dt))
+    return freq, spectrum
+
 # %%
-T_range = [0.2, 0.8, 1.6]
-a_range = [2, 4, 7]
+T_range = [0.025, 0.1, 0.4]
+a_range = [2, 8, 16]
 b = 0.5
 c = 0
 d = 10
 plots_11 = []
 
-t_start, t_end = 0, 5
+t_start, t_end = 0, 20
 num_points = 2 ** 15
 t = np.linspace(t_start, t_end, num_points)
 dt = t[1] - t[0]
-
-freq = fftshift(fft.fftfreq(len(t), dt))
-
-def calc_spectrum(signal):
-    spectrum = np.abs(fftshift(fft.fft(signal)))
-    return freq, spectrum
+N = len(t)
 
 time_subplot_data = []
 spectrum_subplot_data = []
 freq_response_subplot_data = []
-for i, a_val in enumerate(a_range):
+
+for i, a in enumerate(a_range):
     time_row = []
     spectrum_row = []
     freq_response_row = []
     
-    for j, T_val in enumerate(T_range):
-        g_signal = np.array([g(ti, a_val) for ti in t])
-        u_signal = np.array([u(ti, a_val, b, c, d) for ti in t])
+    for j, T in enumerate(T_range):
+        g_signal = np.array([g(ti, a) for ti in t])
+        u_signal = np.array([u(ti, a, b, c, d) for ti in t])
         
-        sys = signal.TransferFunction([1], [T_val, 1])
+        sys = signal.TransferFunction([1], [T, 1])
         _, y_signal, _ = signal.lsim(sys, U=u_signal, T=t)
         
         f_g, spec_g = calc_spectrum(g_signal)
         f_u, spec_u = calc_spectrum(u_signal)
         f_y, spec_y = calc_spectrum(y_signal)
         
-        w = 2 * np.pi * freq
-        W_mag = 1 / np.sqrt(1 + (T_val * w)**2)
+        w = f_g
+        W_mag = 1 / np.sqrt(1 + (T * w)**2)
         
-        # Маски для отображения только положительных частот
-        afc_mask = freq >= 0
-        omega_mask = np.abs(freq) < 10
+        afc_mask = (f_g >= 0) & (f_g < 100)
+        omega_mask = np.abs(f_g) < 40
         
         time_plot = [
-            [t, t, t],
-            [g_signal, u_signal, y_signal],
-            ['Исходный g(t)', 'Зашумленный u(t)', 'Отфильтрованный y(t)'],
-            'Время, с', 'Амплитуда',
+            [t[t < 7]] * 3,
+            [u_signal[t < 7], g_signal[t < 7], y_signal[t < 7]],
+            ['u(t)', 'g(t)', 'y(t), filtered'],
+            't', 'Amplitude',
             ['g', 'b', 'r'],
-            ['-', '-', '-'],
-            [1.2, 1.0, 1.5],
-            [None, None, None],
-            [None, None, None],
-            f'a={a_val}, T={T_val} с',
+            ['-'] * 3,
+            [0.5, 1.0, 0.75],
+            [None] * 3,
+            [None] * 3,
+            f'a={a}, T={T} с',
         ]
         time_row.append(time_plot)
 
         spectrum_plot = [
-            [f_g[omega_mask], f_u[omega_mask], f_y[omega_mask]],
-            [spec_g[omega_mask], spec_u[omega_mask], spec_y[omega_mask]],
+            [f_u[omega_mask], f_g[omega_mask], f_y[omega_mask]],
+            [2.0 / N * spec_u[omega_mask],
+             2.0 / N * spec_g[omega_mask],
+             2.0 / N * spec_y[omega_mask]
+            ],
             ['|G(f)|', '|U(f)|', '|Y(f)|'],
-            'Частота, Гц', 'Амплитуда',
+            'ω', 'Amplitude',
             ['g', 'b', 'r'],
-            ['-', '-', '-'],
-            [1.2, 1.0, 1.5],
-            [None, None, None],
-            [None, None, None],
-            f'Спектры (a={a_val}, T={T_val})',
+            ['-'] * 3,
+            [1.0, 1.0, 1.0],
+            [None] * 3,
+            [None] * 3,
+            f'a={a}, T={T}',
         ]
         spectrum_row.append(spectrum_plot)
         
         freq_response_plot = [
-            [freq[afc_mask]],
+            [f_g[afc_mask]],
             [W_mag[afc_mask]],
             ['|W(iω)|'],
-            'Частота, Гц', 'Амплитуда',
+            'ω', 'Amplitude',
             ['m'],
             ['-'],
             [1.5],
             [None],
             [None],
-            f'АЧХ фильтра (T={T_val})',
+            f'T={T}',
         ]
         freq_response_row.append(freq_response_plot)
     
@@ -181,7 +184,7 @@ draw_plots(
     height=10,
     subplot_data=time_subplot_data,
     legend_loc='upper right',
-    legend_fontsize='x-small'
+    legend_fontsize='xx-small'
 )
 
 draw_plots(
@@ -190,18 +193,16 @@ draw_plots(
     width=12,
     height=10,
     subplot_data=spectrum_subplot_data,
-    legend_loc='upper right',
-    legend_fontsize='x-small'
+    legend_loc='upper right'
 )
 
 draw_plots(
     rows=3,
     cols=3,
     width=12,
-    height=10,
+    height=6,
     subplot_data=freq_response_subplot_data,
-    legend_loc='upper right',
-    legend_fontsize='x-small'
+    legend_loc='upper right'
 )
 
 # %%
