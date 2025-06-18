@@ -81,9 +81,7 @@ u = lambda t, a, b, c, d: g(t, a) + b * np.random.uniform(-1, 1) + c * np.sin(d 
 # # Задание 1.1
 
 # %%
-W_1 = lambda T, p: 1 / (T * p + 1)
-
-def calc_spectrum(signal):
+def calc_spectrum(signal, dt):
     spectrum = fftshift(np.abs(fft(signal)))
     freq = 2 * np.pi * fftshift(fftfreq(len(signal), dt))
     return freq, spectrum
@@ -118,9 +116,9 @@ for i, a in enumerate(a_range):
         sys = signal.TransferFunction([1], [T, 1])
         _, y_signal, _ = signal.lsim(sys, U=u_signal, T=t)
         
-        freq_g, func_g = calc_spectrum(g_signal)
-        freq_u, func_u = calc_spectrum(u_signal)
-        freq_y, func_y = calc_spectrum(y_signal)
+        freq_g, func_g = calc_spectrum(g_signal, dt)
+        freq_u, func_u = calc_spectrum(u_signal, dt)
+        freq_y, func_y = calc_spectrum(y_signal, dt)
         
         w = freq_g
         W_mag = 1 / np.sqrt(1 + (T * w)**2)
