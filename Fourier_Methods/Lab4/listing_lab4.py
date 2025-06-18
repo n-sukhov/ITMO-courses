@@ -118,15 +118,15 @@ for i, a in enumerate(a_range):
         sys = signal.TransferFunction([1], [T, 1])
         _, y_signal, _ = signal.lsim(sys, U=u_signal, T=t)
         
-        f_g, spec_g = calc_spectrum(g_signal)
-        f_u, spec_u = calc_spectrum(u_signal)
-        f_y, spec_y = calc_spectrum(y_signal)
+        freq_g, func_g = calc_spectrum(g_signal)
+        freq_u, func_u = calc_spectrum(u_signal)
+        freq_y, func_y = calc_spectrum(y_signal)
         
-        w = f_g
+        w = freq_g
         W_mag = 1 / np.sqrt(1 + (T * w)**2)
         
-        afc_mask = (f_g >= 0) & (f_g < 100)
-        omega_mask = np.abs(f_g) < 40
+        afc_mask = (freq_g >= 0) & (freq_g < 100)
+        omega_mask = np.abs(freq_g) < 40
         
         time_plot = [
             [t[t < 7]] * 3,
@@ -138,20 +138,20 @@ for i, a in enumerate(a_range):
             [0.5, 1.0, 0.75],
             [None] * 3,
             [None] * 3,
-            f'a={a}, T={T} с',
+            f'a={a}, T={T}',
         ]
         time_row.append(time_plot)
 
         spectrum_plot = [
-            [f_u[omega_mask], f_g[omega_mask], f_y[omega_mask]],
-            [2.0 / N * spec_u[omega_mask],
-             2.0 / N * spec_g[omega_mask],
-             2.0 / N * spec_y[omega_mask]
+            [freq_g[omega_mask], freq_u[omega_mask], freq_y[omega_mask]],
+            [2.0 / N * func_g[omega_mask],
+             2.0 / N * func_u[omega_mask],
+             2.0 / N * func_y[omega_mask]
             ],
-            ['|G(f)|', '|U(f)|', '|Y(f)|'],
+            ['|g_hat(ω)|', '|u_hat(ω)|', 'y_hat(ω)|'],
             'ω', 'Amplitude',
-            ['g', 'b', 'r'],
-            ['-'] * 3,
+            ['b', "#09FF00", 'r'],
+            ['-', ':', '-'],
             [1.0, 1.0, 1.0],
             [None] * 3,
             [None] * 3,
@@ -159,23 +159,29 @@ for i, a in enumerate(a_range):
         ]
         spectrum_row.append(spectrum_plot)
         
+        target = 1/np.sqrt(2)
+        idx = np.argmin(np.abs(W_mag[afc_mask] - target))
+        cutoff_freq = freq_g[afc_mask][idx]
+        cutoff_amp = W_mag[afc_mask][idx]
+
         freq_response_plot = [
-            [f_g[afc_mask]],
-            [W_mag[afc_mask]],
-            ['|W(iω)|'],
-            'ω', 'Amplitude',
-            ['m'],
-            ['-'],
-            [1.5],
-            [None],
-            [None],
+            [freq_g[afc_mask], [cutoff_freq, cutoff_freq], [0, cutoff_freq]],
+            [W_mag[afc_mask], [0, cutoff_amp], [cutoff_amp, cutoff_amp]],
+            ['|W(iω)|', "ω_c", None],
+            'ω', '|W(iω)|',
+            ['m', 'b', 'b'],
+            ['-', '--', '--'],
+            [1.5, 0.9, 0.9],
+            [None] * 3,
+            [None] * 3,
             f'T={T}',
         ]
         freq_response_row.append(freq_response_plot)
     
     time_subplot_data.append(time_row)
     spectrum_subplot_data.append(spectrum_row)
-    freq_response_subplot_data.append(freq_response_row)
+    if i == 0:
+        freq_response_subplot_data.append(freq_response_row)
 
 draw_plots(
     rows=3,
@@ -197,10 +203,10 @@ draw_plots(
 )
 
 draw_plots(
-    rows=3,
+    rows=1,
     cols=3,
     width=12,
-    height=6,
+    height=3,
     subplot_data=freq_response_subplot_data,
     legend_loc='upper right'
 )
