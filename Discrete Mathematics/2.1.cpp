@@ -12,12 +12,6 @@ int main() {
         --i, --j;
         adj_matrix[i * m + j] = true;
     }
-    for (int i = 0; i < m ; ++i){
-        for (int j = 0; j < m; ++j){
-            std::cout << adj_matrix[i * m + j] << " ";
-        }
-        std::cout << std::endl;
-    }
     bool reflexivity = true;
     bool transitivity = true;
     bool symmetry = true;
