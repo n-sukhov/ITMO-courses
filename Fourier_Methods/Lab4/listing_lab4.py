@@ -20,8 +20,7 @@ def draw_plots(rows, cols, width, height, subplot_data, legend_loc="best", legen
 
     for idx, data in enumerate(flat_data):
         if idx >= len(axes):
-            raise ValueError(f"Too many subplots provided in 'subplot_data': \
-                             expected at most {rows * cols}, got more.")
+            raise ValueError(f"Too many subplots provided in 'subplot_data': expected at most {rows * cols}, got more.")
         if not data:
             continue
 
@@ -105,6 +104,8 @@ dt = t[1] - t[0]
 time_subplot_data = []
 spectrum_subplot_data = []
 freq_response_subplot_data = []
+#convolution_check_signal = []
+#convolution_check_freq = []
 
 for i, a in enumerate(a_range):
     time_row = []
@@ -135,7 +136,7 @@ for i, a in enumerate(a_range):
             't', 'Amplitude',
             ['g', 'b', 'r'],
             ['-'] * 3,
-            [0.5, 1.0, 0.75],
+            [0.5, 1.2, 1.0],
             [None] * 3,
             [None] * 3,
             f'a={a}, T={T}',
@@ -183,30 +184,31 @@ for i, a in enumerate(a_range):
     if i == 0:
         freq_response_subplot_data.append(freq_response_row)
 
-draw_plots(
-    rows=3,
-    cols=3,
-    width=12,
-    height=10,
-    subplot_data=time_subplot_data,
-    legend_loc='upper right',
-    legend_fontsize='xx-small'
-)
+for tsd in time_subplot_data:
+    draw_plots(
+        rows=3,
+        cols=1,
+        width=9,
+        height=13,
+        subplot_data=[tsd],
+        legend_loc='upper right'
+    )
+
+for ssd in spectrum_subplot_data:
+    draw_plots(
+        rows=3,
+        cols=1,
+        width=9,
+        height=13,
+        subplot_data=[ssd],
+        legend_loc='upper right'
+    )
 
 draw_plots(
     rows=3,
-    cols=3,
-    width=12,
+    cols=1,
+    width=7,
     height=10,
-    subplot_data=spectrum_subplot_data,
-    legend_loc='upper right'
-)
-
-draw_plots(
-    rows=1,
-    cols=3,
-    width=12,
-    height=3,
     subplot_data=freq_response_subplot_data,
     legend_loc='upper right'
 )
@@ -238,6 +240,9 @@ for i, c in enumerate(c_range):
     freq_response_row = []
     
     for j, b1 in enumerate(b1_range):
+        time_row_b = []
+        spectrum_row_b = []
+
         for k, d in enumerate(d_range):
             g_signal = np.array([g(ti, a) for ti in t])
             u_signal = np.array([u(ti, a, b, c, d) for ti in t])
@@ -268,7 +273,7 @@ for i, c in enumerate(c_range):
                 [None] * 3,
                 f'b1={b1:.2f}, c={c}, d={d}',
             ]
-            time_row.append(time_plot)
+            time_row_b.append([time_plot])
             
             spectrum_plot = [
                 [freq_u[omega_mask], freq_g[omega_mask], freq_y[omega_mask]],
@@ -284,7 +289,7 @@ for i, c in enumerate(c_range):
                 [None] * 3,
                 f'b1={b1}, c={c}, d={d}',
             ]
-            spectrum_row.append(spectrum_plot)
+            spectrum_row_b.append([spectrum_plot])
             
             if c == c_range[0] and d == d_range[0]:
                 freq_response_plot = [
@@ -301,30 +306,33 @@ for i, c in enumerate(c_range):
                 ]
                 freq_response_row.append(freq_response_plot)
     
-    time_subplot_data.append([time_row])
-    spectrum_subplot_data.append([spectrum_row])
+        time_subplot_data.append([time_row_b])
+        spectrum_subplot_data.append([spectrum_row_b])
     freq_response_subplot_data.append(freq_response_row)
 
 for tsd in time_subplot_data:
-    draw_plots(
-        rows=4,
-        cols=3,
-        width=12,
-        height=12,
-        subplot_data=tsd,
-        legend_loc='upper right',
-        legend_fontsize='xx-small'
-    )
+    for b in tsd:
+        draw_plots(
+            rows=3,
+            cols=1,
+            width=9,
+            height=13,
+            subplot_data=b,
+            legend_loc='upper right',
+            legend_fontsize='medium'
+        )
 
 for ssd in spectrum_subplot_data:
-    draw_plots(
-        rows=4,
-        cols=3,
-        width=12,
-        height=12,
-        subplot_data=ssd,
-        legend_loc='upper right'
-    )
+    for b in ssd:
+        draw_plots(
+            rows=3,
+            cols=1,
+            width=9,
+            height=13,
+            subplot_data=b,
+            legend_loc='upper right',
+            legend_fontsize='medium'
+        )
 
 draw_plots(
     rows=2,
@@ -332,7 +340,8 @@ draw_plots(
     width=10,
     height=8,
     subplot_data=freq_response_subplot_data,
-    legend_loc='upper right'
+    legend_loc='upper right',
+    legend_fontsize='medium'
 )
 
 # %% [markdown]
