@@ -1,7 +1,7 @@
 # %%
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.fft import fft, fftfreq, fftshift
+from scipy.fft import fft, fftfreq, fftshift, ifft, ifftshift
 from scipy import signal
 import pandas as pd
 from datetime import datetime
@@ -104,13 +104,16 @@ dt = t[1] - t[0]
 time_subplot_data = []
 spectrum_subplot_data = []
 freq_response_subplot_data = []
-#convolution_check_signal = []
-#convolution_check_freq = []
+convolution_subplot_data_time = []
+convolution_subplot_data_spectrum = []
+
 
 for i, a in enumerate(a_range):
     time_row = []
     spectrum_row = []
-    freq_response_row = []
+    freq_response_row = []    
+    conv_time_row = []
+    conv_freq_row = []
     
     for j, T in enumerate(T_range):
         g_signal = np.array([g(ti, a) for ti in t])
@@ -123,8 +126,7 @@ for i, a in enumerate(a_range):
         freq_u, func_u = calc_spectrum(u_signal, dt)
         freq_y, func_y = calc_spectrum(y_signal, dt)
         
-        w = freq_g
-        W_mag = 1 / np.sqrt(1 + (T * w)**2)
+        W_mag = 1 / np.sqrt(1 + (T * freq_g)**2)
         
         afc_mask = (freq_g >= 0) & (freq_g < 100)
         omega_mask = np.abs(freq_g) < 40
@@ -149,7 +151,7 @@ for i, a in enumerate(a_range):
              2.0 / N * func_g[omega_mask],
              2.0 / N * func_y[omega_mask]
             ],
-            ['|u_hat(ω)|', '|g_hat(ω)|', 'y_hat(ω)|'],
+            ['|u_hat(ω)|', '|g_hat(ω)|', '|y_hat(ω)|'],
             'ω', 'Amplitude',
             ['b', "#09FF00", 'r'],
             ['-', ':', '-'],
@@ -179,10 +181,47 @@ for i, a in enumerate(a_range):
         ]
         freq_response_row.append(freq_response_plot)
     
+        W_freq = 1 / (1 + 1j * T * freq_u)
+        y_freq = ifft(ifftshift(W_freq) * fft(u_signal)).real
+          
+        conv_plot_time = [
+            [t[t<7], t[t<7]],
+            [y_signal[t<7], y_freq[t<7]],
+            ['y(t)', 'F^{-1}(W_1(iω)·u_hat(ω))'],
+            't', 'Amplitude',
+            ['r', 'b'],
+            ['-', '--'],
+            [0.75, 0.75],
+            [None]*2,
+            [None]*2,
+            f'Convolution check (a={a}, T={T})'
+        ]
+        conv_time_row.append(conv_plot_time)
+
+        func_y_mult = np.abs(W_freq) * func_u
+        
+        conv_plot_freq = [
+            [freq_y[omega_mask], freq_u[omega_mask]],
+            [2.0 / N * func_y[omega_mask], 2.0 / N * func_y_mult[omega_mask]],
+            ['|y_hat(ω)|', 'W_1(iω)·u_hat(ω)'],
+            'ω', 'Amplitude',
+            ['r', 'b'],
+            ['-', '--'],
+            [1, 1],
+            [None]*2,
+            [None]*2,
+            f'Convolution check (a={a}, T={T})'
+        ]
+        conv_freq_row.append(conv_plot_freq)
+
+
     time_subplot_data.append(time_row)
     spectrum_subplot_data.append(spectrum_row)
     if i == 0:
         freq_response_subplot_data.append(freq_response_row)
+    convolution_subplot_data_time.append(conv_time_row)
+    convolution_subplot_data_spectrum.append(conv_freq_row)
+
 
 for tsd in time_subplot_data:
     draw_plots(
@@ -213,6 +252,26 @@ draw_plots(
     legend_loc='upper right'
 )
 
+for csd in convolution_subplot_data_time:
+    draw_plots(
+        rows=3,
+        cols=1,
+        width=9,
+        height=10,
+        subplot_data=[csd],
+        legend_loc='upper right'
+    )
+
+for fcd in convolution_subplot_data_spectrum:
+    draw_plots(
+        rows=3,
+        cols=1,
+        width=9,
+        height=10,
+        subplot_data=[fcd],
+        legend_loc='upper right'
+    )
+
 # %% [markdown]
 # # Задание 1.2
 
@@ -233,15 +292,16 @@ dt = t[1] - t[0]
 time_subplot_data = []
 spectrum_subplot_data = []
 freq_response_subplot_data = []
+convolution_subplot_data_time = []
+convolution_subplot_data_spectrum = []
 
-for i, c in enumerate(c_range):
-    time_row = []
-    spectrum_row = []
+for i, c in enumerate(c_range):   
     freq_response_row = []
-    
     for j, b1 in enumerate(b1_range):
         time_row_b = []
         spectrum_row_b = []
+        conv_time_row = []
+        conv_freq_row = []
 
         for k, d in enumerate(d_range):
             g_signal = np.array([g(ti, a) for ti in t])
@@ -254,8 +314,7 @@ for i, c in enumerate(c_range):
             freq_u, func_u = calc_spectrum(u_signal, dt)
             freq_y, func_y = calc_spectrum(y_signal, dt)
             
-            w = freq_g
-            W_mag = np.abs((1j*w)**2 + a1*(1j*w) + a2) / np.abs((1j*w)**2 + b1*(1j*w) + b2)
+            W_mag = ((1j*freq_g)**2 + a1*(1j*freq_g) + a2) / ((1j*freq_g)**2 + b1*(1j*freq_g) + b2)
             
             afc_mask = (freq_g >= 0) & (freq_g < 120)
             omega_mask = np.abs(freq_g) < 35
@@ -305,9 +364,45 @@ for i, c in enumerate(c_range):
                     f'b1={b1}',
                 ]
                 freq_response_row.append(freq_response_plot)
+
+            W_freq = ((1j*freq_u)**2 + a1*(1j*freq_u) + a2) / ((1j*freq_u)**2 + b1*(1j*freq_u) + b2)
+            y_freq = ifft(ifftshift(W_freq) * fft(u_signal)).real
+            
+            conv_plot_time = [
+                [t[t<7], t[t<7]],
+                [y_signal[t<7], y_freq[t<7]],
+                ['y(t)', 'F^{-1}(W_1(iω)·u_hat(ω))'],
+                't', 'Amplitude',
+                ['r', 'b'],
+                ['-', '--'],
+                [0.75, 0.75],
+                [None]*2,
+                [None]*2,
+                f'Convolution check (b1={b1:.2f}, c={c}, d={d})'
+            ]
+            conv_time_row.append([conv_plot_time])
+
+            func_y_mult = np.abs(W_mag) * func_u
+            
+            conv_plot_freq = [
+                [freq_y[omega_mask], freq_u[omega_mask]],
+                [2.0 / N * func_y[omega_mask], 2.0 / N * func_y_mult[omega_mask]],
+                ['|y_hat(ω)|', 'W_1(iω)·u_hat(ω)'],
+                'ω', 'Amplitude',
+                ['r', 'b'],
+                ['-', '--'],
+                [1, 1],
+                [None]*2,
+                [None]*2,
+                f'Convolution check (b1={b1:.2f}, c={c}, d={d})'
+            ]
+            conv_freq_row.append([conv_plot_freq])
     
         time_subplot_data.append([time_row_b])
         spectrum_subplot_data.append([spectrum_row_b])
+        convolution_subplot_data_time.append([conv_time_row])
+        convolution_subplot_data_spectrum.append([conv_freq_row])
+
     freq_response_subplot_data.append(freq_response_row)
 
 for tsd in time_subplot_data:
@@ -343,6 +438,28 @@ draw_plots(
     legend_loc='upper right',
     legend_fontsize='medium'
 )
+
+for csd in convolution_subplot_data_time:
+    for b in csd:
+        draw_plots(
+            rows=3,
+            cols=1,
+            width=9,
+            height=10,
+            subplot_data=b,
+            legend_loc='upper right'
+        )
+
+for css in convolution_subplot_data_spectrum:
+    for b in css:
+        draw_plots(
+            rows=3,
+            cols=1,
+            width=9,
+            height=10,
+            subplot_data=b,
+            legend_loc='upper right'
+        )
 
 # %% [markdown]
 # # Задание 2
