@@ -1,0 +1,522 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+\PYG{k+kn}{from} \PYG{n+nn}{scipy.fft} \PYG{k+kn}{import} \PYG{n}{fft}\PYG{p}{,} \PYG{n}{fftfreq}\PYG{p}{,} \PYG{n}{fftshift}\PYG{p}{,} \PYG{n}{ifft}\PYG{p}{,} \PYG{n}{ifftshift}
+\PYG{k+kn}{from} \PYG{n+nn}{scipy} \PYG{k+kn}{import} \PYG{n}{signal}
+\PYG{k+kn}{import} \PYG{n+nn}{pandas} \PYG{k}{as} \PYG{n+nn}{pd}
+\PYG{k+kn}{from} \PYG{n+nn}{datetime} \PYG{k+kn}{import} \PYG{n}{datetime}
+\PYG{o}{\PYGZpc{}}\PYG{n}{matplotlib} \PYG{n}{widget}
+\PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{seed}\PYG{p}{(}\PYG{l+m+mi}{17}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} Util\PYGZhy{}функции}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{k}{def} \PYG{n+nf}{draw\PYGZus{}plots}\PYG{p}{(}\PYG{n}{rows}\PYG{p}{,} \PYG{n}{cols}\PYG{p}{,} \PYG{n}{width}\PYG{p}{,} \PYG{n}{height}\PYG{p}{,} \PYG{n}{subplot\PYGZus{}data}\PYG{p}{,} \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}best\PYGZdq{}}\PYG{p}{,} \PYG{n}{legend\PYGZus{}fontsize}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}small\PYGZdq{}}\PYG{p}{):}
+    \PYG{n}{fig}\PYG{p}{,} \PYG{n}{axes} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplots}\PYG{p}{(}\PYG{n}{rows}\PYG{p}{,} \PYG{n}{cols}\PYG{p}{,} \PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{n}{width}\PYG{p}{,} \PYG{n}{height}\PYG{p}{))}
+    \PYG{n}{axes} \PYG{o}{=} \PYG{n}{axes}\PYG{o}{.}\PYG{n}{flatten}\PYG{p}{()} \PYG{k}{if} \PYG{n}{rows} \PYG{o}{*} \PYG{n}{cols} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{1} \PYG{k}{else} \PYG{p}{[}\PYG{n}{axes}\PYG{p}{]}
+
+    \PYG{n}{flat\PYGZus{}data} \PYG{o}{=} \PYG{p}{[}\PYG{n}{item} \PYG{k}{for} \PYG{n}{row} \PYG{o+ow}{in} \PYG{n}{subplot\PYGZus{}data} \PYG{k}{for} \PYG{n}{item} \PYG{o+ow}{in} \PYG{n}{row}\PYG{p}{]}
+
+    \PYG{k}{for} \PYG{n}{idx}\PYG{p}{,} \PYG{n}{data} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{flat\PYGZus{}data}\PYG{p}{):}
+        \PYG{k}{if} \PYG{n}{idx} \PYG{o}{\PYGZgt{}=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{axes}\PYG{p}{):}
+            \PYG{k}{raise} \PYG{n+ne}{ValueError}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}Too many subplots provided in \PYGZsq{}subplot\PYGZus{}data\PYGZsq{}: expected at most }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{rows}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{cols}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{, got more.\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{data}\PYG{p}{:}
+            \PYG{k}{continue}
+
+        \PYG{n}{ax} \PYG{o}{=} \PYG{n}{axes}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{]}
+
+        \PYG{p}{(}
+            \PYG{n}{x\PYGZus{}arrays}\PYG{p}{,} \PYG{n}{y\PYGZus{}arrays}\PYG{p}{,}
+            \PYG{n}{labels}\PYG{p}{,}
+            \PYG{n}{x\PYGZus{}label}\PYG{p}{,} \PYG{n}{y\PYGZus{}label}\PYG{p}{,}
+            \PYG{n}{colors}\PYG{p}{,} \PYG{n}{linestyles}\PYG{p}{,}
+            \PYG{n}{linewidth}\PYG{p}{,} \PYG{n}{markers}\PYG{p}{,}
+            \PYG{n}{markersizes}\PYG{p}{,} \PYG{n}{title}\PYG{p}{,}
+            \PYG{n}{markerevery}
+        \PYG{p}{)} \PYG{o}{=} \PYG{n}{data} \PYG{o}{+} \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{p}{(}\PYG{l+m+mi}{12} \PYG{o}{\PYGZhy{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{data}\PYG{p}{))}
+
+        \PYG{n}{num\PYGZus{}plots} \PYG{o}{=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{y\PYGZus{}arrays}\PYG{p}{)}
+
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{num\PYGZus{}plots}\PYG{p}{):}
+            \PYG{n}{x} \PYG{o}{=} \PYG{n}{x\PYGZus{}arrays}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+            \PYG{n}{y} \PYG{o}{=} \PYG{n}{y\PYGZus{}arrays}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+
+            \PYG{n}{label} \PYG{o}{=} \PYG{n}{labels}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{if} \PYG{n}{labels} \PYG{o+ow}{and} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{labels}\PYG{p}{)} \PYG{k}{else} \PYG{k+kc}{None}
+            \PYG{n}{color} \PYG{o}{=} \PYG{n}{colors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{if} \PYG{n}{colors} \PYG{o+ow}{and} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{colors}\PYG{p}{)} \PYG{k}{else} \PYG{k+kc}{None}
+            \PYG{n}{linestyle} \PYG{o}{=} \PYG{n}{linestyles}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{if} \PYG{n}{linestyles} \PYG{o+ow}{and} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{linestyles}\PYG{p}{)} \PYG{k}{else} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}
+            \PYG{n}{lw} \PYG{o}{=} \PYG{n}{linewidth}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{if} \PYG{n}{linewidth} \PYG{o+ow}{and} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{linewidth}\PYG{p}{)} \PYG{k}{else} \PYG{l+m+mi}{2}
+            \PYG{n}{marker} \PYG{o}{=} \PYG{n}{markers}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{if} \PYG{n}{markers} \PYG{o+ow}{and} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{markers}\PYG{p}{)} \PYG{k}{else} \PYG{k+kc}{None}
+            \PYG{n}{markersize} \PYG{o}{=} \PYG{n}{markersizes}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{if} \PYG{n}{markersizes} \PYG{o+ow}{and} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{markersizes}\PYG{p}{)} \PYG{k}{else} \PYG{k+kc}{None}
+            \PYG{n}{mevery} \PYG{o}{=} \PYG{n}{markerevery}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{if} \PYG{n}{markerevery} \PYG{o+ow}{and} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{markerevery}\PYG{p}{)} \PYG{k}{else} \PYG{k+kc}{None}
+
+            \PYG{n}{ax}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y}\PYG{p}{,}
+                    \PYG{n}{label}\PYG{o}{=}\PYG{n}{label}\PYG{p}{,}
+                    \PYG{n}{color}\PYG{o}{=}\PYG{n}{color}\PYG{p}{,}
+                    \PYG{n}{linestyle}\PYG{o}{=}\PYG{n}{linestyle}\PYG{p}{,}
+                    \PYG{n}{linewidth}\PYG{o}{=}\PYG{n}{lw}\PYG{p}{,}
+                    \PYG{n}{marker}\PYG{o}{=}\PYG{n}{marker}\PYG{p}{,}
+                    \PYG{n}{markersize}\PYG{o}{=}\PYG{n}{markersize}\PYG{p}{,}
+                    \PYG{n}{markevery}\PYG{o}{=}\PYG{n}{mevery}\PYG{p}{)}
+
+        \PYG{k}{if} \PYG{n}{labels}\PYG{p}{:}
+            \PYG{n}{ax}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{(}\PYG{n}{loc}\PYG{o}{=}\PYG{n}{legend\PYGZus{}loc}\PYG{p}{,} \PYG{n}{fontsize}\PYG{o}{=}\PYG{n}{legend\PYGZus{}fontsize}\PYG{p}{)}
+        \PYG{n}{ax}\PYG{o}{.}\PYG{n}{grid}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{x\PYGZus{}label}\PYG{p}{:}
+            \PYG{n}{ax}\PYG{o}{.}\PYG{n}{set\PYGZus{}xlabel}\PYG{p}{(}\PYG{n}{x\PYGZus{}label}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{y\PYGZus{}label}\PYG{p}{:}
+            \PYG{n}{ax}\PYG{o}{.}\PYG{n}{set\PYGZus{}ylabel}\PYG{p}{(}\PYG{n}{y\PYGZus{}label}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{title}\PYG{p}{:}
+            \PYG{n}{ax}\PYG{o}{.}\PYG{n}{set\PYGZus{}title}\PYG{p}{(}\PYG{n}{title}\PYG{p}{)}
+    
+    \PYG{k}{for} \PYG{n}{idx} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{flat\PYGZus{}data}\PYG{p}{),} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{axes}\PYG{p}{)):}
+        \PYG{n}{fig}\PYG{o}{.}\PYG{n}{delaxes}\PYG{p}{(}\PYG{n}{axes}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{])}
+        
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{gca}\PYG{p}{()}\PYG{o}{.}\PYG{n}{set\PYGZus{}axisbelow}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)} 
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{tight\PYGZus{}layout}\PYG{p}{()}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{g} \PYG{o}{=} \PYG{k}{lambda} \PYG{n}{t}\PYG{p}{,} \PYG{n}{a}\PYG{p}{:} \PYG{n}{a} \PYG{k}{if} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZlt{}=} \PYG{n}{t} \PYG{o}{\PYGZlt{}=} \PYG{l+m+mi}{4}\PYG{p}{)} \PYG{k}{else} \PYG{l+m+mi}{0}
+\PYG{n}{u} \PYG{o}{=} \PYG{k}{lambda} \PYG{n}{t}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{,} \PYG{n}{d}\PYG{p}{:} \PYG{n}{g}\PYG{p}{(}\PYG{n}{t}\PYG{p}{,} \PYG{n}{a}\PYG{p}{)} \PYG{o}{+} \PYG{n}{b} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{uniform}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{+} \PYG{n}{c} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sin}\PYG{p}{(}\PYG{n}{d} \PYG{o}{*} \PYG{n}{t}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{} Задание 1.1}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{k}{def} \PYG{n+nf}{calc\PYGZus{}spectrum}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{,} \PYG{n}{dt}\PYG{p}{):}
+    \PYG{n}{spectrum} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{)))}
+    \PYG{n}{freq} \PYG{o}{=} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{pi} \PYG{o}{*} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fftfreq}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{signal}\PYG{p}{),} \PYG{n}{dt}\PYG{p}{))}
+    \PYG{k}{return} \PYG{n}{freq}\PYG{p}{,} \PYG{n}{spectrum}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{T\PYGZus{}range} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mf}{0.025}\PYG{p}{,} \PYG{l+m+mf}{0.1}\PYG{p}{,} \PYG{l+m+mf}{0.4}\PYG{p}{]}
+\PYG{n}{a\PYGZus{}range} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{8}\PYG{p}{,} \PYG{l+m+mi}{16}\PYG{p}{]}
+\PYG{n}{b} \PYG{o}{=} \PYG{l+m+mf}{0.5}
+\PYG{n}{c} \PYG{o}{=} \PYG{l+m+mi}{0}
+\PYG{n}{d} \PYG{o}{=} \PYG{l+m+mi}{10}
+\PYG{n}{plots\PYGZus{}11} \PYG{o}{=} \PYG{p}{[]}
+
+\PYG{n}{N} \PYG{o}{=} \PYG{l+m+mi}{2} \PYG{o}{**} \PYG{l+m+mi}{15}
+\PYG{n}{t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linspace}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{20}\PYG{p}{,} \PYG{n}{N}\PYG{p}{)}
+\PYG{n}{dt} \PYG{o}{=} \PYG{n}{t}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{t}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+
+\PYG{n}{time\PYGZus{}subplot\PYGZus{}data} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{spectrum\PYGZus{}subplot\PYGZus{}data} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{freq\PYGZus{}response\PYGZus{}subplot\PYGZus{}data} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}time} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}spectrum} \PYG{o}{=} \PYG{p}{[]}
+
+
+\PYG{k}{for} \PYG{n}{i}\PYG{p}{,} \PYG{n}{a} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{a\PYGZus{}range}\PYG{p}{):}
+    \PYG{n}{time\PYGZus{}row} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{n}{spectrum\PYGZus{}row} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{n}{freq\PYGZus{}response\PYGZus{}row} \PYG{o}{=} \PYG{p}{[]}    
+    \PYG{n}{conv\PYGZus{}time\PYGZus{}row} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{n}{conv\PYGZus{}freq\PYGZus{}row} \PYG{o}{=} \PYG{p}{[]}
+    
+    \PYG{k}{for} \PYG{n}{j}\PYG{p}{,} \PYG{n}{T} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{T\PYGZus{}range}\PYG{p}{):}
+        \PYG{n}{g\PYGZus{}signal} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{n}{g}\PYG{p}{(}\PYG{n}{ti}\PYG{p}{,} \PYG{n}{a}\PYG{p}{)} \PYG{k}{for} \PYG{n}{ti} \PYG{o+ow}{in} \PYG{n}{t}\PYG{p}{])}
+        \PYG{n}{u\PYGZus{}signal} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{n}{u}\PYG{p}{(}\PYG{n}{ti}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{,} \PYG{n}{d}\PYG{p}{)} \PYG{k}{for} \PYG{n}{ti} \PYG{o+ow}{in} \PYG{n}{t}\PYG{p}{])}
+        
+        \PYG{n}{W} \PYG{o}{=} \PYG{n}{signal}\PYG{o}{.}\PYG{n}{TransferFunction}\PYG{p}{([}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{p}{[}\PYG{n}{T}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{])}
+        \PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{y\PYGZus{}signal}\PYG{p}{,} \PYG{n}{\PYGZus{}} \PYG{o}{=} \PYG{n}{signal}\PYG{o}{.}\PYG{n}{lsim}\PYG{p}{(}\PYG{n}{W}\PYG{p}{,} \PYG{n}{U}\PYG{o}{=}\PYG{n}{u\PYGZus{}signal}\PYG{p}{,} \PYG{n}{T}\PYG{o}{=}\PYG{n}{t}\PYG{p}{)}
+        
+        \PYG{n}{freq\PYGZus{}g}\PYG{p}{,} \PYG{n}{func\PYGZus{}g} \PYG{o}{=} \PYG{n}{calc\PYGZus{}spectrum}\PYG{p}{(}\PYG{n}{g\PYGZus{}signal}\PYG{p}{,} \PYG{n}{dt}\PYG{p}{)}
+        \PYG{n}{freq\PYGZus{}u}\PYG{p}{,} \PYG{n}{func\PYGZus{}u} \PYG{o}{=} \PYG{n}{calc\PYGZus{}spectrum}\PYG{p}{(}\PYG{n}{u\PYGZus{}signal}\PYG{p}{,} \PYG{n}{dt}\PYG{p}{)}
+        \PYG{n}{freq\PYGZus{}y}\PYG{p}{,} \PYG{n}{func\PYGZus{}y} \PYG{o}{=} \PYG{n}{calc\PYGZus{}spectrum}\PYG{p}{(}\PYG{n}{y\PYGZus{}signal}\PYG{p}{,} \PYG{n}{dt}\PYG{p}{)}
+        
+        \PYG{n}{W\PYGZus{}mag} \PYG{o}{=} \PYG{l+m+mi}{1} \PYG{o}{/} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sqrt}\PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{+} \PYG{p}{(}\PYG{n}{T} \PYG{o}{*} \PYG{n}{freq\PYGZus{}g}\PYG{p}{)}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{)}
+        
+        \PYG{n}{afc\PYGZus{}mask} \PYG{o}{=} \PYG{p}{(}\PYG{n}{freq\PYGZus{}g} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{freq\PYGZus{}g} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{100}\PYG{p}{)}
+        \PYG{n}{omega\PYGZus{}mask} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{freq\PYGZus{}g}\PYG{p}{)} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{40}
+        
+        \PYG{n}{time\PYGZus{}plot} \PYG{o}{=} \PYG{p}{[}
+            \PYG{p}{[}\PYG{n}{t}\PYG{p}{[}\PYG{n}{t} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{7}\PYG{p}{]]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{p}{[}\PYG{n}{u\PYGZus{}signal}\PYG{p}{[}\PYG{n}{t} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{7}\PYG{p}{],} \PYG{n}{g\PYGZus{}signal}\PYG{p}{[}\PYG{n}{t} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{7}\PYG{p}{],} \PYG{n}{y\PYGZus{}signal}\PYG{p}{[}\PYG{n}{t} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{7}\PYG{p}{]],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}u(t)\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}g(t)\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}y(t), filtered\PYGZsq{}}\PYG{p}{],}
+            \PYG{l+s+s1}{\PYGZsq{}t\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Amplitude\PYGZsq{}}\PYG{p}{,}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}g\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{p}{[}\PYG{l+m+mf}{0.5}\PYG{p}{,} \PYG{l+m+mf}{1.2}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{],}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}a=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{a}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, T=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{T}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
+        \PYG{p}{]}
+        \PYG{n}{time\PYGZus{}row}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{time\PYGZus{}plot}\PYG{p}{)}
+
+        \PYG{n}{spectrum\PYGZus{}plot} \PYG{o}{=} \PYG{p}{[}
+            \PYG{p}{[}\PYG{n}{freq\PYGZus{}u}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],} \PYG{n}{freq\PYGZus{}g}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],} \PYG{n}{freq\PYGZus{}y}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{]],}
+            \PYG{p}{[}\PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}u}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],}
+             \PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}g}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],}
+             \PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}y}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{]}
+            \PYG{p}{],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}|u\PYGZus{}hat(ω)|\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}|g\PYGZus{}hat(ω)|\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}|y\PYGZus{}hat(ω)|\PYGZsq{}}\PYG{p}{],}
+            \PYG{l+s+s1}{\PYGZsq{}ω\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Amplitude\PYGZsq{}}\PYG{p}{,}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}\PYGZsh{}09FF00\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}:\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{],}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}a=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{a}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, T=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{T}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
+        \PYG{p}{]}
+        \PYG{n}{spectrum\PYGZus{}row}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{spectrum\PYGZus{}plot}\PYG{p}{)}
+        
+        \PYG{n}{target} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{o}{/}\PYG{n}{np}\PYG{o}{.}\PYG{n}{sqrt}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{)}
+        \PYG{n}{idx} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{argmin}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{W\PYGZus{}mag}\PYG{p}{[}\PYG{n}{afc\PYGZus{}mask}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{target}\PYG{p}{))}
+        \PYG{n}{cutoff\PYGZus{}freq} \PYG{o}{=} \PYG{n}{freq\PYGZus{}g}\PYG{p}{[}\PYG{n}{afc\PYGZus{}mask}\PYG{p}{][}\PYG{n}{idx}\PYG{p}{]}
+        \PYG{n}{cutoff\PYGZus{}amp} \PYG{o}{=} \PYG{n}{W\PYGZus{}mag}\PYG{p}{[}\PYG{n}{afc\PYGZus{}mask}\PYG{p}{][}\PYG{n}{idx}\PYG{p}{]}
+
+        \PYG{n}{freq\PYGZus{}response\PYGZus{}plot} \PYG{o}{=} \PYG{p}{[}
+            \PYG{p}{[}\PYG{n}{freq\PYGZus{}g}\PYG{p}{[}\PYG{n}{afc\PYGZus{}mask}\PYG{p}{],} \PYG{p}{[}\PYG{n}{cutoff\PYGZus{}freq}\PYG{p}{,} \PYG{n}{cutoff\PYGZus{}freq}\PYG{p}{],} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{cutoff\PYGZus{}freq}\PYG{p}{]],}
+            \PYG{p}{[}\PYG{n}{W\PYGZus{}mag}\PYG{p}{[}\PYG{n}{afc\PYGZus{}mask}\PYG{p}{],} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{cutoff\PYGZus{}amp}\PYG{p}{],} \PYG{p}{[}\PYG{n}{cutoff\PYGZus{}amp}\PYG{p}{,} \PYG{n}{cutoff\PYGZus{}amp}\PYG{p}{]],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}|W(iω)|\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}ω\PYGZus{}c\PYGZdq{}}\PYG{p}{,} \PYG{k+kc}{None}\PYG{p}{],}
+            \PYG{l+s+s1}{\PYGZsq{}ω\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}|W(iω)|\PYGZsq{}}\PYG{p}{,}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}m\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+m+mf}{1.5}\PYG{p}{,} \PYG{l+m+mf}{0.9}\PYG{p}{,} \PYG{l+m+mf}{0.9}\PYG{p}{],}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}T=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{T}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
+        \PYG{p}{]}
+        \PYG{n}{freq\PYGZus{}response\PYGZus{}row}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{freq\PYGZus{}response\PYGZus{}plot}\PYG{p}{)}
+    
+        \PYG{n}{W\PYGZus{}freq} \PYG{o}{=} \PYG{l+m+mi}{1} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{n}{j} \PYG{o}{*} \PYG{n}{T} \PYG{o}{*} \PYG{n}{freq\PYGZus{}u}\PYG{p}{)}
+        \PYG{n}{y\PYGZus{}freq} \PYG{o}{=} \PYG{n}{ifft}\PYG{p}{(}\PYG{n}{ifftshift}\PYG{p}{(}\PYG{n}{W\PYGZus{}freq}\PYG{p}{)} \PYG{o}{*} \PYG{n}{fft}\PYG{p}{(}\PYG{n}{u\PYGZus{}signal}\PYG{p}{))}\PYG{o}{.}\PYG{n}{real}
+          
+        \PYG{n}{conv\PYGZus{}plot\PYGZus{}time} \PYG{o}{=} \PYG{p}{[}
+            \PYG{p}{[}\PYG{n}{t}\PYG{p}{[}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{7}\PYG{p}{],} \PYG{n}{t}\PYG{p}{[}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{7}\PYG{p}{]],}
+            \PYG{p}{[}\PYG{n}{y\PYGZus{}signal}\PYG{p}{[}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{7}\PYG{p}{],} \PYG{n}{y\PYGZus{}freq}\PYG{p}{[}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{7}\PYG{p}{]],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}y(t)\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZca{}\PYGZob{}\PYGZhy{}1\PYGZcb{}(W\PYGZus{}1(iω)·u\PYGZus{}hat(ω))\PYGZsq{}}\PYG{p}{],}
+            \PYG{l+s+s1}{\PYGZsq{}t\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Amplitude\PYGZsq{}}\PYG{p}{,}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+m+mf}{0.75}\PYG{p}{,} \PYG{l+m+mf}{0.75}\PYG{p}{],}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,}
+            \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Convolution check (a=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{a}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, T=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{T}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{)\PYGZsq{}}
+        \PYG{p}{]}
+        \PYG{n}{conv\PYGZus{}time\PYGZus{}row}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{conv\PYGZus{}plot\PYGZus{}time}\PYG{p}{)}
+
+        \PYG{n}{func\PYGZus{}y\PYGZus{}mult} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{W\PYGZus{}freq}\PYG{p}{)} \PYG{o}{*} \PYG{n}{func\PYGZus{}u}
+        
+        \PYG{n}{conv\PYGZus{}plot\PYGZus{}freq} \PYG{o}{=} \PYG{p}{[}
+            \PYG{p}{[}\PYG{n}{freq\PYGZus{}y}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],} \PYG{n}{freq\PYGZus{}u}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{]],}
+            \PYG{p}{[}\PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}y}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],} \PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}y\PYGZus{}mult}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{]],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}|y\PYGZus{}hat(ω)|\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}W\PYGZus{}1(iω)·u\PYGZus{}hat(ω)\PYGZsq{}}\PYG{p}{],}
+            \PYG{l+s+s1}{\PYGZsq{}ω\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Amplitude\PYGZsq{}}\PYG{p}{,}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{}}\PYG{p}{],}
+            \PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{],}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,}
+            \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,}
+            \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Convolution check (a=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{a}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, T=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{T}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{)\PYGZsq{}}
+        \PYG{p}{]}
+        \PYG{n}{conv\PYGZus{}freq\PYGZus{}row}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{conv\PYGZus{}plot\PYGZus{}freq}\PYG{p}{)}
+
+
+    \PYG{n}{time\PYGZus{}subplot\PYGZus{}data}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{time\PYGZus{}row}\PYG{p}{)}
+    \PYG{n}{spectrum\PYGZus{}subplot\PYGZus{}data}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{spectrum\PYGZus{}row}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{i} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+        \PYG{n}{freq\PYGZus{}response\PYGZus{}subplot\PYGZus{}data}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{freq\PYGZus{}response\PYGZus{}row}\PYG{p}{)}
+    \PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}time}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{conv\PYGZus{}time\PYGZus{}row}\PYG{p}{)}
+    \PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}spectrum}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{conv\PYGZus{}freq\PYGZus{}row}\PYG{p}{)}
+
+
+\PYG{k}{for} \PYG{n}{tsd} \PYG{o+ow}{in} \PYG{n}{time\PYGZus{}subplot\PYGZus{}data}\PYG{p}{:}
+    \PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+        \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+        \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+        \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{,}
+        \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{13}\PYG{p}{,}
+        \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{p}{[}\PYG{n}{tsd}\PYG{p}{],}
+        \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}
+    \PYG{p}{)}
+
+\PYG{k}{for} \PYG{n}{ssd} \PYG{o+ow}{in} \PYG{n}{spectrum\PYGZus{}subplot\PYGZus{}data}\PYG{p}{:}
+    \PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+        \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+        \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+        \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{,}
+        \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{13}\PYG{p}{,}
+        \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{p}{[}\PYG{n}{ssd}\PYG{p}{],}
+        \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}
+    \PYG{p}{)}
+
+\PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+    \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+    \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+    \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{7}\PYG{p}{,}
+    \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{,}
+    \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{n}{freq\PYGZus{}response\PYGZus{}subplot\PYGZus{}data}\PYG{p}{,}
+    \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}
+\PYG{p}{)}
+
+\PYG{k}{for} \PYG{n}{csd} \PYG{o+ow}{in} \PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}time}\PYG{p}{:}
+    \PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+        \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+        \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+        \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{,}
+        \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{,}
+        \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{p}{[}\PYG{n}{csd}\PYG{p}{],}
+        \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}
+    \PYG{p}{)}
+
+\PYG{k}{for} \PYG{n}{fcd} \PYG{o+ow}{in} \PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}spectrum}\PYG{p}{:}
+    \PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+        \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+        \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+        \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{,}
+        \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{,}
+        \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{p}{[}\PYG{n}{fcd}\PYG{p}{],}
+        \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}
+    \PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{} Задание 1.2}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{a} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{n}{b} \PYG{o}{=} \PYG{l+m+mi}{0}
+\PYG{n}{c\PYGZus{}range} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mf}{0.1}\PYG{p}{,} \PYG{l+m+mf}{0.5}\PYG{p}{]}
+\PYG{n}{d\PYGZus{}range} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{20}\PYG{p}{,} \PYG{l+m+mi}{25}\PYG{p}{,} \PYG{l+m+mi}{30}\PYG{p}{]}
+
+\PYG{n}{a1} \PYG{o}{=} \PYG{l+m+mi}{0}
+\PYG{n}{a2} \PYG{o}{=} \PYG{n}{b2} \PYG{o}{=} \PYG{l+m+mi}{625}
+\PYG{n}{b1\PYGZus{}range} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{20}\PYG{p}{,} \PYG{l+m+mi}{70}\PYG{p}{,} \PYG{l+m+mi}{200}\PYG{p}{]} 
+
+\PYG{n}{N} \PYG{o}{=} \PYG{l+m+mi}{2} \PYG{o}{**} \PYG{l+m+mi}{15}
+\PYG{n}{t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linspace}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{20}\PYG{p}{,} \PYG{n}{N}\PYG{p}{)}
+\PYG{n}{dt} \PYG{o}{=} \PYG{n}{t}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{t}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+
+\PYG{n}{time\PYGZus{}subplot\PYGZus{}data} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{spectrum\PYGZus{}subplot\PYGZus{}data} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{freq\PYGZus{}response\PYGZus{}subplot\PYGZus{}data} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}time} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}spectrum} \PYG{o}{=} \PYG{p}{[]}
+
+\PYG{k}{for} \PYG{n}{i}\PYG{p}{,} \PYG{n}{c} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{c\PYGZus{}range}\PYG{p}{):}   
+    \PYG{n}{freq\PYGZus{}response\PYGZus{}row} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{k}{for} \PYG{n}{j}\PYG{p}{,} \PYG{n}{b1} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{b1\PYGZus{}range}\PYG{p}{):}
+        \PYG{n}{time\PYGZus{}row\PYGZus{}b} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{n}{spectrum\PYGZus{}row\PYGZus{}b} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{n}{conv\PYGZus{}time\PYGZus{}row} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{n}{conv\PYGZus{}freq\PYGZus{}row} \PYG{o}{=} \PYG{p}{[]}
+
+        \PYG{k}{for} \PYG{n}{k}\PYG{p}{,} \PYG{n}{d} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{d\PYGZus{}range}\PYG{p}{):}
+            \PYG{n}{g\PYGZus{}signal} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{n}{g}\PYG{p}{(}\PYG{n}{ti}\PYG{p}{,} \PYG{n}{a}\PYG{p}{)} \PYG{k}{for} \PYG{n}{ti} \PYG{o+ow}{in} \PYG{n}{t}\PYG{p}{])}
+            \PYG{n}{u\PYGZus{}signal} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{n}{u}\PYG{p}{(}\PYG{n}{ti}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{c}\PYG{p}{,} \PYG{n}{d}\PYG{p}{)} \PYG{k}{for} \PYG{n}{ti} \PYG{o+ow}{in} \PYG{n}{t}\PYG{p}{])}
+            
+            \PYG{n}{W} \PYG{o}{=} \PYG{n}{signal}\PYG{o}{.}\PYG{n}{TransferFunction}\PYG{p}{([}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{a1}\PYG{p}{,} \PYG{n}{a2}\PYG{p}{],} \PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{b1}\PYG{p}{,} \PYG{n}{b2}\PYG{p}{])}
+            \PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{y\PYGZus{}signal}\PYG{p}{,} \PYG{n}{\PYGZus{}} \PYG{o}{=} \PYG{n}{signal}\PYG{o}{.}\PYG{n}{lsim}\PYG{p}{(}\PYG{n}{W}\PYG{p}{,} \PYG{n}{U}\PYG{o}{=}\PYG{n}{u\PYGZus{}signal}\PYG{p}{,} \PYG{n}{T}\PYG{o}{=}\PYG{n}{t}\PYG{p}{)}
+            
+            \PYG{n}{freq\PYGZus{}g}\PYG{p}{,} \PYG{n}{func\PYGZus{}g} \PYG{o}{=} \PYG{n}{calc\PYGZus{}spectrum}\PYG{p}{(}\PYG{n}{g\PYGZus{}signal}\PYG{p}{,} \PYG{n}{dt}\PYG{p}{)}
+            \PYG{n}{freq\PYGZus{}u}\PYG{p}{,} \PYG{n}{func\PYGZus{}u} \PYG{o}{=} \PYG{n}{calc\PYGZus{}spectrum}\PYG{p}{(}\PYG{n}{u\PYGZus{}signal}\PYG{p}{,} \PYG{n}{dt}\PYG{p}{)}
+            \PYG{n}{freq\PYGZus{}y}\PYG{p}{,} \PYG{n}{func\PYGZus{}y} \PYG{o}{=} \PYG{n}{calc\PYGZus{}spectrum}\PYG{p}{(}\PYG{n}{y\PYGZus{}signal}\PYG{p}{,} \PYG{n}{dt}\PYG{p}{)}
+            
+            \PYG{n}{W\PYGZus{}mag} \PYG{o}{=} \PYG{p}{((}\PYG{l+m+mi}{1}\PYG{n}{j}\PYG{o}{*}\PYG{n}{freq\PYGZus{}g}\PYG{p}{)}\PYG{o}{**}\PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{a1}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{n}{j}\PYG{o}{*}\PYG{n}{freq\PYGZus{}g}\PYG{p}{)} \PYG{o}{+} \PYG{n}{a2}\PYG{p}{)} \PYG{o}{/} \PYG{p}{((}\PYG{l+m+mi}{1}\PYG{n}{j}\PYG{o}{*}\PYG{n}{freq\PYGZus{}g}\PYG{p}{)}\PYG{o}{**}\PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{b1}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{n}{j}\PYG{o}{*}\PYG{n}{freq\PYGZus{}g}\PYG{p}{)} \PYG{o}{+} \PYG{n}{b2}\PYG{p}{)}
+            
+            \PYG{n}{afc\PYGZus{}mask} \PYG{o}{=} \PYG{p}{(}\PYG{n}{freq\PYGZus{}g} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{freq\PYGZus{}g} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{120}\PYG{p}{)}
+            \PYG{n}{omega\PYGZus{}mask} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{freq\PYGZus{}g}\PYG{p}{)} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{35}
+            \PYG{n}{t\PYGZus{}mask} \PYG{o}{=} \PYG{n}{t} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{7}
+
+            \PYG{n}{time\PYGZus{}plot} \PYG{o}{=} \PYG{p}{[}
+                \PYG{p}{[}\PYG{n}{t}\PYG{p}{[}\PYG{n}{t\PYGZus{}mask}\PYG{p}{]]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+                \PYG{p}{[}\PYG{n}{u\PYGZus{}signal}\PYG{p}{[}\PYG{n}{t\PYGZus{}mask}\PYG{p}{],} \PYG{n}{g\PYGZus{}signal}\PYG{p}{[}\PYG{n}{t\PYGZus{}mask}\PYG{p}{],} \PYG{n}{y\PYGZus{}signal}\PYG{p}{[}\PYG{n}{t\PYGZus{}mask}\PYG{p}{]],}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}u(t)\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}g(t)\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}y(t), filtered\PYGZsq{}}\PYG{p}{],}
+                \PYG{l+s+s1}{\PYGZsq{}t\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Amplitude\PYGZsq{}}\PYG{p}{,}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}g\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{],}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+                \PYG{p}{[}\PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{],}
+                \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+                \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+                \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}b1=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{b1}\PYG{l+s+si}{:}\PYG{l+s+s1}{.2f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, c=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{c}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, d=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
+            \PYG{p}{]}
+            \PYG{n}{time\PYGZus{}row\PYGZus{}b}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}\PYG{n}{time\PYGZus{}plot}\PYG{p}{])}
+            
+            \PYG{n}{spectrum\PYGZus{}plot} \PYG{o}{=} \PYG{p}{[}
+                \PYG{p}{[}\PYG{n}{freq\PYGZus{}u}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],} \PYG{n}{freq\PYGZus{}g}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],} \PYG{n}{freq\PYGZus{}y}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{]],}
+                \PYG{p}{[}\PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}u}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],}
+                 \PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}g}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],}
+                 \PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}y}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{]],}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}|u\PYGZus{}hat(ω)|\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}|g\PYGZus{}hat(ω)|\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}y\PYGZus{}hat(ω)|\PYGZsq{}}\PYG{p}{],}
+                \PYG{l+s+s1}{\PYGZsq{}ω\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Amplitude\PYGZsq{}}\PYG{p}{,}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}\PYGZsh{}039D71\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{],}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}:\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{],}
+                \PYG{p}{[}\PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{],}
+                \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+                \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{3}\PYG{p}{,}
+                \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}b1=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{b1}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, c=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{c}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, d=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
+            \PYG{p}{]}
+            \PYG{n}{spectrum\PYGZus{}row\PYGZus{}b}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}\PYG{n}{spectrum\PYGZus{}plot}\PYG{p}{])}
+            
+            \PYG{k}{if} \PYG{n}{c} \PYG{o}{==} \PYG{n}{c\PYGZus{}range}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o+ow}{and} \PYG{n}{d} \PYG{o}{==} \PYG{n}{d\PYGZus{}range}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]:}
+                \PYG{n}{freq\PYGZus{}response\PYGZus{}plot} \PYG{o}{=} \PYG{p}{[}
+                    \PYG{p}{[}\PYG{n}{freq\PYGZus{}g}\PYG{p}{[}\PYG{n}{afc\PYGZus{}mask}\PYG{p}{]],}
+                    \PYG{p}{[}\PYG{n}{W\PYGZus{}mag}\PYG{p}{[}\PYG{n}{afc\PYGZus{}mask}\PYG{p}{]],}
+                    \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}|W(iω)|\PYGZsq{}}\PYG{p}{],}
+                    \PYG{l+s+s1}{\PYGZsq{}ω\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}|W(iω)|\PYGZsq{}}\PYG{p}{,}
+                    \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}m\PYGZsq{}}\PYG{p}{],}
+                    \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{],}
+                    \PYG{p}{[}\PYG{l+m+mf}{1.5}\PYG{p}{],}
+                    \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{],}
+                    \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{],}
+                    \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}b1=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{b1}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
+                \PYG{p}{]}
+                \PYG{n}{freq\PYGZus{}response\PYGZus{}row}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{freq\PYGZus{}response\PYGZus{}plot}\PYG{p}{)}
+
+            \PYG{n}{W\PYGZus{}freq} \PYG{o}{=} \PYG{p}{((}\PYG{l+m+mi}{1}\PYG{n}{j}\PYG{o}{*}\PYG{n}{freq\PYGZus{}u}\PYG{p}{)}\PYG{o}{**}\PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{a1}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{n}{j}\PYG{o}{*}\PYG{n}{freq\PYGZus{}u}\PYG{p}{)} \PYG{o}{+} \PYG{n}{a2}\PYG{p}{)} \PYG{o}{/} \PYG{p}{((}\PYG{l+m+mi}{1}\PYG{n}{j}\PYG{o}{*}\PYG{n}{freq\PYGZus{}u}\PYG{p}{)}\PYG{o}{**}\PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{b1}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{n}{j}\PYG{o}{*}\PYG{n}{freq\PYGZus{}u}\PYG{p}{)} \PYG{o}{+} \PYG{n}{b2}\PYG{p}{)}
+            \PYG{n}{y\PYGZus{}freq} \PYG{o}{=} \PYG{n}{ifft}\PYG{p}{(}\PYG{n}{ifftshift}\PYG{p}{(}\PYG{n}{W\PYGZus{}freq}\PYG{p}{)} \PYG{o}{*} \PYG{n}{fft}\PYG{p}{(}\PYG{n}{u\PYGZus{}signal}\PYG{p}{))}\PYG{o}{.}\PYG{n}{real}
+            
+            \PYG{n}{conv\PYGZus{}plot\PYGZus{}time} \PYG{o}{=} \PYG{p}{[}
+                \PYG{p}{[}\PYG{n}{t}\PYG{p}{[}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{7}\PYG{p}{],} \PYG{n}{t}\PYG{p}{[}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{7}\PYG{p}{]],}
+                \PYG{p}{[}\PYG{n}{y\PYGZus{}signal}\PYG{p}{[}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{7}\PYG{p}{],} \PYG{n}{y\PYGZus{}freq}\PYG{p}{[}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{7}\PYG{p}{]],}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}y(t)\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}F\PYGZca{}\PYGZob{}\PYGZhy{}1\PYGZcb{}(W\PYGZus{}1(iω)·u\PYGZus{}hat(ω))\PYGZsq{}}\PYG{p}{],}
+                \PYG{l+s+s1}{\PYGZsq{}t\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Amplitude\PYGZsq{}}\PYG{p}{,}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{],}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{}}\PYG{p}{],}
+                \PYG{p}{[}\PYG{l+m+mf}{0.75}\PYG{p}{,} \PYG{l+m+mf}{0.75}\PYG{p}{],}
+                \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,}
+                \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,}
+                \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Convolution check (b1=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{b1}\PYG{l+s+si}{:}\PYG{l+s+s1}{.2f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, c=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{c}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, d=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{)\PYGZsq{}}
+            \PYG{p}{]}
+            \PYG{n}{conv\PYGZus{}time\PYGZus{}row}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}\PYG{n}{conv\PYGZus{}plot\PYGZus{}time}\PYG{p}{])}
+
+            \PYG{n}{func\PYGZus{}y\PYGZus{}mult} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{W\PYGZus{}mag}\PYG{p}{)} \PYG{o}{*} \PYG{n}{func\PYGZus{}u}
+            
+            \PYG{n}{conv\PYGZus{}plot\PYGZus{}freq} \PYG{o}{=} \PYG{p}{[}
+                \PYG{p}{[}\PYG{n}{freq\PYGZus{}y}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],} \PYG{n}{freq\PYGZus{}u}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{]],}
+                \PYG{p}{[}\PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}y}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{],} \PYG{l+m+mf}{2.0} \PYG{o}{/} \PYG{n}{N} \PYG{o}{*} \PYG{n}{func\PYGZus{}y\PYGZus{}mult}\PYG{p}{[}\PYG{n}{omega\PYGZus{}mask}\PYG{p}{]],}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}|y\PYGZus{}hat(ω)|\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}W\PYGZus{}1(iω)·u\PYGZus{}hat(ω)\PYGZsq{}}\PYG{p}{],}
+                \PYG{l+s+s1}{\PYGZsq{}ω\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Amplitude\PYGZsq{}}\PYG{p}{,}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{],}
+                \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{}}\PYG{p}{],}
+                \PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{],}
+                \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,}
+                \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,}
+                \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Convolution check (b1=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{b1}\PYG{l+s+si}{:}\PYG{l+s+s1}{.2f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, c=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{c}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, d=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{)\PYGZsq{}}
+            \PYG{p}{]}
+            \PYG{n}{conv\PYGZus{}freq\PYGZus{}row}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}\PYG{n}{conv\PYGZus{}plot\PYGZus{}freq}\PYG{p}{])}
+    
+        \PYG{n}{time\PYGZus{}subplot\PYGZus{}data}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}\PYG{n}{time\PYGZus{}row\PYGZus{}b}\PYG{p}{])}
+        \PYG{n}{spectrum\PYGZus{}subplot\PYGZus{}data}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}\PYG{n}{spectrum\PYGZus{}row\PYGZus{}b}\PYG{p}{])}
+        \PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}time}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}\PYG{n}{conv\PYGZus{}time\PYGZus{}row}\PYG{p}{])}
+        \PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}spectrum}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}\PYG{n}{conv\PYGZus{}freq\PYGZus{}row}\PYG{p}{])}
+
+    \PYG{n}{freq\PYGZus{}response\PYGZus{}subplot\PYGZus{}data}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{freq\PYGZus{}response\PYGZus{}row}\PYG{p}{)}
+
+\PYG{k}{for} \PYG{n}{tsd} \PYG{o+ow}{in} \PYG{n}{time\PYGZus{}subplot\PYGZus{}data}\PYG{p}{:}
+    \PYG{k}{for} \PYG{n}{b} \PYG{o+ow}{in} \PYG{n}{tsd}\PYG{p}{:}
+        \PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+            \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+            \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{,}
+            \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{13}\PYG{p}{,}
+            \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{n}{b}\PYG{p}{,}
+            \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}\PYG{p}{,}
+            \PYG{n}{legend\PYGZus{}fontsize}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}medium\PYGZsq{}}
+        \PYG{p}{)}
+
+\PYG{k}{for} \PYG{n}{ssd} \PYG{o+ow}{in} \PYG{n}{spectrum\PYGZus{}subplot\PYGZus{}data}\PYG{p}{:}
+    \PYG{k}{for} \PYG{n}{b} \PYG{o+ow}{in} \PYG{n}{ssd}\PYG{p}{:}
+        \PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+            \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+            \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{,}
+            \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{13}\PYG{p}{,}
+            \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{n}{b}\PYG{p}{,}
+            \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}\PYG{p}{,}
+            \PYG{n}{legend\PYGZus{}fontsize}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}medium\PYGZsq{}}
+        \PYG{p}{)}
+
+\PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+    \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{,}
+    \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{,}
+    \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{,}
+    \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{8}\PYG{p}{,}
+    \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{n}{freq\PYGZus{}response\PYGZus{}subplot\PYGZus{}data}\PYG{p}{,}
+    \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}\PYG{p}{,}
+    \PYG{n}{legend\PYGZus{}fontsize}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}medium\PYGZsq{}}
+\PYG{p}{)}
+
+\PYG{k}{for} \PYG{n}{csd} \PYG{o+ow}{in} \PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}time}\PYG{p}{:}
+    \PYG{k}{for} \PYG{n}{b} \PYG{o+ow}{in} \PYG{n}{csd}\PYG{p}{:}
+        \PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+            \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+            \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{,}
+            \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{,}
+            \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{n}{b}\PYG{p}{,}
+            \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}
+        \PYG{p}{)}
+
+\PYG{k}{for} \PYG{n}{css} \PYG{o+ow}{in} \PYG{n}{convolution\PYGZus{}subplot\PYGZus{}data\PYGZus{}spectrum}\PYG{p}{:}
+    \PYG{k}{for} \PYG{n}{b} \PYG{o+ow}{in} \PYG{n}{css}\PYG{p}{:}
+        \PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+            \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,}
+            \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+            \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{,}
+            \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{,}
+            \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{n}{b}\PYG{p}{,}
+            \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}upper right\PYGZsq{}}
+        \PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{} Задание 2}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{data} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}csv}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}SBER\PYGZus{}DATA.csv\PYGZsq{}}\PYG{p}{,} \PYG{n}{sep}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{};\PYGZsq{}}\PYG{p}{,} \PYG{n}{parse\PYGZus{}dates}\PYG{o}{=}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZlt{}DATE\PYGZgt{}\PYGZsq{}}\PYG{p}{],} 
+                  \PYG{n}{date\PYGZus{}parser}\PYG{o}{=}\PYG{k}{lambda} \PYG{n}{x}\PYG{p}{:} \PYG{n}{datetime}\PYG{o}{.}\PYG{n}{strptime}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZpc{}y\PYGZpc{}m}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{))}
+\PYG{n}{data} \PYG{o}{=} \PYG{n}{data}\PYG{o}{.}\PYG{n}{sort\PYGZus{}values}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZlt{}DATE\PYGZgt{}\PYGZsq{}}\PYG{p}{)}
+
+\PYG{n}{dates} \PYG{o}{=} \PYG{n}{data}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZlt{}DATE\PYGZgt{}\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{values}
+\PYG{n}{prices} \PYG{o}{=} \PYG{n}{data}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZlt{}CLOSE\PYGZgt{}\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{values}
+\PYG{n}{t\PYGZus{}days} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{dates}\PYG{p}{))}
+
+\PYG{n}{time\PYGZus{}constants\PYGZus{}days} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{7}\PYG{p}{,} \PYG{l+m+mi}{30}\PYG{p}{,} \PYG{l+m+mi}{90}\PYG{p}{,} \PYG{l+m+mi}{365}\PYG{p}{]}
+
+\PYG{n}{filtered\PYGZus{}signals} \PYG{o}{=} \PYG{p}{[]}
+\PYG{k}{for} \PYG{n}{tc} \PYG{o+ow}{in} \PYG{n}{time\PYGZus{}constants\PYGZus{}days}\PYG{p}{:}
+    \PYG{n}{W} \PYG{o}{=} \PYG{n}{signal}\PYG{o}{.}\PYG{n}{TransferFunction}\PYG{p}{([}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{p}{[}\PYG{n}{tc}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{])}
+    \PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{y\PYGZus{}signal}\PYG{p}{,} \PYG{n}{\PYGZus{}} \PYG{o}{=} \PYG{n}{signal}\PYG{o}{.}\PYG{n}{lsim}\PYG{p}{(}\PYG{n}{W}\PYG{p}{,} \PYG{n}{U}\PYG{o}{=}\PYG{n}{prices}\PYG{p}{,} \PYG{n}{T}\PYG{o}{=}\PYG{n}{t\PYGZus{}days}\PYG{p}{,} \PYG{n}{X0}\PYG{o}{=}\PYG{n}{prices}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{*} \PYG{n}{tc}\PYG{p}{)}
+    \PYG{n}{filtered\PYGZus{}signals}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{y\PYGZus{}signal}\PYG{p}{)}
+
+\PYG{n}{plot\PYGZus{}data} \PYG{o}{=} \PYG{p}{[]}
+
+\PYG{k}{for} \PYG{n}{i}\PYG{p}{,} \PYG{n}{tc} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{time\PYGZus{}constants\PYGZus{}days}\PYG{p}{):}
+    \PYG{k}{if} \PYG{n}{tc} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{:}
+        \PYG{n}{tc\PYGZus{}label} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}1 день\PYGZdq{}}
+    \PYG{k}{elif} \PYG{n}{tc} \PYG{o}{==} \PYG{l+m+mi}{7}\PYG{p}{:}
+        \PYG{n}{tc\PYGZus{}label} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}1 неделя\PYGZdq{}}
+    \PYG{k}{elif} \PYG{n}{tc} \PYG{o}{==} \PYG{l+m+mi}{30}\PYG{p}{:}
+        \PYG{n}{tc\PYGZus{}label} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}1 месяц\PYGZdq{}}
+    \PYG{k}{elif} \PYG{n}{tc} \PYG{o}{==} \PYG{l+m+mi}{90}\PYG{p}{:}
+        \PYG{n}{tc\PYGZus{}label} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}3 месяца\PYGZdq{}}
+    \PYG{k}{else}\PYG{p}{:}
+        \PYG{n}{tc\PYGZus{}label} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}1 год\PYGZdq{}}
+
+    \PYG{n}{plot\PYGZus{}data}\PYG{o}{.}\PYG{n}{append}\PYG{p}{([}
+        \PYG{p}{[}\PYG{n}{dates}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{,}
+        \PYG{p}{[}\PYG{n}{prices}\PYG{p}{,} \PYG{n}{filtered\PYGZus{}signals}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]],}
+        \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}Цена открытия\PYGZsq{}}\PYG{p}{,} \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Сглаживание\PYGZsq{}}\PYG{p}{],}
+        \PYG{l+s+s1}{\PYGZsq{}Дата\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Цена, руб.\PYGZsq{}}\PYG{p}{,}
+        \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}g\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}r\PYGZsq{}}\PYG{p}{],}
+        \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{,}
+        \PYG{p}{[}\PYG{l+m+mf}{0.7}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{],}
+        \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{,}
+        \PYG{p}{[}\PYG{k+kc}{None}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{,}
+        \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}T=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{tc\PYGZus{}label}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}
+    \PYG{p}{])}
+
+\PYG{n}{draw\PYGZus{}plots}\PYG{p}{(}
+    \PYG{n}{rows}\PYG{o}{=}\PYG{l+m+mi}{6}\PYG{p}{,}
+    \PYG{n}{cols}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}
+    \PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{12}\PYG{p}{,}
+    \PYG{n}{height}\PYG{o}{=}\PYG{l+m+mi}{26}\PYG{p}{,}
+    \PYG{n}{subplot\PYGZus{}data}\PYG{o}{=}\PYG{p}{[}\PYG{n}{plot\PYGZus{}data}\PYG{p}{],}
+    \PYG{n}{legend\PYGZus{}loc}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}lower right\PYGZsq{}}
+\PYG{p}{)}
+
+
+\end{Verbatim}
