@@ -1,0 +1,90 @@
+
+
+\section{Задание 1. Непрерывное и дискретное преобразование Фурье}
+Прежде, чем приступить к выполнению задания, рассмотрим знакомую прямоугольную функцию $\Pi : \mathbb{R} \to \mathbb{R}$:
+
+$$
+\Pi(t) = 
+\begin{cases} 
+1, & |t| \leq 1/2, \\
+0, & |t| > 1/2
+\end{cases}
+$$
+
+Её Фурье-образом будет являться аналитическое выражение:
+
+$$
+\hat{\Pi}(\nu) = \int_{-\infty}^{+\infty} \Pi(t) e^{-2\pi i\nu t}  dt
+$$
+
+\text{Вычислим вручную аналитически образ Фурье функции $\Pi(t)$:}\\
+$$
+\hat{\Pi}(\nu) = \int_{-\infty}^{+\infty} \Pi(t) e^{-2\pi i\nu t}  dt=\int_{-0.5}^{0.5}e^{-2\pi i\nu t}dt=\int_{-0.5}^{0.5}\frac{1}{-2\pi i\nu}de^{-2\pi i\nu t}=\frac{e^{-2\pi i\nu t}}{-2\pi i\nu} \Bigg|_{-0.5}^{0.5}=\frac{\sin(\pi\nu)}{\pi\nu}=\text{sinc}(\pi\nu)
+$$
+\text{Построим графики функций $\Pi(t)$ (см. рис. \ref{1}) и $\hat{\Pi}(\nu)$ (см. рис. \ref{2})}\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t).png}
+    \caption{График $\Pi(t)$}
+    \label{1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v).png}
+    \caption{График $\hat{\Pi}(\nu)$}
+    \label{2}
+\end{figure}
+
+\subsection{Численное интегрирование}
+Найдём Фурье-образ функции $\Pi(t)$ с помощью численного интегрирования (функция \texttt{trapz}).\\
+Метод трапеций для численного приближённого вычисления определённого интеграла от функции $f(x)$ на интервале $[a,b]$ выглядит так:
+$$
+S = \sum_{i=1}^{N-1}\frac{f(x_i)+f(x_{i-1})}{2}\cdot\Delta x,\quad\Delta x=x_i-x_{i-1},\quad N=\frac{b-a}{\Delta x}
+$$
+Применять метод будем для вычисления Фурье от наших функций ($-\infty$ и $\infty$ заменятся на пределы численого интегрирования):
+$$
+\begin{cases}
+\Pi(t) = \int\limits_{-\infty}^{\infty} \hat{\Pi}(\nu) e^{2\pi i\nu t} d\nu \\
+\hat{\Pi}(\nu) = \int\limits_{-\infty}^{\infty} \Pi(t) e^{-2\pi i\nu t} dt
+\end{cases}
+$$
+
+
+\parident Исследуем влияние параметров $T$ (промежуток интегрирования по времени) и $\Delta t$ (шаг дискретизации) на получаемый путём численного интегрирования Фурье-образ функции (см. рис. \ref{3}) и восстановленную функцию из образа (см. рис. \ref{4}), зафиксируем $V, \Delta\nu$.
+
+Исследуем влияние параметров $V$ (промежуток интегрирования по времени) и $\Delta\nu$ (шаг дискретизации) на получаемый путём численного интегрирования Фурье-образ функции (см. рис. \ref{5}) и восстановленную функцию из образа (см. рис. \ref{6}), зафиксируем $T, \Delta t$.
+\newline\newline
+\textbf{Анализ и выводы}\\
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_fix_v.png}
+    \caption{Сравнение графиков $\hat{\Pi}(\nu)$}
+    \label{3}
+\end{figure}
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_fix_v.png}
+    \caption{Сравнение графиков $\Pi(t)$}
+    \label{4}
+\end{figure}
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_fix_t.png}
+    \caption{Сравнение графиков $\hat{\Pi}(\nu)$}
+    \label{5}
+\end{figure}
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_fix_t.png}
+    \caption{Сравнение графиков $\Pi(t)$}
+    \label{6}
+\end{figure}
