@@ -1,0 +1,5 @@
+\xpginauxfiletrue 
+\selectlanguage *{russian}
+\contentsline {section}{\numberline {1}Задание 1. Непрерывное и дискретное преобразование Фурье}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Численное интегрирование}{4}{subsection.1.1}%
+\contentsfinish 
