@@ -52,9 +52,13 @@ $$
 $$
 
 
-\parident Исследуем влияние параметров $T$ (промежуток интегрирования по времени) и $\Delta t$ (шаг дискретизации) на получаемый путём численного интегрирования Фурье-образ функции (см. рис. \ref{3}) и восстановленную функцию из образа (см. рис. \ref{4}), зафиксируем $V, \Delta\nu$.
+$\ \ \ \ $Исследуем влияние параметров $T$ (промежуток интегрирования по времени) и $\Delta t$ (шаг дискретизации)
+на получаемый путём численного интегрирования Фурье-образ функции (см. рис. \ref{3}) и восстановленную функцию из образа
+(см. рис. \ref{4}), зафиксируем $V, \Delta\nu$.
 
-Исследуем влияние параметров $V$ (промежуток интегрирования по времени) и $\Delta\nu$ (шаг дискретизации) на получаемый путём численного интегрирования Фурье-образ функции (см. рис. \ref{5}) и восстановленную функцию из образа (см. рис. \ref{6}), зафиксируем $T, \Delta t$.
+Исследуем влияние параметров $V$ (промежуток интегрирования по времени) и $\Delta\nu$ (шаг дискретизации)
+на получаемый путём численного интегрирования Фурье-образ функции (см. рис. \ref{5}) и восстановленную функцию из образа
+(см. рис. \ref{6}), зафиксируем $T, \Delta t$.
 \newline\newline
 \textbf{Анализ и выводы}\\
 Видим, что уменьшение шага интегрирования по времени даёт более точные результаты
@@ -95,4 +99,60 @@ $$
     \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_fix_t.png}
     \caption{Сравнение графиков $\Pi(t)$}
     \label{6}
+\end{figure}
+
+\subsection{Использование DFT}
+Найдём Фурье-образ функци $\Pi(t)$ с помощью дискретного преобразования Фурье, используя его так, чтобы преобразования было унитарным. Выполним обратное преобразование
+от найденного Фурье-образа с помощью обратного дискретного преобразования.
+Формулы прямого и обратного унитарного $DFT$:
+$$
+\begin{cases}
+    X_m=\frac{1}{\sqrt{N}}\sum_{n=0}^{N-1}x_ne^{-i2\pi (\frac{mn}{N})} \\
+    x_n=\frac{1}{\sqrt{N}}\sum_{n=0}^{N-1}X_me^{i2\pi \frac{mn}{N}}
+\end{cases}
+$$
+Связь параметров $\Delta\nu$ c $T$, и $\Delta t$ с $V$ выглядит так:
+$$
+\Delta\nu=\frac{1}{T},\quad\Delta t=\frac{1}{V}
+$$
+Для вычислений будем использовать быстрое преобразование Фурье - алгоритм, позволяющий вычислять дискретное преобразование
+Фурье за $O(N\log (N))$ действий.
+
+Исследуем влияние параметров $T$ (промежуток интегрирования по времени) и $\Delta t$ (шаг дискретизации)
+на получаемый при помощи fft Фурье-образ функции (см. рис. \ref{7}) и восстановленную функцию из образа
+(см. рис. \ref{8}).
+
+Исследуем влияние параметров $V$ (промежуток интегрирования по времени) и $\Delta\nu$ (шаг дискретизации)
+на получаемый при помощи fft Фурье-образ функции (см. рис. \ref{9}) и восстановленную функцию из образа
+(см. рис. \ref{10}).
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_fft_fix_v.png}
+    \caption{Сравнение графиков $\hat{\Pi}(\nu)$}
+    \label{7}
+\end{figure}
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_fft_fix_v.png}
+    \caption{Сравнение графиков $\Pi(t)$}
+    \label{8}
+\end{figure}
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_fft_fix_t.png}
+    \caption{Сравнение графиков $\hat{\Pi}(\nu)$}
+    \label{9}
+\end{figure}
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_fix_t.png}
+    \caption{Сравнение графиков $\Pi(t)$}
+    \label{10}
 \end{figure}

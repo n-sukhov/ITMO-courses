@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  25 AUG 2025 23:12
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  26 AUG 2025 18:38
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1674,13 +1674,7 @@ t available
 
 
 ]
-! Undefined control sequence.
-l.55 \parident
-               Исследуем влияние параметров $T$ (промежуток интегрирования п...
-
-? 
-
-Underfull \hbox (badness 10000) in paragraph at lines 57--68
+Underfull \hbox (badness 10000) in paragraph at lines 59--72
 
  []
 
@@ -1716,11 +1710,47 @@ File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_
 fix_t.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_fix_t
 .png>
+
+Overfull \vbox (0.19444pt too high) has occurred while \output is active []
+
+
+[8] [9]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_compari
+son_fft_fix_v.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_f
+ft_fix_v.png>
+
+Overfull \vbox (1.41113pt too high) has occurred while \output is active []
+
+
+[10]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_
+fft_fix_v.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_fft_f
+ix_v.png>
+
+Overfull \vbox (0.19444pt too high) has occurred while \output is active []
+
+
+[11]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_compari
+son_fft_fix_t.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_f
+ft_fix_t.png>
+
+Overfull \vbox (1.41113pt too high) has occurred while \output is active []
+
+
+[12]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_
+fix_t.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_fix_t
+.png>
 )
 Overfull \vbox (0.19444pt too high) has occurred while \output is active []
 
 
-[8]
+[13]
 
 Package caption Warning: Unused \captionsetup[table] on input line 44.
 See the caption package documentation for explanation.
@@ -1737,18 +1767,18 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 2.0pt have occurred.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6375A9193FC58D8030B484481C0620E9;734.
+(rerunfilecheck)             Checksum: 5F10AD303FAD94BC4BF293787EE3A7F1;918.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 44007 strings out of 474878
- 904556 string characters out of 5762516
- 1976947 words of memory out of 5000000
- 65363 multiletter control sequences out of 15000+600000
+ 44038 strings out of 474878
+ 906936 string characters out of 5762516
+ 1977414 words of memory out of 5000000
+ 65391 multiletter control sequences out of 15000+600000
  563394 words of font info for 95 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  91i,8n,122p,677b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (8 pages).
+Output written on main.pdf (13 pages).

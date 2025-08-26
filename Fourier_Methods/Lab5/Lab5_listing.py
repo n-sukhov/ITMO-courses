@@ -1,6 +1,7 @@
 # %%
 import matplotlib.pyplot as plt
 import numpy as np
+from numpy.fft import fft, fftshift, ifft, ifftshift
 from dataclasses import dataclass
 np.random.seed(17)
 
@@ -22,9 +23,9 @@ class Plot:
 
 class Plot_Group:
     def __init__(
-            self, title=None, x_label=None, y_label=None,
-            legend=False, legend_loc="best", legend_fontsize="small",
-            grid=True
+            self, title: str | None = None, x_label: str | None = None, y_label: str | None = None,
+            legend: bool = False, legend_loc: str | None = "best", legend_fontsize: str | None = "small",
+            grid: bool = True, xlim: tuple | None = None, ylim: tuple | None = None
         ):
         self.title = title
         self.x_label = x_label
@@ -33,13 +34,15 @@ class Plot_Group:
         self.legend_loc = legend_loc
         self.legend_fontsize = legend_fontsize
         self.grid = grid
+        self.xlim = xlim
+        self.ylim = ylim
         self.plots = list()
 
     def add_plot(self, Plot):
         self.plots.append(Plot)
 
 class Chart:
-    def __init__(self, rows=1, cols=1, width=7, height=5):
+    def __init__(self, rows: int = 1, cols: int = 1, width: float = 7, height: float = 5):
         self.rows = rows
         self.cols = cols
         self.width = width
@@ -47,7 +50,7 @@ class Chart:
         self.__cur_ij = [0, 0]
         self.__plot_groups = [[None for _ in range(self.cols)] for _ in range(self.rows)]
 
-    def add_plot_group(self, Plot_Group, ij=None):
+    def add_plot_group(self, Plot_Group: Plot_Group, ij: list = None):
         if ij is None:
             if self.__cur_ij[0] >= self.rows:
                 raise IndexError("Max quantity of plots achieved!")
@@ -95,6 +98,11 @@ class Chart:
                 if plot_group_ij.legend and any(plot.label for plot in plot_group_ij.plots):
                     axes[i][j].legend(loc=plot_group_ij.legend_loc, fontsize=plot_group_ij.legend_fontsize)
 
+                if plot_group_ij.xlim is not None:
+                    axes[i][j].set_xlim(plot_group_ij.xlim[0], plot_group_ij.xlim[1])
+                if plot_group_ij.ylim is not None:
+                    axes[i][j].set_ylim(plot_group_ij.ylim[0], plot_group_ij.ylim[1])
+
                 if plot_group_ij.grid: axes[i][j].grid(True)
                 else: axes[i][j].grid(False)
 
@@ -105,7 +113,7 @@ class Chart:
         self.__make_chart()
         plt.show()
 
-    def save_chart(self, folder_path="", filename="chart", dpi="figure"):
+    def save_chart(self, folder_path:str = "", filename:str = "chart", dpi="figure"):
         self.__make_chart()
         plt.savefig(folder_path+filename+".png", dpi=dpi)
 
@@ -158,12 +166,19 @@ del plt_g, chart
 # # Задание 1.1
 
 # %%
-def point_ft(func, t, v):
-    return func(t) * np.exp(-2 * np.pi * 1j * v *t)
-def point_ift(func, v, t):
-    return func(v) * np.exp(2 * np.pi * 1j * v *t)
+t_rect = np.arange(-10.0, 10.0001, 0.0001)
+v_rect = np.arange(-25.0, 25.0001, 0.0001)
 
-T_list = [2, 7]
+PI = rect_func(t_rect)
+PI_hat = sinc(v_rect)
+
+# %%
+def point_ft(func, t, v):
+    return func(t) * np.exp(-2j * np.pi * v * t)
+def point_ift(func, v, t):
+    return func(v) * np.exp(2j * np.pi * v * t)
+
+T_list = [2, 8]
 dt_list = [0.05, 0.001]
 
 chart_V = Chart(4, 1, 13, 20)
@@ -172,19 +187,21 @@ chart_T = Chart(4, 1, 13, 20)
 for T in T_list:
     for dt in dt_list:
         V = 50
-        dv = 0.1
-        t_space = np.linspace(-T/2, T/2, int(T/dt))
-        v_space = np.linspace(-V/2, V/2, int(V/dv))
-        PI_hat = sinc(v_space)
-        PI = rect_func(t_space)
+        dv = 0.25
+        t_space = np.arange(-T/2, T/2 + dt, dt)
+        v_space = np.arange(-V/2, V/2 + dv, dv)
         PI_hat_trapz = [np.trapz(point_ft(rect_func, t_space, v), t_space) for v in v_space]
-        PI_trapz = [np.trapz(point_ift(sinc, v_space, t), v_space) for t in t_space]
+        @list_func
+        def PI_hat_trapz_f(v):
+            global v_space
+            return PI_hat_trapz[np.where(v_space==v)[0][0]]
+        PI_trapz = [np.trapz(point_ift(PI_hat_trapz_f, v_space, t), v_space) for t in t_space]
 
         plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", legend=True)
-        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", legend=True)
-        plt_g_V.add_plot(Plot(v_space, PI_hat, "Аналитический образ П_hat(v)", "green"))
-        plt_g_V.add_plot(Plot(v_space, PI_hat_trapz, "П_hat(v) (метод trapz)", "red", linestyle='--'))
-        plt_g_T.add_plot(Plot(t_space, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
+        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-T/2, T/2), legend=True)
+        plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=2))
+        plt_g_V.add_plot(Plot(v_space, PI_hat_trapz, "П_hat(v) (метод trapz)", "red", linewidth=2, linestyle='--'))
+        plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
         plt_g_T.add_plot(Plot(t_space, PI_trapz, "П(t) (метод trapz)", "orangered", linewidth=2, linestyle='--'))
 
         chart_V.add_plot_group(plt_g_V)
@@ -197,7 +214,7 @@ chart_T.save_chart(plt_folder, "П(t)_comparison_fix_v", dpi=700)
 del chart_V, chart_T
 
 # %%
-V_list = [10, 50]
+V_list = [8, 40]
 dv_list = [0.5, 0.001]
 
 chart_V = Chart(4, 1, 13, 20)
@@ -207,18 +224,20 @@ for V in V_list:
     for dv in dv_list:
         T = 2
         dt = 0.01
-        t_space = np.linspace(-T/2, T/2, int(T/dt))
-        v_space = np.linspace(-V/2, V/2, int(V/dv))
-        PI_hat = sinc(v_space)
-        PI = rect_func(t_space)
+        t_space = np.arange(-T/2, T/2 + dt, dt)
+        v_space = np.arange(-V/2, V/2 + dv, dv)
         PI_hat_trapz = [np.trapz(point_ft(rect_func, t_space, v), t_space) for v in v_space]
-        PI_trapz = [np.trapz(point_ift(sinc, v_space, t), v_space) for t in t_space]
+        @list_func
+        def PI_hat_trapz_f(v):
+            global v_space
+            return PI_hat_trapz[np.where(v_space==v)[0][0]]
+        PI_trapz = [np.trapz(point_ift(PI_hat_trapz_f, v_space, t), v_space) for t in t_space]
 
-        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", legend=True)
-        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", legend=True)
-        plt_g_V.add_plot(Plot(v_space, PI_hat, "Аналитический образ П_hat(v)", "green"))
-        plt_g_V.add_plot(Plot(v_space, PI_hat_trapz, "П_hat(v) (метод trapz)", "red", linestyle='--'))
-        plt_g_T.add_plot(Plot(t_space, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
+        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", xlim=(-V/2, V/2), legend=True)
+        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-1, 1), legend=True)
+        plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=2))
+        plt_g_V.add_plot(Plot(v_space, PI_hat_trapz, "П_hat(v) (метод trapz)", "red", linewidth=2, linestyle='--'))
+        plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
         plt_g_T.add_plot(Plot(t_space, PI_trapz, "П(t) (метод trapz)", "orangered", linewidth=2, linestyle='--'))
 
         chart_V.add_plot_group(plt_g_V)
@@ -234,6 +253,35 @@ del chart_V, chart_T
 # # Задание 1.2
 
 # %%
+T_list = [2, 8]
+dt_list = [0.05, 0.001]
 
+chart_V = Chart(4, 1, 13, 20)
+chart_T = Chart(4, 1, 13, 20)
+
+for T in T_list:
+    for dt in dt_list:
+        V = 50
+        dv = 0.25
+        t_space = np.arange(-T/2, T/2 + dt, dt)
+        v_space = np.arange(-V/2, V/2 + dv, dv)
+        PI_hat_fft = fftshift(fft(PI))
+        PI_fft = ifftshift(ifft(PI_hat_fft))
+
+        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", legend=True)
+        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-T/2, T/2), legend=True)
+        plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=2))
+        plt_g_V.add_plot(Plot(v_space, PI_hat_fft, "П_hat(v) (метод fft)", "red", linewidth=2, linestyle='--'))
+        plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
+        plt_g_T.add_plot(Plot(t_space, PI_fft, "П(t) (метод fft)", "orangered", linewidth=2, linestyle='--'))
+
+        chart_V.add_plot_group(plt_g_V)
+        chart_T.add_plot_group(plt_g_T)
+        del plt_g_V, plt_g_T
+
+chart_V.save_chart(plt_folder, "П_hat(v)_comparison_fft_fix_v", dpi=700)
+chart_T.save_chart(plt_folder, "П(t)_comparison_fft_fix_v", dpi=700)
+
+del chart_V, chart_T
 
 
