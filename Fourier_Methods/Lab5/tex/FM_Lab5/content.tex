@@ -221,8 +221,17 @@ c_m=\Delta t\cdot e^{-2\pi i\nu t_0},\quad\text{где }\nu=\frac{m}{N\Delta t}
 $$
 Теперь, чтобы получить Фурье-образ,найдём коэффициенты $c_m$ для всех частот и поэлементно домножим на массив точек, полученный из \texttt{fft} выполненного
 для функции $\Pi(t)$. И найдем приближение исходной функции, поделив массив точек из \texttt{ifft} на тот же коэффициент. Посмотрим на графики и убедимся, что данный алгоритм сработал 
-(\ref{12}).
+(\ref{12}-\ref{13}).\\
+\textbf{Суть метода и почему он работает}\\
+Основная идея заключается в том, что мы представляем аппроксимацию непрерывного интеграла в виде дискретной суммы домноженной на поправочный коэффициент.
+Сумма Римана вида $\sum_{n=0}^{N-1} f(t_n) e^{-2\pi i \frac{nm}{N}}$ является естественный видом DFT, а коэффициент $c_m$ решает следующие 2 проблемы,
+чтобы привести общее выражение к виду непрерывного преобразования Фурье, приближенного суммой Римана:\\
+1. \textbf{Масштабирует} DFT, учитывая $\Delta t$ для аппрокимации непрерывного интеграла дискретной суммой.
+\\
+2. \textbf{Компенсирует фазовый сдвиг} на $\frac{T}{2}$ - посколько DFT рассчитывает на начало сигнала в $t=0$ по умолчанию, наш множитель
+$e^{-2\pi i\nu t_0}$ призван компенсировать такое поведение, свигая сигнал во временной области на эту разницу в половину периода.
 
+Так же сравним с остальными методами (см. рис. \ref{14}-\ref{15}).
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_sfft.png}
@@ -234,4 +243,17 @@ $$
     \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_sfft.png}
     \caption{Применение умного ifft}
     \label{13}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_all.png}
+    \caption{Сравнение умного fft с \texttt{trapz} и чистым \texttt{fft}}
+    \label{14}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_all.png}
+    \caption{Сравнение умного ifft с \texttt{trapz} и чистым \texttt{ifft}}
+    \label{15}
 \end{figure}
