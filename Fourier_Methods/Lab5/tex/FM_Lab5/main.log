@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  30 AUG 2025 21:02
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  31 AUG 2025 21:24
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1772,23 +1772,15 @@ Overfull \vbox (0.19444pt too high) has occurred while \output is active []
 
 
 [17]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_compari
+son_all.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_a
+ll.png>
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_
 all.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_all.p
 ng>
-File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_
-all.png Graphic file (type bmp)
-</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_all.p
-ng>
-
-Overfull \vbox (0.19444pt too high) has occurred while \output is active []
-
-
-[18])
-Overfull \vbox (0.19444pt too high) has occurred while \output is active []
-
-
-[19]
+) [18] [19]
 
 Package caption Warning: Unused \captionsetup[table] on input line 44.
 See the caption package documentation for explanation.
@@ -1811,10 +1803,10 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 44088 strings out of 474878
- 910520 string characters out of 5762516
+ 44097 strings out of 474878
+ 911267 string characters out of 5762516
  1983277 words of memory out of 5000000
- 65436 multiletter control sequences out of 15000+600000
+ 65444 multiletter control sequences out of 15000+600000
  563394 words of font info for 95 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  91i,8n,122p,677b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s

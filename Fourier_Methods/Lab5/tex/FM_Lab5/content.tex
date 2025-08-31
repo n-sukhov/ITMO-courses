@@ -247,7 +247,7 @@ $e^{-2\pi i\nu t_0}$ призван компенсировать такое по
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П(t)_comparison_all.png}
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/П_hat(v)_comparison_all.png}
     \caption{Сравнение умного fft с \texttt{trapz} и чистым \texttt{fft}}
     \label{14}
 \end{figure}
@@ -257,3 +257,9 @@ $e^{-2\pi i\nu t_0}$ призван компенсировать такое по
     \caption{Сравнение умного ifft с \texttt{trapz} и чистым \texttt{ifft}}
     \label{15}
 \end{figure}
+Метод умного использования FFT выигрывает по всем параметрам у остальных методов. Разве что, по скорости он может быть
+немного медленнее, чем DFT, потому что выполняет больше операций при вычислениях, но эта разница довольно мала, чтобы
+говорить здесь о каком-то преимуществе DFT. В остальном, он совмещает в себе точность DFT при восстановлении сигнала и
+корректное нахождение Фурье-образа, как у метода \texttt{trapz}.
+\\Что касаемо влияния параметров $\Delta t, T, \Delta\nu, V$, результат аналогичен обычному DFT - для достижения большей точности
+при восстановлении сигнала нужно выбирать больший $T$ и уменьшать $\Delta t$.
