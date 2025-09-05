@@ -1,7 +1,7 @@
 # %%
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy.fft import fft, fftshift, ifft, ifftshift
+from numpy.fft import fft, fftshift, ifft, ifftshift, fftfreq
 from dataclasses import dataclass
 np.random.seed(17)
 
@@ -24,7 +24,7 @@ class Plot:
 class Plot_Group:
     def __init__(
             self, title: str | None = None, x_label: str | None = None, y_label: str | None = None,
-            legend: bool = False, legend_loc: str | None = "best", legend_fontsize: str | None = "small",
+            legend: bool = False, legend_loc: str | None = "best", legend_fontsize: str | None = "medium",
             grid: bool = True, xlim: tuple | None = None, ylim: tuple | None = None
         ):
         self.title = title
@@ -152,14 +152,14 @@ plt_g = Plot_Group(x_label="t", y_label="П(t)")
 plt_g.add_plot(Plot(t_rect, PI, linewidth=2))
 chart = Chart(width=10)
 chart.add_plot_group(plt_g)
-chart.save_chart(plt_folder, "П(t)", dpi=700)
+chart.save_chart(plt_folder, "П(t)", dpi=200)
 del plt_g, chart
 
 plt_g = Plot_Group(x_label="v", y_label="П_hat(v)")
 plt_g.add_plot(Plot(v_rect, PI_hat, linewidth=2))
 chart = Chart(width=10)
 chart.add_plot_group(plt_g)
-chart.save_chart(plt_folder, "П_hat(v)", dpi=700)
+chart.save_chart(plt_folder, "П_hat(v)", dpi=200)
 del plt_g, chart
 
 # %% [markdown]
@@ -197,8 +197,8 @@ for T in T_list:
             return PI_hat_trapz[np.where(v_space==v)[0][0]]
         PI_trapz = [np.trapz(point_ift(PI_hat_trapz_f, v_space, t), v_space) for t in t_space]
 
-        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", legend=True)
-        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-T/2, T/2), legend=True)
+        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", legend=True, legend_fontsize="large")
+        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-T/2, T/2), legend=True, legend_fontsize="large")
         plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=2))
         plt_g_V.add_plot(Plot(v_space, PI_hat_trapz, "П_hat(v) (метод trapz)", "red", linewidth=2, linestyle='--'))
         plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
@@ -208,8 +208,8 @@ for T in T_list:
         chart_T.add_plot_group(plt_g_T)
         del plt_g_V, plt_g_T
 
-chart_V.save_chart(plt_folder, "П_hat(v)_comparison_fix_v", dpi=700)
-chart_T.save_chart(plt_folder, "П(t)_comparison_fix_v", dpi=700)
+chart_V.save_chart(plt_folder, "П_hat(v)_comparison_fix_v", dpi=200)
+chart_T.save_chart(plt_folder, "П(t)_comparison_fix_v", dpi=200)
 
 del chart_V, chart_T
 
@@ -233,8 +233,8 @@ for V in V_list:
             return PI_hat_trapz[np.where(v_space==v)[0][0]]
         PI_trapz = [np.trapz(point_ift(PI_hat_trapz_f, v_space, t), v_space) for t in t_space]
 
-        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", xlim=(-V/2, V/2), legend=True)
-        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-1, 1), legend=True)
+        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", xlim=(-V/2, V/2), legend=True, legend_fontsize="large")
+        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-1, 1), legend=True, legend_fontsize="large")
         plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=2))
         plt_g_V.add_plot(Plot(v_space, PI_hat_trapz, "П_hat(v) (метод trapz)", "red", linewidth=2, linestyle='--'))
         plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
@@ -244,8 +244,8 @@ for V in V_list:
         chart_T.add_plot_group(plt_g_T)
         del plt_g_V, plt_g_T
 
-chart_V.save_chart(plt_folder, "П_hat(v)_comparison_fix_t", dpi=700)
-chart_T.save_chart(plt_folder, "П(t)_comparison_fix_t", dpi=700)
+chart_V.save_chart(plt_folder, "П_hat(v)_comparison_fix_t", dpi=200)
+chart_T.save_chart(plt_folder, "П(t)_comparison_fix_t", dpi=200)
 
 del chart_V, chart_T
 
@@ -253,35 +253,218 @@ del chart_V, chart_T
 # # Задание 1.2
 
 # %%
-T_list = [2, 8]
-dt_list = [0.05, 0.001]
+T_list = [10, 30]
+dt_list = [0.1, 0.001]
 
 chart_V = Chart(4, 1, 13, 20)
 chart_T = Chart(4, 1, 13, 20)
 
 for T in T_list:
     for dt in dt_list:
-        V = 50
-        dv = 0.25
         t_space = np.arange(-T/2, T/2 + dt, dt)
-        v_space = np.arange(-V/2, V/2 + dv, dv)
-        PI_hat_fft = fftshift(fft(PI))
-        PI_fft = ifftshift(ifft(PI_hat_fft))
+        N = len(t_space)
+        dv = 1 / (N * dt)
+        V = 1 / dt
+        v_space = fftshift(fftfreq(N, dt))
 
-        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", legend=True)
-        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-T/2, T/2), legend=True)
-        plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=2))
-        plt_g_V.add_plot(Plot(v_space, PI_hat_fft, "П_hat(v) (метод fft)", "red", linewidth=2, linestyle='--'))
+        PI_1 = rect_func(t_space)
+        PI_hat_fft = fftshift(fft(PI_1, norm='ortho'))
+        PI_fft = ifft(ifftshift(PI_hat_fft), norm='ortho')
+
+        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={round(dv, 3)}", x_label="v", y_label="П_hat(v)", xlim=(-8, 8), legend=True, legend_fontsize="large")
+        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={round(dv, 3)}", x_label="t", y_label="П(t)", xlim=(-3, 3), legend=True, legend_fontsize="large")
+        plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=0.5))
+        plt_g_V.add_plot(Plot(v_space, np.real(PI_hat_fft), "П_hat(v) (метод fft)", "red", linewidth=0.5, linestyle='--'))
         plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
-        plt_g_T.add_plot(Plot(t_space, PI_fft, "П(t) (метод fft)", "orangered", linewidth=2, linestyle='--'))
+        plt_g_T.add_plot(Plot(t_space, np.real(PI_fft), "П(t) (метод ifft)", "orangered", linewidth=2, linestyle='--'))
 
         chart_V.add_plot_group(plt_g_V)
         chart_T.add_plot_group(plt_g_T)
         del plt_g_V, plt_g_T
 
-chart_V.save_chart(plt_folder, "П_hat(v)_comparison_fft_fix_v", dpi=700)
-chart_T.save_chart(plt_folder, "П(t)_comparison_fft_fix_v", dpi=700)
+chart_V.save_chart(plt_folder, "П_hat(v)_comparison_fft_fix_v", dpi=200)
+chart_T.save_chart(plt_folder, "П(t)_comparison_fft_fix_v", dpi=200)
 
 del chart_V, chart_T
+
+# %%
+V_list = [10, 50]
+dv_list = [0.5, 0.01]
+
+chart_V = Chart(4, 1, 13, 20)
+chart_T = Chart(4, 1, 13, 20)
+
+for V in V_list:
+    for dv in dv_list:
+        v_space = np.arange(-V/2, V/2 + dv, dv)
+        N = len(v_space)
+        dt = 1 / (N * dv)
+        T = 1 / dv
+        t_space = fftshift(fftfreq(N, dv))
+
+        PI_1 = rect_func(t_space)
+        PI_hat_fft = fftshift(fft(PI_1, norm='ortho'))
+        PI_fft = ifft(ifftshift(PI_hat_fft), norm='ortho')
+
+        plt_g_V = Plot_Group(title=f"T={T}, dt={round(dt, 3)}, V={V}, dv={dv}", x_label="v", y_label="П_hat(v)", xlim=(-8, 8), legend=True, legend_fontsize="large")
+        plt_g_T = Plot_Group(title=f"T={T}, dt={round(dt, 3)}, V={V}, dv={dv}", x_label="t", y_label="П(t)", xlim=(-3, 3), legend=True, legend_fontsize="large")
+        plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=0.5))
+        plt_g_V.add_plot(Plot(v_space, np.real(PI_hat_fft), "П_hat(v) (метод fft)", "red", linewidth=0.5, linestyle='--'))
+        plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
+        plt_g_T.add_plot(Plot(t_space, np.real(PI_fft), "П(t) (метод ifft)", "orangered", linewidth=2, linestyle='--'))
+
+        chart_V.add_plot_group(plt_g_V)
+        chart_T.add_plot_group(plt_g_T)
+        del plt_g_V, plt_g_T
+
+chart_V.save_chart(plt_folder, "П_hat(v)_comparison_fft_fix_t", dpi=200)
+chart_T.save_chart(plt_folder, "П(t)_comparison_fft_fix_t", dpi=200)
+
+del chart_V, chart_T
+
+# %% [markdown]
+# Сравнение $O(N^2)$ и $O(N\log(N))$
+
+# %%
+x = np.linspace(0, 10 ** 2, 1000)
+N2 = x ** 2
+NlogN = x * np.log(x)
+chart = Chart()
+plt_g = Plot_Group(title="N^2 vs Nlog(N)", x_label="N", y_label="Time", legend=True, legend_fontsize="large")
+plt_g.add_plot(Plot(x, N2, "N^2", linewidth=2, color="royalblue"))
+plt_g.add_plot(Plot(x, NlogN, "Nlog(N)", linewidth=2, color="red"))
+chart.add_plot_group(plt_g)
+chart.save_chart(plt_folder, "N2_NlogN", dpi=200)
+del plt_g, chart
+
+# %% [markdown]
+# # Задание 1.4
+
+# %%
+def smart_fft(func, T, dt):
+    t_space = np.arange(-T/2, T/2, dt)
+    N = len(t_space)
+    v_space = fftshift(fftfreq(N, dt))
+    y_space = func(t_space)
+    c_m = dt * np.exp(1j * np.pi * v_space * T)
+    fft_func = fftshift(c_m * fft(y_space))
+    return fft_func, v_space
+
+def smart_ifft(y_space, v_space, dt):
+    N = len(v_space)
+    T = N * dt
+    t_space = fftshift(fftfreq(N, dt))
+    c_m = dt * np.exp(1j * np.pi * v_space * T)
+    fft_func = ifft(ifftshift(y_space) / c_m)
+    return fft_func
+
+# %%
+T_list = [10, 30]
+dt_list = [0.1, 0.001]
+
+chart_V = Chart(4, 1, 13, 20)
+chart_T = Chart(4, 1, 13, 20)
+
+for T in T_list:
+    for dt in dt_list:
+        t_space = np.arange(-T/2, T/2, dt)
+        N = len(t_space)
+        dv = 1 / (N * dt)
+        V = 1 / dt
+
+        PI_1 = rect_func(t_space)
+        PI_hat_sfft, v_space = smart_fft(rect_func, T, dt)
+        PI_sfft = smart_ifft(PI_hat_sfft, v_space, dt)
+
+        plt_g_V = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={round(dv, 3)}", x_label="v", y_label="П_hat(v)", xlim=(-8, 8), legend=True, legend_fontsize="large")
+        plt_g_T = Plot_Group(title=f"T={T}, dt={dt}, V={V}, dv={round(dv, 3)}", x_label="t", y_label="П(t)", xlim=(-3, 3), legend=True, legend_fontsize="large")
+        plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "green", linewidth=2))
+        plt_g_V.add_plot(Plot(v_space, np.real(PI_hat_sfft), "П_hat(v) (умный fft)", "red", linewidth=2, linestyle='--'))
+        plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=2))
+        plt_g_T.add_plot(Plot(t_space, np.real(PI_sfft), "П(t) (умный ifft)", "orangered", linewidth=2, linestyle='--'))
+
+        chart_V.add_plot_group(plt_g_V)
+        chart_T.add_plot_group(plt_g_T)
+        del plt_g_V, plt_g_T
+
+chart_V.save_chart(plt_folder, "П_hat(v)_comparison_sfft", dpi=200)
+chart_T.save_chart(plt_folder, "П(t)_comparison_sfft", dpi=200)
+
+del chart_V, chart_T
+
+# %% [markdown]
+# # Сравнение методов
+
+# %%
+T = 10
+dt = 0.01
+
+chart_V = Chart(1, 1, 10, 6)
+chart_T = Chart(1, 1, 10, 6)
+
+t_space = np.arange(-T/2, T/2, dt)
+N = len(t_space)
+dv = 1 / (N * dt)
+V = 1 / dt
+
+PI_1 = rect_func(t_space)
+PI_hat_sfft, v_space = smart_fft(rect_func, T, dt)
+PI_sfft = smart_ifft(PI_hat_sfft, v_space, dt)
+
+v_space_trapz = np.arange(-20, 20.1, 0.1)
+PI_hat_trapz = [np.trapz(point_ft(rect_func, t_space, v), t_space) for v in v_space_trapz]
+@list_func
+def PI_hat_trapz_f(v):
+    global v_space_trapz
+    return PI_hat_trapz[np.where(v_space_trapz==v)[0][0]]
+PI_trapz = [np.trapz(point_ift(PI_hat_trapz_f, v_space_trapz, t), v_space_trapz) for t in t_space]
+
+PI_hat_fft = fftshift(fft(PI_1, norm='ortho'))
+PI_fft = ifft(ifftshift(PI_hat_fft), norm='ortho')
+
+plt_g_V = Plot_Group(title=f"Сравнение всех методов", x_label="v", y_label="П_hat(v)", xlim=(-8, 8), legend=True, legend_fontsize="large")
+plt_g_T = Plot_Group(title=f"Сравнение всех методов", x_label="t", y_label="П(t)", xlim=(-1.5, 1.5), legend=True, legend_fontsize="large")
+
+plt_g_V.add_plot(Plot(v_space, np.real(PI_hat_fft), "П_hat(v) (метод fft)", "red", linewidth=1, linestyle='-'))
+plt_g_V.add_plot(Plot(v_rect, PI_hat, "Аналитический образ П_hat(v)", "blue", linewidth=3, linestyle='-'))
+plt_g_V.add_plot(Plot(v_space, np.real(PI_hat_sfft), "П_hat(v) (умный fft)", "green", linewidth=3, linestyle='--'))
+plt_g_V.add_plot(Plot(v_space_trapz, PI_hat_trapz, "П_hat(v) (метод trapz)", "cyan", linewidth=3, linestyle=':'))
+
+plt_g_T.add_plot(Plot(t_rect, PI, "Аналитический образ П(t)", "indigo", linewidth=3))
+plt_g_T.add_plot(Plot(t_space, np.real(PI_sfft), "П(t) (умный ifft)", "orangered", linewidth=3, linestyle='--'))
+plt_g_T.add_plot(Plot(t_space, PI_trapz, "П(t) (метод trapz)", "darkgreen", linewidth=2, linestyle='-'))
+plt_g_T.add_plot(Plot(t_space, np.real(PI_fft), "П(t) (метод ifft)", "orange", linewidth=3, linestyle=':'))
+
+chart_V.add_plot_group(plt_g_V)
+chart_T.add_plot_group(plt_g_T)
+del plt_g_V, plt_g_T
+
+chart_V.save_chart(plt_folder, "П_hat(v)_comparison_all", dpi=200)
+chart_T.save_chart(plt_folder, "П(t)_comparison_all", dpi=200)
+
+del chart_V, chart_T
+
+# %% [markdown]
+# # Задание 2
+
+# %%
+@list_func
+def y1(t):
+    return 3 * np.sin(4 * t + np.pi) + 2 * np.sin(7 * t + 1)
+
+@list_func
+def y2(t):
+    arg = 6 * np.pi * t
+    return np.sin(arg) / (arg)
+
+# %%
+x = np.linspace(-100.0, 100.0, 10**5)
+
+
+# %%
+
+
+# %%
+
 
 
