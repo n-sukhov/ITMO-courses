@@ -273,17 +273,55 @@ $$
 Мы будем исследовать теорему Найквиста-Шеннона-Котельникова на двух примерах. Чтобы результат численного моделирования был максимально
 близок к математическому, будем задавать рассматриваемые функции на как можно большем промежутке, на картинках же
 для наглядности выведем только наиболее весомую часть функции.\\
-Для начала построим графики функций и посмотрим на них (рис. \ref{16} - $y_1$, \ref{17} - $y_2$).
+Для начала построим графики функций и посмотрим на них (рис. \ref{16}).
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\linewidth]{}
-    \caption{$y_1$}
-    \label{14}
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y1_cont.png}
+    \caption{$y(t)$}
+    \label{16}
+\end{figure}
+\newpage
+Теперь зададим сэмплированный вариант указанных функций: рассмотрим разреженный вариант массива
+времени и соответствующий ему массив значений. Построим дискретный график поверх непрерывного для разных значений
+$\Delta t$ (см. рис. \ref{17}-\ref{18}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y1_comparison.png}
+    \caption{Сравнение непрерывного и сэмплированного варианта $y_1(t)$}
+    \label{17}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\linewidth]{}
-    \caption{$y_2$}
-    \label{15}
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y2_comparison.png}
+    \caption{Сравнение непрерывного и сэмплированного варианта $y_2(t)$}
+    \label{18}
 \end{figure}
+Найдем параметр $B$ для наших функций:
+$$
+\hat{y_1}(\nu)=\frac{a_1}{2i}(\delta_{\frac{\omega_1}{2\pi}}-\delta_{\frac{-\omega_1}{2\pi}})+
+\frac{a_2}{2i}(\delta_{\frac{\omega_2}{2\pi}}-\delta_{\frac{-\omega_2}{2\pi}}),
+$$
+так как Фурье-образ синуса определяется выражением:
+$\mathcal{F}\{\sin(at)\}\mathcal{F}\{\frac{1}{2i}e^{iat}-\frac{1}{2i}e^{-iat}\}\simeq\{\frac{1}{2i}\delta_a-\frac{1}{2i}\delta_{-a}\}$\\
+$$
+\hat{y_1}(\nu)=\frac{3}{2i}(\delta_{\frac{2}{\pi}}-\delta_{\frac{-2}{\pi}})+
+\frac{1}{i}(\delta_{\frac{7}{2\pi}}-\delta_{\frac{-7}{2\pi}})
+$$
+Получаем, что максимальная частота, присутствующая в $y_1$ равна $\frac{7}{2\pi}\Rightarrow B=\frac{7}{2\pi}$.
+$$
+\hat{y_2}(\nu)=\mathcal{F}\{sinc(bt)\}=
+\frac{1}{|b|}\text{rect}(\frac{\nu}{b})=\frac{1}{6}\text{rect}(\frac{\nu}{6})
+$$
+В нашем случае, прямоугольная функция не равна нулю в области $[-3,3]\Rightarrow B=3$.\\
+
+\textbf{Теорема Найквиста-Шеннона-Котельникова:} Если Фурье-образ исходной функции содержится внутри отрезка $[−B, B]$,
+то функция может быть безошибочно восстановлена по дискретным данным, если шаг дискретизации
+$∆t < 1/(2B)$. Здесь $B$ - это область определения $\hat{f}(v)$, сопоставляемая $f(t)$ при Фурье-преобразовании.
+Также верна следующая интерполяционная формула:
+$$
+f(t)=\sum_{n=-\infty}^{\infty}f(t_n)\text{sinc}(2B(t-t_n)), t_n=\frac{n}{2B}
+$$
+
+Применим интерполяционную формулу, и посмотрим как $\Delta t, T$ влияют на восстановление (см. рис. ).
