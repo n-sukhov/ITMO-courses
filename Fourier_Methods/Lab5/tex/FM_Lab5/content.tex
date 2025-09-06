@@ -324,8 +324,19 @@ $$
 f(t)=\sum_{n=-\infty}^{\infty}f(t_n)\text{sinc}(2B(t-t_n)), t_n=\frac{n}{2B}
 $$
 
-Применим интерполяционную формулу, и посмотрим как $\Delta t, T$ влияют на восстановление (см. рис. \ref{19}-\ref{22}).
+Применим интерполяционную формулу, и посмотрим как $\Delta t, T$ влияют на восстановление (см. рис. \ref{19}-\ref{22}).\\
 
+Мы видим, что как и предполагалось по теореме Найквиста-Шеннона-Котельникова, при $\Delta t<\frac{1}{2B}$
+интерполированная функция полностью совпадает с исходной, при других значениях это не срабатывает. Так же можно
+сделать вывод, что смысла уменьшать шаг дискретизации после этого значение нет - только потратим время на вычисления.\\
+Теперь найдём Фурье-образы функций при помощи умного \texttt{fft} для показательных значени шага дискретизации (см. рис.
+\ref{23}-\ref{26}).\\
+Отсюда видим, что период не влияет на качество интерполяции, но улучшает Фурье-образ сэмплированного сигнала.
+\textbf{Выводы}\\
+Полученные в данной лабораторной работе результаты согласуются с теоретическими представлениями. Мы исследовали
+разные подходы к реализации преобразования Фурье для практических вычислений, нашли их плюсы и недостатки (подробно
+описаны в предыдущих разделах). Узнали, как можно их совмещать, чтобы добиться лучшего результат (умный \text{fft}).
+Эксперимент с сэмплированием показал корректность теоремы Найквиста-Шеннона-Котельникова.
 
 \begin{figure}[H]
     \centering
@@ -336,18 +347,43 @@ $$
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y1_interp_20.png}
-    \caption{Сравнение непрерывного и сэмплированного варианта $y_2(t)$ и интерполяции}
+    \caption{Сравнение непрерывного и сэмплированного варианта $y_1(t)$ и интерполяции}
     \label{20}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y2_interp_5.png}
-    \caption{Сравнение непрерывного, сэмплированного варианта $y_1(t)$ и интерполяции}
+    \caption{Сравнение непрерывного, сэмплированного варианта $y_2(t)$ и интерполяции}
     \label{21}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y2_interp_20.png}
     \caption{Сравнение непрерывного и сэмплированного варианта $y_2(t)$ и интерполяции}
+    \label{22}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y_hat_1_interp_5.png}
+    \caption{Сравнение непрерывного, сэмплированного варианта $\hat{y_1}(t)$ и интерполяции}
+    \label{19}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y_hat_1_interp_20.png}
+    \caption{Сравнение непрерывного и сэмплированного варианта $\hat{y_1}(t)$ и интерполяции}
+    \label{20}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y_hat_2_interp_5.png}
+    \caption{Сравнение непрерывного, сэмплированного варианта $\hat{y_2}(t)$ и интерполяции}
+    \label{21}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab5/plots/y_hat_2_interp_20.png}
+    \caption{Сравнение непрерывного и сэмплированного варианта $\hat{y_2}(t)$ и интерполяции}
     \label{22}
 \end{figure}
