@@ -567,57 +567,70 @@ for T in T_list:
     del chart
 
 # %%
-dt_list = [0.6, 1 / 2 / B1, 0.05]
-
-x = np.arange(-50.0, 50.001, 0.001)
+dt_list = [0.6, 1 / 2 / B1]
+T_list = [5, 20]
+x = np.arange(-50.0, 50.0, 0.001)
 for T in T_list:
-    chart = Chart(3, 1, 10, 13)
+    chart = Chart(2, 1, 10, 10)
     for dt in dt_list:
         x_sampled = np.arange(-T/2, T/2 + dt, dt)
         y1_interp = interpolate(y1, dt, x)
         
-        y_hat_1_cont, v_space = smart_fft(y1, 100, 0.001)
         @list_func
         def y1i(t):
-            global x
-            return y1_interp[np.where(t==x)[0][0]]
-        y_hat_1_interp, v_space = smart_fft(y1i, 100, 0.001)
+            idx = np.abs(x - t).argmin()
+            return y1_interp[idx]
+        
+        y_hat_1_cont, v_space_cont = smart_fft(y1, 100, 0.001)
+        y_hat_1_interp, v_space_interp = smart_fft(y1i, 100, 0.001)
         y_hat_1_disc, v_space_ds = smart_fft(y1, T, dt)
 
-        plt_g = Plot_Group(f"y_hat(v), T={T}, dt={round(dt, 3)}, dv={round(1/T, 3)}", "v", "y_hat", xlim=(-20, 20), legend=True, legend_fontsize="large")
-        plt_g.add_plot(Plot(v_space, y_hat_1_cont, "y_hat_1(v)", color="indigo", linewidth=0.75))
-        plt_g.add_plot(Plot(v_space_ds, y_hat_1_disc, "y_hat_1(v) sampled", color="crimson",
-                            linewidth=1, linestyle=":"))
-        plt_g.add_plot(Plot(v_space, y_hat_1_interp, "y_hat_1(v) interpolated", color="green",
-                            linewidth=0.75, linestyle="--"))
+        plt_g = Plot_Group(f"y_hat(v), T={T}, dt={round(dt, 3)}, dv={round(1/T, 3)}", "v", "y_hat", xlim=(-3, 3), legend=True, legend_fontsize="large")
+        plt_g.add_plot(Plot(v_space_cont, np.abs(y_hat_1_cont), "|y_hat_1(v)|", color="indigo", linewidth=0.75))
+        plt_g.add_plot(Plot(v_space_ds, np.abs(y_hat_1_disc), "|y_hat_1(v) sampled|", color="crimson",
+                            linewidth=2, linestyle=":"))
+        plt_g.add_plot(Plot(v_space_interp, np.abs(y_hat_1_interp), "|y_hat_1(v) interpolated|", color="green",
+                            linewidth=1, linestyle="--"))
+        xB = [1.12] *2
+        yB = [0, 120]
+        plt_g.add_plot(Plot(xB, yB, "B", "orange", linestyle="--"))
+        xBm = [-1.12] *2
+        yBm = [0, 120]
+        plt_g.add_plot(Plot(xBm, yBm, "B", "orange", linestyle="--"))
         chart.add_plot_group(plt_g)
         del plt_g
     
     chart.save_chart(plt_folder, f"y_hat_1_interp_{T}", dpi=200)
     del chart
 
-dt_list = [0.2, 0.15, 0.02]
+dt_list = [0.2, 0.15]
 for T in T_list:
-    chart = Chart(3, 1, 10, 13)
+    chart = Chart(2, 1, 10, 10)
     for dt in dt_list:
         x_sampled = np.arange(-T/2, T/2, dt)
-        y2_disc = y2(x_sampled)
         y2_interp = interpolate(y2, dt, x)
 
-        y_hat_2_cont, v_space = smart_fft(y2, 100, 0.001)
         @list_func
-        def y1i(t):
-            global x
-            return y2_interp[np.where(t==x)[0][0]]
-        y_hat_2_interp, v_space = smart_fft(y1i, 100, 0.001)
+        def y2i(t):
+            idx = np.abs(x - t).argmin()
+            return y2_interp[idx]
+        
+        y_hat_2_cont, v_space_cont = smart_fft(y2, 200, 0.001)
+        y_hat_2_interp, v_space_interp = smart_fft(y2i, 200, 0.001)
         y_hat_2_disc, v_space_ds = smart_fft(y2, T, dt)
 
-        plt_g = Plot_Group(f"y_hat(v), T={T}, dt={round(dt, 3)}, dv={round(1/T, 3)}", "v", "y_hat", xlim=(-20, 20), legend=True, legend_fontsize="large")
-        plt_g.add_plot(Plot(v_space, y_hat_2_cont, "y_hat_2(v)", color="indigo", linewidth=0.75))
-        plt_g.add_plot(Plot(v_space_ds, y_hat_2_disc, "y_hat_2(v) sampled", color="crimson",
-                            linewidth=1, linestyle=":"))
-        plt_g.add_plot(Plot(v_space, y_hat_2_interp, "y_hat_2(v) interpolated", color="green",
-                            linewidth=0.75, linestyle="--"))
+        plt_g = Plot_Group(f"y_hat(v), T={T}, dt={round(dt, 3)}, dv={round(1/T, 3)}", "v", "y_hat", xlim=(-5, 5), legend=True, legend_fontsize="large")
+        plt_g.add_plot(Plot(v_space_cont, np.abs(y_hat_2_cont), "y_hat_2(v)", color="indigo", linewidth=0.75))
+        plt_g.add_plot(Plot(v_space_ds, np.abs(y_hat_2_disc), "y_hat_2(v) sampled", color="crimson",
+                            linewidth=2, linestyle=":"))
+        plt_g.add_plot(Plot(v_space_interp, np.abs(y_hat_2_interp), "y_hat_2(v) interpolated", color="green",
+                            linewidth=1, linestyle="--"))
+        xB = [3] *2
+        yB = [0, 0.25]
+        plt_g.add_plot(Plot(xB, yB, "B", "orange", linestyle="--"))
+        xBm = [-3] *2
+        yBm = [0, 0.25]
+        plt_g.add_plot(Plot(xBm, yBm, "B", "orange", linestyle="--"))
         chart.add_plot_group(plt_g)
         del plt_g
         
