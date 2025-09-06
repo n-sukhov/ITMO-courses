@@ -1,0 +1,4 @@
+\xpginauxfiletrue 
+\selectlanguage *{russian}
+\contentsline {section}{\numberline {1}Фильтрация изображений с периодичностью}{3}{section.1}%
+\contentsfinish 
