@@ -31,7 +31,7 @@ spectrum_image = (normalized_log * 255).astype(np.uint8)
 cv2.imwrite(plt_folder+'fourier_spectrum_1.png', spectrum_image)
 
 # %%
-spectrum_filtered = cv2.imread('/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/fourier_spectrum_1_filtered.jpg').astype(np.float64) / 255.0
+spectrum_filtered = cv2.imread(plt_folder + 'fourier_spectrum_1_filtered.jpg').astype(np.float64) / 255.0
 
 log_magnitude_filtered = spectrum_filtered * (np.max(log_magnitude) - np.min(log_magnitude)) + np.min(log_magnitude)
 magnitude_filtered = np.expm1(log_magnitude_filtered)

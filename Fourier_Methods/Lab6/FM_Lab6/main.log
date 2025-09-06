@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  7 SEP 2025 01:39
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  7 SEP 2025 01:45
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1674,7 +1674,49 @@ File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/periodic_filtere
 d_image.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/periodic_filtered_ima
 ge.png>
- [4]) [5]
+ [4] [5] (./_minted-main/colorful.pygstyle)
+runsystem(pygmentize -l 'python' -f latex -P commandprefix=PYG -F tokenmerge -P
+ stripnl='False' -o _minted-main/AC37B431B66586B5A9C57AD9321BF4B31009B85D5B724D
+3092AEBA9E7B1CD59B.pygtex /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/La
+b6_listing.py)...executed.
+
+
+(./_minted-main/AC37B431B66586B5A9C57AD9321BF4B31009B85D5B724D3092AEBA9E7B1CD59
+B.pygtex
+
+LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(0)/m/n' in size <6> not
+ available
+(Font)              size <10> substituted on input line 1.
+
+
+LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/m/n' in size <6> not
+ available
+(Font)              size <10> substituted on input line 1.
+
+
+LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/b/n' undefined
+(Font)              using `TU/FiraCode-Regular.otf(1)/m/n' instead on input lin
+e 3.
+
+
+LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/b/n' in size <6> not
+ available
+(Font)              size <10> substituted on input line 3.
+
+
+Overfull \hbox (41.41077pt too wide) in paragraph at lines 45--45
+\TU/FiraCode-Regular.otf(1)/b/n/10 filtered_fft_channels[].[]append(fft[].[]iff
+t2(fft[].[]ifftshift(complex_spectrum)))|  
+ []
+
+)
+Package hyperref Info: bookmark level for unknown listing defaults to 0 on inpu
+t line 68.
+) [6]
+runsystem(rm _minted-main/9B2D26896EA48D7C7CEAF6F4ABC693DD1009B85D5B724D3092AEB
+A9E7B1CD59B.pygtex)...executed.
+
+
 
 Package caption Warning: Unused \captionsetup[table] on input line 44.
 See the caption package documentation for explanation.
@@ -1688,21 +1730,24 @@ L3 programming layer <2024-01-22>
 
 
 LaTeX Font Warning: Size substitutions with differences
-(Font)              up to 2.0pt have occurred.
+(Font)              up to 4.0pt have occurred.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 3CBA7D5322B2E02E63C5E8D06BF5E2B9;355.
+(rerunfilecheck)             Checksum: 4D1221BC32708EE1C2B18668358E5E75;478.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 43987 strings out of 474878
- 903671 string characters out of 5762516
- 1975524 words of memory out of 5000000
- 65346 multiletter control sequences out of 15000+600000
- 563378 words of font info for 93 fonts, out of 8000000 for 9000
+ 44141 strings out of 474878
+ 906650 string characters out of 5762516
+ 1990763 words of memory out of 5000000
+ 65485 multiletter control sequences out of 15000+600000
+ 564055 words of font info for 100 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 91i,6n,122p,677b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 91i,9n,122p,678b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (5 pages).
+Output written on main.pdf (6 pages).
