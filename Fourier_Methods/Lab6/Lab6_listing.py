@@ -59,6 +59,9 @@ cv2.imwrite(plt_folder + 'periodic_filtered_image.png', reconstructed_image_uint
 dogsimg = cv2.imread("dogs.jpg")
 gray_img = cv2.cvtColor(dogsimg, cv2.COLOR_BGR2GRAY)
 cv2.imwrite("black_dogs.jpg", gray_img)
+img = np.array(gray_img)
+h, w = img.shape
+N_values = [7, 23, 47]
 
 # %% [markdown]
 # #### Ядра
@@ -90,27 +93,96 @@ negative_kernel = np.array([[0, 0, 0],
                             [0, 0, 0]])
 
 # %%
-img = np.array(gray_img)
+fft_original = fft.fftshift(fft.fft2(img))
+log_magnitude_original = np.log1p(np.abs(fft_original))
 
-N_values = [7, 27, 57]
+# %%
+#туту надо сделать "Приведено изображение логарифма модуля образа исходной картинки."
 
-gaussian_results = []
-for N in N_values:
+# %%
+plt.rcParams['axes.titlesize'] = 10
+
+# %% [markdown]
+# #### Размытие по Гауссу
+
+# %%
+fig = plt.figure(figsize=(10, 16))
+
+plt.subplot(4, 3, 1)
+plt.imshow(img, cmap='gray')
+plt.title('Исходное изображение')
+plt.axis('off')
+
+plt.subplot(4, 3, 2)
+plt.axis('off')
+
+plt.subplot(4, 3, 3)
+plt.axis('off')
+
+for i, N in enumerate(N_values):
     kernel = gaussian_kernel(N)
-    result = convolve2d(img, kernel, mode='same', boundary='symm')
-    gaussian_results.append(result)
+    
+    conv_result = convolve2d(img, kernel, mode='same', boundary='symm')
+    conv_result = np.clip(conv_result, 0, 255)
+    
+    k_h, k_w = kernel.shape
+    fft_size = (h + k_h - 1, w + k_w - 1)
+    fft_img_padded = fft.fft2(img, s=fft_size)
+    fft_kernel = fft.fft2(kernel, s=fft_size)
+    result_fft = fft.ifft2(fft_img_padded * fft_kernel)
+    
+    start_i = (fft_size[0] - h) // 2
+    start_j = (fft_size[1] - w) // 2
+    fft_result = np.real(result_fft[start_i:start_i+h, start_j:start_j+w])
+    fft_result = np.clip(fft_result, 0, 255)
+    
+    fft_kernel_shifted = fft.fftshift(fft_kernel)
+    log_magnitude_kernel = np.log1p(np.abs(fft_kernel_shifted))
+    
+    row = i + 1
+    
+    plt.subplot(4, 3, row*3 + 1)
+    plt.imshow(conv_result, cmap='gray')
+    plt.title(f'Обычная свертка: N={N}')
+    plt.axis('off')
+    
+    plt.subplot(4, 3, row*3 + 2)
+    plt.imshow(fft_result, cmap='gray')
+    plt.title(f'Фурье: N={N}')
+    plt.axis('off')
+    
+    plt.subplot(4, 3, row*3 + 3)
+    plt.imshow(log_magnitude_kernel, cmap='gray')
+    plt.title(f'Логарифм модуля фурье-образа ядра: N={N}')
+    plt.axis('off')
 
-box_results = []
-for N in N_values:
-    kernel = box_kernel(N)
-    result = convolve2d(img, kernel, mode='same', boundary='symm')
-    box_results.append(result)
+plt.tight_layout()
+plt.savefig(plt_folder + 'gaussian_comp.png', dpi=300, bbox_inches='tight')
+plt.show()
 
-sharp_result = convolve2d(img, sharp_kernel, mode='same', boundary='symm')
+# %% [markdown]
+# #### Блочное размытие
 
-edge_result = convolve2d(img, edge_kernel, mode='same', boundary='symm')
+# %%
 
-negative_result = convolve2d(img, negative_kernel, mode='same', boundary='symm')
+
+# %% [markdown]
+# #### Увеличение резкости
+
+# %%
+
+
+# %% [markdown]
+# #### Выделение краёв
+
+# %%
+
+
+# %% [markdown]
+# #### Негатив
+
+# %%
+
 
 # %%
 
