@@ -1,0 +1,317 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{cv2}
+\PYG{k+kn}{from} \PYG{n+nn}{scipy.fft} \PYG{k+kn}{import} \PYG{n}{fft2}\PYG{p}{,} \PYG{n}{fftshift}\PYG{p}{,} \PYG{n}{ifft2}\PYG{p}{,} \PYG{n}{ifftshift}
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+\PYG{k+kn}{from} \PYG{n+nn}{scipy.signal} \PYG{k+kn}{import} \PYG{n}{convolve2d}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{plt\PYGZus{}folder} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}plots/\PYGZdq{}}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{} Задание 1}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{image\PYGZus{}float} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}1.png\PYGZsq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{float64}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mf}{255.0}
+
+\PYG{n}{fft\PYGZus{}channels} \PYG{o}{=} \PYG{p}{[]}
+\PYG{k}{for} \PYG{n}{channel} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{):}
+    \PYG{n}{channel\PYGZus{}data} \PYG{o}{=} \PYG{n}{image\PYGZus{}float}\PYG{p}{[:,} \PYG{p}{:,} \PYG{n}{channel}\PYG{p}{]}
+    \PYG{n}{fft\PYGZus{}channel} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fft2}\PYG{p}{(}\PYG{n}{channel\PYGZus{}data}\PYG{p}{))}
+    \PYG{n}{fft\PYGZus{}channels}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{fft\PYGZus{}channel}\PYG{p}{)}
+\PYG{n}{fft\PYGZus{}image} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{stack}\PYG{p}{(}\PYG{n}{fft\PYGZus{}channels}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+
+\PYG{n}{original\PYGZus{}fft} \PYG{o}{=} \PYG{n}{fft\PYGZus{}image}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{()}
+
+\PYG{n}{magnitude\PYGZus{}spectrum} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft\PYGZus{}image}\PYG{p}{)}
+\PYG{n}{phase\PYGZus{}spectrum} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{angle}\PYG{p}{(}\PYG{n}{fft\PYGZus{}image}\PYG{p}{)}
+
+\PYG{n}{log\PYGZus{}magnitude} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{log1p}\PYG{p}{(}\PYG{n}{magnitude\PYGZus{}spectrum}\PYG{p}{)}
+\PYG{n}{normalized\PYGZus{}log} \PYG{o}{=} \PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude} \PYG{o}{\PYGZhy{}} \PYG{n}{np}\PYG{o}{.}\PYG{n}{min}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude}\PYG{p}{))} \PYG{o}{/} \PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{max}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{np}\PYG{o}{.}\PYG{n}{min}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude}\PYG{p}{))}
+
+\PYG{n}{spectrum\PYGZus{}image} \PYG{o}{=} \PYG{p}{(}\PYG{n}{normalized\PYGZus{}log} \PYG{o}{*} \PYG{l+m+mi}{255}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{uint8}\PYG{p}{)}
+\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imwrite}\PYG{p}{(}\PYG{n}{plt\PYGZus{}folder}\PYG{o}{+}\PYG{l+s+s1}{\PYGZsq{}fourier\PYGZus{}spectrum\PYGZus{}1.png\PYGZsq{}}\PYG{p}{,} \PYG{n}{spectrum\PYGZus{}image}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{spectrum\PYGZus{}filtered} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{n}{plt\PYGZus{}folder} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}fourier\PYGZus{}spectrum\PYGZus{}1\PYGZus{}filtered.jpg\PYGZsq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{float64}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mf}{255.0}
+
+\PYG{n}{log\PYGZus{}magnitude\PYGZus{}filtered} \PYG{o}{=} \PYG{n}{spectrum\PYGZus{}filtered} \PYG{o}{*} \PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{max}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{np}\PYG{o}{.}\PYG{n}{min}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude}\PYG{p}{))} \PYG{o}{+} \PYG{n}{np}\PYG{o}{.}\PYG{n}{min}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude}\PYG{p}{)}
+\PYG{n}{magnitude\PYGZus{}filtered} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{expm1}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}filtered}\PYG{p}{)}
+
+\PYG{n}{filtered\PYGZus{}fft\PYGZus{}channels} \PYG{o}{=} \PYG{p}{[]}
+\PYG{k}{for} \PYG{n}{channel} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{):}
+    \PYG{n}{magnitude\PYGZus{}channel} \PYG{o}{=} \PYG{n}{magnitude\PYGZus{}filtered}\PYG{p}{[:,} \PYG{p}{:,} \PYG{n}{channel}\PYG{p}{]}
+    \PYG{n}{phase\PYGZus{}channel} \PYG{o}{=} \PYG{n}{phase\PYGZus{}spectrum}\PYG{p}{[:,} \PYG{p}{:,} \PYG{n}{channel}\PYG{p}{]}
+    \PYG{n}{complex\PYGZus{}spectrum} \PYG{o}{=} \PYG{n}{magnitude\PYGZus{}channel} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{n}{j} \PYG{o}{*} \PYG{n}{phase\PYGZus{}channel}\PYG{p}{)}
+    \PYG{n}{filtered\PYGZus{}fft\PYGZus{}channels}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{ifft2}\PYG{p}{(}\PYG{n}{ifftshift}\PYG{p}{(}\PYG{n}{complex\PYGZus{}spectrum}\PYG{p}{)))}
+
+\PYG{n}{reconstructed\PYGZus{}image} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{stack}\PYG{p}{(}\PYG{n}{filtered\PYGZus{}fft\PYGZus{}channels}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{n}{reconstructed\PYGZus{}image} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{real}\PYG{p}{(}\PYG{n}{reconstructed\PYGZus{}image}\PYG{p}{)}
+\PYG{n}{reconstructed\PYGZus{}image} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{clip}\PYG{p}{(}\PYG{n}{reconstructed\PYGZus{}image}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{n}{reconstructed\PYGZus{}image\PYGZus{}uint8} \PYG{o}{=} \PYG{p}{(}\PYG{n}{reconstructed\PYGZus{}image} \PYG{o}{*} \PYG{l+m+mi}{255}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{uint8}\PYG{p}{)}
+
+\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imwrite}\PYG{p}{(}\PYG{n}{plt\PYGZus{}folder} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}periodic\PYGZus{}filtered\PYGZus{}image.png\PYGZsq{}}\PYG{p}{,} \PYG{n}{reconstructed\PYGZus{}image\PYGZus{}uint8}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{} Задание 2}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{dogsimg} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}dogs.jpg\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{gray\PYGZus{}img} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{dogsimg}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2GRAY}\PYG{p}{)}
+\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imwrite}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}black\PYGZus{}dogs.jpg\PYGZdq{}}\PYG{p}{,} \PYG{n}{gray\PYGZus{}img}\PYG{p}{)}
+\PYG{n}{img} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{gray\PYGZus{}img}\PYG{p}{)}
+\PYG{n}{h}\PYG{p}{,} \PYG{n}{w} \PYG{o}{=} \PYG{n}{img}\PYG{o}{.}\PYG{n}{shape}
+\PYG{n}{N\PYGZus{}values} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{7}\PYG{p}{,} \PYG{l+m+mi}{23}\PYG{p}{,} \PYG{l+m+mi}{47}\PYG{p}{]}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{} Ядра}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{k}{def} \PYG{n+nf}{gaussian\PYGZus{}kernel}\PYG{p}{(}\PYG{n}{N}\PYG{p}{):}
+    \PYG{n}{sigma} \PYG{o}{=} \PYG{p}{(}\PYG{n}{N} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{6}
+    \PYG{n}{center} \PYG{o}{=} \PYG{p}{(}\PYG{n}{N} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2}
+    \PYG{n}{i} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{N}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{center}
+    \PYG{n}{j} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{N}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{center}
+    \PYG{n}{ii}\PYG{p}{,} \PYG{n}{jj} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{meshgrid}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{j}\PYG{p}{)}
+    \PYG{n}{kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{ii}\PYG{o}{**}\PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{jj}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{)} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{sigma}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{))}
+    \PYG{k}{return} \PYG{n}{kernel} \PYG{o}{/} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{kernel}\PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{box\PYGZus{}kernel}\PYG{p}{(}\PYG{n}{N}\PYG{p}{):}
+    \PYG{n}{kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ones}\PYG{p}{((}\PYG{n}{N}\PYG{p}{,} \PYG{n}{N}\PYG{p}{))}
+    \PYG{k}{return} \PYG{n}{kernel} \PYG{o}{/} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{kernel}\PYG{p}{)}
+
+\PYG{n}{sharp\PYGZus{}kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{],}
+                         \PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],}
+                         \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{]])}
+
+\PYG{n}{edge\PYGZus{}kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],}
+                        \PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{8}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],}
+                        \PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]])}
+
+\PYG{n}{negative\PYGZus{}kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{],}
+                            \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{],}
+                            \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{]])}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{fft\PYGZus{}original} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fft2}\PYG{p}{(}\PYG{n}{img}\PYG{p}{))}
+\PYG{n}{log\PYGZus{}magnitude\PYGZus{}original} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{log1p}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft\PYGZus{}original}\PYG{p}{))}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}original}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}\PYG{n}{plt\PYGZus{}folder} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}log.png\PYGZsq{}}\PYG{p}{,} \PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{300}\PYG{p}{,} \PYG{n}{bbox\PYGZus{}inches}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}tight\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{rcParams}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}axes.titlesize\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{12}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} Util func}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{k}{def} \PYG{n+nf}{draw\PYGZus{}pics3}\PYG{p}{(}\PYG{n}{kernel\PYGZus{}f}\PYG{p}{,} \PYG{n}{name}\PYG{p}{):}
+    \PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{15}\PYG{p}{,} \PYG{l+m+mi}{18}\PYG{p}{))}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Исходное изображение\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{k}{for} \PYG{n}{i}\PYG{p}{,} \PYG{n}{N} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{N\PYGZus{}values}\PYG{p}{):}
+        \PYG{n}{kernel} \PYG{o}{=} \PYG{n}{kernel\PYGZus{}f}\PYG{p}{(}\PYG{n}{N}\PYG{p}{)}
+        \PYG{n}{conv\PYGZus{}result} \PYG{o}{=} \PYG{n}{convolve2d}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{,} \PYG{n}{mode}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}same\PYGZsq{}}\PYG{p}{,} \PYG{n}{boundary}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}symm\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{n}{k\PYGZus{}h}\PYG{p}{,} \PYG{n}{k\PYGZus{}w} \PYG{o}{=} \PYG{n}{kernel}\PYG{o}{.}\PYG{n}{shape}
+        \PYG{n}{fft\PYGZus{}size} \PYG{o}{=} \PYG{p}{(}\PYG{n}{h} \PYG{o}{+} \PYG{n}{k\PYGZus{}h} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{w} \PYG{o}{+} \PYG{n}{k\PYGZus{}w} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n}{fft\PYGZus{}img\PYGZus{}padded} \PYG{o}{=} \PYG{n}{fft2}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{s}\PYG{o}{=}\PYG{n}{fft\PYGZus{}size}\PYG{p}{)}  
+        \PYG{n}{fft\PYGZus{}kernel} \PYG{o}{=} \PYG{n}{fft2}\PYG{p}{(}\PYG{n}{kernel}\PYG{p}{,} \PYG{n}{s}\PYG{o}{=}\PYG{n}{fft\PYGZus{}size}\PYG{p}{)}
+        
+        \PYG{n}{result\PYGZus{}fft} \PYG{o}{=} \PYG{n}{ifft2}\PYG{p}{(}\PYG{n}{fft\PYGZus{}img\PYGZus{}padded} \PYG{o}{*} \PYG{n}{fft\PYGZus{}kernel}\PYG{p}{)}
+        \PYG{n}{start\PYGZus{}i} \PYG{o}{=} \PYG{p}{(}\PYG{n}{fft\PYGZus{}size}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{h}\PYG{p}{)} \PYG{o}{//} \PYG{l+m+mi}{2}
+        \PYG{n}{start\PYGZus{}j} \PYG{o}{=} \PYG{p}{(}\PYG{n}{fft\PYGZus{}size}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{w}\PYG{p}{)} \PYG{o}{//} \PYG{l+m+mi}{2}
+        \PYG{n}{fft\PYGZus{}result} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{real}\PYG{p}{(}\PYG{n}{result\PYGZus{}fft}\PYG{p}{[}\PYG{n}{start\PYGZus{}i}\PYG{p}{:}\PYG{n}{start\PYGZus{}i}\PYG{o}{+}\PYG{n}{h}\PYG{p}{,} \PYG{n}{start\PYGZus{}j}\PYG{p}{:}\PYG{n}{start\PYGZus{}j}\PYG{o}{+}\PYG{n}{w}\PYG{p}{])}
+        
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{4}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{conv\PYGZus{}result}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Обычная свертка: N=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{N}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{7}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{fft\PYGZus{}result}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Фурье: N=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{N}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{tight\PYGZus{}layout}\PYG{p}{()}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}\PYG{n}{plt\PYGZus{}folder} \PYG{o}{+} \PYG{n}{name} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}comp.png\PYGZsq{}}\PYG{p}{,} \PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{200}\PYG{p}{,} \PYG{n}{bbox\PYGZus{}inches}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}tight\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+    
+    \PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{,} \PYG{l+m+mi}{18}\PYG{p}{))}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}original}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Логарифм модуля фурье\PYGZhy{}образа исходного изображения\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{k}{for} \PYG{n}{i}\PYG{p}{,} \PYG{n}{N} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{N\PYGZus{}values}\PYG{p}{):}
+        \PYG{n}{kernel} \PYG{o}{=} \PYG{n}{kernel\PYGZus{}f}\PYG{p}{(}\PYG{n}{N}\PYG{p}{)}
+        \PYG{n}{conv\PYGZus{}result} \PYG{o}{=} \PYG{n}{convolve2d}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{,} \PYG{n}{mode}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}same\PYGZsq{}}\PYG{p}{,} \PYG{n}{boundary}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}symm\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{n}{k\PYGZus{}h}\PYG{p}{,} \PYG{n}{k\PYGZus{}w} \PYG{o}{=} \PYG{n}{kernel}\PYG{o}{.}\PYG{n}{shape}
+        \PYG{n}{fft\PYGZus{}size} \PYG{o}{=} \PYG{p}{(}\PYG{n}{h} \PYG{o}{+} \PYG{n}{k\PYGZus{}h} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{w} \PYG{o}{+} \PYG{n}{k\PYGZus{}w} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n}{fft\PYGZus{}img\PYGZus{}padded} \PYG{o}{=} \PYG{n}{fft2}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{s}\PYG{o}{=}\PYG{n}{fft\PYGZus{}size}\PYG{p}{)}
+        \PYG{n}{fft\PYGZus{}kernel} \PYG{o}{=} \PYG{n}{fft2}\PYG{p}{(}\PYG{n}{kernel}\PYG{p}{,} \PYG{n}{s}\PYG{o}{=}\PYG{n}{fft\PYGZus{}size}\PYG{p}{)}
+        \PYG{n}{result\PYGZus{}fft} \PYG{o}{=} \PYG{n}{ifft2}\PYG{p}{(}\PYG{n}{fft\PYGZus{}img\PYGZus{}padded} \PYG{o}{*} \PYG{n}{fft\PYGZus{}kernel}\PYG{p}{)}
+        \PYG{n}{start\PYGZus{}i} \PYG{o}{=} \PYG{p}{(}\PYG{n}{fft\PYGZus{}size}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{h}\PYG{p}{)} \PYG{o}{//} \PYG{l+m+mi}{2}
+        \PYG{n}{start\PYGZus{}j} \PYG{o}{=} \PYG{p}{(}\PYG{n}{fft\PYGZus{}size}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{w}\PYG{p}{)} \PYG{o}{//} \PYG{l+m+mi}{2}
+        \PYG{n}{fft\PYGZus{}result} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{real}\PYG{p}{(}\PYG{n}{result\PYGZus{}fft}\PYG{p}{[}\PYG{n}{start\PYGZus{}i}\PYG{p}{:}\PYG{n}{start\PYGZus{}i}\PYG{o}{+}\PYG{n}{h}\PYG{p}{,} \PYG{n}{start\PYGZus{}j}\PYG{p}{:}\PYG{n}{start\PYGZus{}j}\PYG{o}{+}\PYG{n}{w}\PYG{p}{])}
+        
+        \PYG{n}{fft\PYGZus{}kernel\PYGZus{}shifted} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fft\PYGZus{}kernel}\PYG{p}{)}
+        \PYG{n}{log\PYGZus{}magnitude\PYGZus{}kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{log1p}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft\PYGZus{}kernel\PYGZus{}shifted}\PYG{p}{))}
+        
+        \PYG{n}{fft\PYGZus{}conv\PYGZus{}spectrum} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fft2}\PYG{p}{(}\PYG{n}{conv\PYGZus{}result}\PYG{p}{))}
+        \PYG{n}{log\PYGZus{}magnitude\PYGZus{}conv} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{log1p}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft\PYGZus{}conv\PYGZus{}spectrum}\PYG{p}{))}
+        
+        \PYG{n}{fft\PYGZus{}fft\PYGZus{}spectrum} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fft2}\PYG{p}{(}\PYG{n}{fft\PYGZus{}result}\PYG{p}{))}
+        \PYG{n}{log\PYGZus{}magnitude\PYGZus{}fft} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{log1p}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft\PYGZus{}fft\PYGZus{}spectrum}\PYG{p}{))}
+        
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{i}\PYG{o}{*}\PYG{l+m+mi}{3} \PYG{o}{+} \PYG{l+m+mi}{4}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}kernel}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Логарифм модуля}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{фурье\PYGZhy{}образа ядра: N=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{N}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{i}\PYG{o}{*}\PYG{l+m+mi}{3} \PYG{o}{+} \PYG{l+m+mi}{5}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}conv}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Лог. модуля фурье\PYGZhy{}обр. изобр.}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{после обычной свертки: N=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{N}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+        
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{i}\PYG{o}{*}\PYG{l+m+mi}{3} \PYG{o}{+} \PYG{l+m+mi}{6}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}fft}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Лог. модуля фурье\PYGZhy{}обр. изобр.}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{после фурье: N=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{N}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{tight\PYGZus{}layout}\PYG{p}{()}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}\PYG{n}{plt\PYGZus{}folder} \PYG{o}{+} \PYG{n}{name} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}log.png\PYGZsq{}}\PYG{p}{,} \PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{200}\PYG{p}{,} \PYG{n}{bbox\PYGZus{}inches}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}tight\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{} Размытие по Гауссу}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{draw\PYGZus{}pics3}\PYG{p}{(}\PYG{n}{gaussian\PYGZus{}kernel}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}gaussian\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{} Блочное размытие}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{draw\PYGZus{}pics3}\PYG{p}{(}\PYG{n}{box\PYGZus{}kernel}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}gaussian\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} Util func}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{k}{def} \PYG{n+nf}{draw\PYGZus{}pics}\PYG{p}{(}\PYG{n}{kernel}\PYG{p}{,} \PYG{n}{name}\PYG{p}{):}
+    \PYG{n}{conv\PYGZus{}result} \PYG{o}{=} \PYG{n}{convolve2d}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{,} \PYG{n}{mode}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}same\PYGZsq{}}\PYG{p}{,} \PYG{n}{boundary}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}symm\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{k\PYGZus{}h}\PYG{p}{,} \PYG{n}{k\PYGZus{}w} \PYG{o}{=} \PYG{n}{kernel}\PYG{o}{.}\PYG{n}{shape}
+    \PYG{n}{fft\PYGZus{}size} \PYG{o}{=} \PYG{p}{(}\PYG{n}{h} \PYG{o}{+} \PYG{n}{k\PYGZus{}h} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{w} \PYG{o}{+} \PYG{n}{k\PYGZus{}w} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{fft\PYGZus{}img\PYGZus{}padded} \PYG{o}{=} \PYG{n}{fft2}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{s}\PYG{o}{=}\PYG{n}{fft\PYGZus{}size}\PYG{p}{)}  
+    \PYG{n}{fft\PYGZus{}kernel} \PYG{o}{=} \PYG{n}{fft2}\PYG{p}{(}\PYG{n}{kernel}\PYG{p}{,} \PYG{n}{s}\PYG{o}{=}\PYG{n}{fft\PYGZus{}size}\PYG{p}{)}
+
+    \PYG{n}{result\PYGZus{}fft} \PYG{o}{=} \PYG{n}{ifft2}\PYG{p}{(}\PYG{n}{fft\PYGZus{}img\PYGZus{}padded} \PYG{o}{*} \PYG{n}{fft\PYGZus{}kernel}\PYG{p}{)}
+    \PYG{n}{start\PYGZus{}i} \PYG{o}{=} \PYG{p}{(}\PYG{n}{fft\PYGZus{}size}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{h}\PYG{p}{)} \PYG{o}{//} \PYG{l+m+mi}{2}
+    \PYG{n}{start\PYGZus{}j} \PYG{o}{=} \PYG{p}{(}\PYG{n}{fft\PYGZus{}size}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{w}\PYG{p}{)} \PYG{o}{//} \PYG{l+m+mi}{2}
+    \PYG{n}{fft\PYGZus{}result} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{real}\PYG{p}{(}\PYG{n}{result\PYGZus{}fft}\PYG{p}{[}\PYG{n}{start\PYGZus{}i}\PYG{p}{:}\PYG{n}{start\PYGZus{}i}\PYG{o}{+}\PYG{n}{h}\PYG{p}{,} \PYG{n}{start\PYGZus{}j}\PYG{p}{:}\PYG{n}{start\PYGZus{}j}\PYG{o}{+}\PYG{n}{w}\PYG{p}{])}
+
+    \PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{,} \PYG{l+m+mi}{8}\PYG{p}{))}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Исходное изображение\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{conv\PYGZus{}result}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Обычная свертка\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{fft\PYGZus{}result}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Фурье\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{tight\PYGZus{}layout}\PYG{p}{()}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}\PYG{n}{plt\PYGZus{}folder} \PYG{o}{+} \PYG{n}{name} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}comp.png\PYGZsq{}}\PYG{p}{,} \PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{200}\PYG{p}{,} \PYG{n}{bbox\PYGZus{}inches}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}tight\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+
+    \PYG{n}{fft\PYGZus{}kernel\PYGZus{}shifted} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fft\PYGZus{}kernel}\PYG{p}{)}
+    \PYG{n}{log\PYGZus{}magnitude\PYGZus{}kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{log1p}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft\PYGZus{}kernel\PYGZus{}shifted}\PYG{p}{))}
+
+    \PYG{n}{fft\PYGZus{}conv\PYGZus{}spectrum} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fft2}\PYG{p}{(}\PYG{n}{conv\PYGZus{}result}\PYG{p}{))}
+    \PYG{n}{log\PYGZus{}magnitude\PYGZus{}conv} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{log1p}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft\PYGZus{}conv\PYGZus{}spectrum}\PYG{p}{))}
+
+    \PYG{n}{fft\PYGZus{}fft\PYGZus{}spectrum} \PYG{o}{=} \PYG{n}{fftshift}\PYG{p}{(}\PYG{n}{fft2}\PYG{p}{(}\PYG{n}{fft\PYGZus{}result}\PYG{p}{))}
+    \PYG{n}{log\PYGZus{}magnitude\PYGZus{}fft} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{log1p}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{fft\PYGZus{}fft\PYGZus{}spectrum}\PYG{p}{))}
+
+    \PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{8}\PYG{p}{,} \PYG{l+m+mi}{10}\PYG{p}{))}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}original}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Логарифм модуля фурье\PYGZhy{}образа}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{исходного изображения\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}kernel}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Логарифм модуля фурье\PYGZhy{}образа ядра\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}conv}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Логарифм модуля фурье\PYGZhy{}образа}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{после обычной свертки\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{log\PYGZus{}magnitude\PYGZus{}fft}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Логарифм модуля фурье\PYGZhy{}образа}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{после фурье\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{axis}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}off\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{tight\PYGZus{}layout}\PYG{p}{()}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}\PYG{n}{plt\PYGZus{}folder} \PYG{o}{+} \PYG{n}{name} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}log.png\PYGZsq{}}\PYG{p}{,} \PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{200}\PYG{p}{,} \PYG{n}{bbox\PYGZus{}inches}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}tight\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{} Увеличение резкости}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{draw\PYGZus{}pics}\PYG{p}{(}\PYG{n}{sharp\PYGZus{}kernel}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}sharp\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{} Выделение краёв}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{draw\PYGZus{}pics}\PYG{p}{(}\PYG{n}{edge\PYGZus{}kernel}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}edge\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{} Негатив}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+\PYG{n}{draw\PYGZus{}pics}\PYG{p}{(}\PYG{n}{negative\PYGZus{}kernel}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}neg\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{} [markdown]}
+\PYG{c+c1}{\PYGZsh{} \PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{} Сравнение гауссовского и блочного размытия}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZpc{}\PYGZpc{}}
+
+
+
+\end{Verbatim}

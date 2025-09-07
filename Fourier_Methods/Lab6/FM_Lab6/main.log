@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  8 SEP 2025 00:10
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  8 SEP 2025 02:23
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1399,11 +1399,7 @@ Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'russian'.
 
 (./main.aux (./templates/titlepage.aux) (./templates/tocpage.aux)
-(./content.aux
-
-LaTeX Warning: Label `7' multiply defined.
-
-))
+(./content.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
@@ -1700,8 +1696,53 @@ file (type bmp)
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/gaussian_comp.pn
 g Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/gaussian_comp.png>
- [7] [8] [9] (./_minted-main/colorful.pygstyle)
-(./_minted-main/4C733D37D42A027BB789F27A677237BC1009B85D5B724D3092AEBA9E7B1CD59
+ [7]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/gaussian_log.png
+ Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/gaussian_log.png>
+ [8]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/box_comp.png Gra
+phic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/box_comp.png>
+ [9]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/box_log.png Grap
+hic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/box_log.png>
+ [10]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/blur_comp.png Gr
+aphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/blur_comp.png>
+ [11]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/sharp_comp.png G
+raphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/sharp_comp.png>
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/sharp_log.png Gr
+aphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/sharp_log.png>
+ [12]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/edge_comp.png Gr
+aphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/edge_comp.png>
+ [13]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/edge_log.png Gra
+phic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/edge_log.png>
+ [14]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/neg_comp.png Gra
+phic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/neg_comp.png>
+ [15]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/neg_log.png Grap
+hic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/neg_log.png>
+ [16]
+File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/phase_spectrums_
+conv.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/phase_spectrums_conv.
+png>
+ [17]
+(./_minted-main/colorful.pygstyle)
+(./_minted-main/4810B8A23A30417929200EAD755210D81009B85D5B724D3092AEBA9E7B1CD59
 B.pygtex
 
 LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(0)/m/n' in size <6> not
@@ -1723,16 +1764,16 @@ LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/b/n' in size <6> not
  available
 (Font)              size <10> substituted on input line 3.
 
-
-Overfull \hbox (41.41077pt too wide) in paragraph at lines 47--47
-\TU/FiraCode-Regular.otf(1)/b/n/10 filtered_fft_channels[].[]append(fft[].[]iff
-t2(fft[].[]ifftshift(complex_spectrum)))|  
+[18] [19]
+Overfull \hbox (72.17989pt too wide) in paragraph at lines 195--195
+\TU/FiraCode-Regular.otf(1)/b/n/10 plt[].[]title([][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][]N[][][][][][][][][][][][])|  
  []
 
-[10] [11] [12])
+[20] [21])
 Package hyperref Info: bookmark level for unknown listing defaults to 0 on inpu
-t line 176.
-) [13]
+t line 276.
+) [22]
 
 Package caption Warning: Unused \captionsetup[table] on input line 44.
 See the caption package documentation for explanation.
@@ -1752,7 +1793,7 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: DB6A9D7189DFD261BA6BB2467749D5A4;1782.
@@ -1761,12 +1802,12 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 44312 strings out of 474878
- 911268 string characters out of 5762516
- 1999544 words of memory out of 5000000
- 65648 multiletter control sequences out of 15000+600000
+ 44423 strings out of 474878
+ 918217 string characters out of 5762516
+ 2002929 words of memory out of 5000000
+ 65748 multiletter control sequences out of 15000+600000
  564071 words of font info for 102 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  91i,9n,136p,678b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (13 pages).
+Output written on main.pdf (22 pages).
