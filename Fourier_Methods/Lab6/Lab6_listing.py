@@ -106,17 +106,17 @@ plt.rcParams['axes.titlesize'] = 10
 # #### Размытие по Гауссу
 
 # %%
-fig = plt.figure(figsize=(10, 16))
+fig = plt.figure(figsize=(15, 18))
 
-plt.subplot(4, 3, 1)
+plt.subplot(3, 3, 1)
+plt.axis('off')
+
+plt.subplot(3, 3, 2)
 plt.imshow(img, cmap='gray')
 plt.title('Исходное изображение')
 plt.axis('off')
 
-plt.subplot(4, 3, 2)
-plt.axis('off')
-
-plt.subplot(4, 3, 3)
+plt.subplot(3, 3, 3)
 plt.axis('off')
 
 for i, N in enumerate(N_values):
@@ -136,28 +136,63 @@ for i, N in enumerate(N_values):
     fft_result = np.real(result_fft[start_i:start_i+h, start_j:start_j+w])
     fft_result = np.clip(fft_result, 0, 255)
     
-    fft_kernel_shifted = fft.fftshift(fft_kernel)
-    log_magnitude_kernel = np.log1p(np.abs(fft_kernel_shifted))
-    
-    row = i + 1
-    
-    plt.subplot(4, 3, row*3 + 1)
+    plt.subplot(3, 3, i+4)
     plt.imshow(conv_result, cmap='gray')
     plt.title(f'Обычная свертка: N={N}')
     plt.axis('off')
     
-    plt.subplot(4, 3, row*3 + 2)
+    plt.subplot(3, 3, i+7)
     plt.imshow(fft_result, cmap='gray')
     plt.title(f'Фурье: N={N}')
-    plt.axis('off')
-    
-    plt.subplot(4, 3, row*3 + 3)
-    plt.imshow(log_magnitude_kernel, cmap='gray')
-    plt.title(f'Логарифм модуля фурье-образа ядра: N={N}')
     plt.axis('off')
 
 plt.tight_layout()
 plt.savefig(plt_folder + 'gaussian_comp.png', dpi=300, bbox_inches='tight')
+plt.show()
+
+# %%
+fig = plt.figure(figsize=(15, 18))
+
+plt.subplot(3, 1, 1)
+plt.imshow(log_magnitude_original, cmap='gray')
+plt.title('Логарифм модуля фурье-образа исходного изображения')
+plt.axis('off')
+
+for i, N in enumerate(N_values):
+    kernel = gaussian_kernel(N)
+    
+    conv_result = convolve2d(img, kernel, mode='same', boundary='symm')
+    conv_result = np.clip(conv_result, 0, 255)
+    
+    k_h, k_w = kernel.shape
+    fft_size = (h + k_h - 1, w + k_w - 1)
+    fft_img_padded = fft.fft2(img, s=fft_size)
+    fft_kernel = fft.fft2(kernel, s=fft_size)
+    result_fft = fft.ifft2(fft_img_padded * fft_kernel)
+    
+    start_i = (fft_size[0] - h) // 2
+    start_j = (fft_size[1] - w) // 2
+    fft_result = np.real(result_fft[start_i:start_i+h, start_j:start_j+w])
+    fft_result = np.clip(fft_result, 0, 255)
+    
+    fft_conv_spectrum = fft.fftshift(fft.fft2(conv_result))
+    log_magnitude_conv = np.log1p(np.abs(fft_conv_spectrum))
+    
+    fft_fft_spectrum = fft.fftshift(fft.fft2(fft_result))
+    log_magnitude_fft = np.log1p(np.abs(fft_fft_spectrum))
+    
+    plt.subplot(3, 3, i+4)
+    plt.imshow(log_magnitude_conv, cmap='gray')
+    plt.title(f'Обычная свертка: N={N}')
+    plt.axis('off')
+    
+    plt.subplot(3, 3, i+7)
+    plt.imshow(log_magnitude_fft, cmap='gray')
+    plt.title(f'Фурье: N={N}')
+    plt.axis('off')
+
+plt.tight_layout()
+plt.savefig(plt_folder + 'gaussian_log.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 # %% [markdown]
@@ -170,6 +205,57 @@ plt.show()
 # #### Увеличение резкости
 
 # %%
+kernel = sharp_kernel
+
+conv_result = convolve2d(img, kernel, mode='same', boundary='symm')
+conv_result = np.clip(conv_result, 0, 255)
+
+k_h, k_w = kernel.shape
+fft_size = (h + k_h - 1, w + k_w - 1)
+fft_img_padded = fft.fft2(img, s=fft_size)
+fft_kernel = fft.fft2(kernel, s=fft_size)
+result_fft = fft.ifft2(fft_img_padded * fft_kernel)
+
+start_i = (fft_size[0] - h) // 2
+start_j = (fft_size[1] - w) // 2
+fft_result = np.real(result_fft[start_i:start_i+h, start_j:start_j+w])
+fft_result = np.clip(fft_result, 0, 255)
+
+fft_kernel_shifted = fft.fftshift(fft_kernel)
+log_magnitude_kernel = np.log1p(np.abs(fft_kernel_shifted))
+
+fft_result_spectrum = fft.fftshift(fft.fft2(fft_result))
+log_magnitude_result = np.log1p(np.abs(fft_result_spectrum))
+
+fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+
+axes[0, 0].imshow(img, cmap='gray')
+axes[0, 0].set_title('Исходное изображение')
+axes[0, 0].axis('off')
+
+axes[0, 1].imshow(conv_result, cmap='gray')
+axes[0, 1].set_title('Обычная свертка: Увеличение резкости')
+axes[0, 1].axis('off')
+
+axes[0, 2].imshow(fft_result, cmap='gray')
+axes[0, 2].set_title('Фурье: Увеличение резкости')
+axes[0, 2].axis('off')
+
+axes[1, 0].imshow(log_magnitude_original, cmap='gray')
+axes[1, 0].set_title('Логарифм модуля фурье-образа исходного изображения')
+axes[1, 0].axis('off')
+
+axes[1, 1].imshow(log_magnitude_kernel, cmap='gray')
+axes[1, 1].set_title('Логарифм модуля фурье-образа ядра')
+axes[1, 1].axis('off')
+
+axes[1, 2].imshow(log_magnitude_result, cmap='gray')
+axes[1, 2].set_title('Логарифм модуля фурье-образа результата')
+axes[1, 2].axis('off')
+
+plt.tight_layout()
+plt.savefig(plt_folder + 'sharp_comp.png', dpi=300, bbox_inches='tight')
+plt.show()
 
 
 # %% [markdown]
