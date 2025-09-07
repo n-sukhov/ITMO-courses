@@ -2,6 +2,8 @@
 import numpy as np
 import cv2
 from scipy import fft
+import matplotlib.pyplot as plt
+from scipy.signal import convolve2d
 
 # %%
 plt_folder = "plots/"
@@ -49,5 +51,68 @@ reconstructed_image = np.clip(reconstructed_image, 0, 1)
 reconstructed_image_uint8 = (reconstructed_image * 255).astype(np.uint8)
 
 cv2.imwrite(plt_folder + 'periodic_filtered_image.png', reconstructed_image_uint8)
+
+# %% [markdown]
+# # Задание 2
+
+# %%
+dogsimg = cv2.imread("dogs.jpg")
+gray_img = cv2.cvtColor(dogsimg, cv2.COLOR_BGR2GRAY)
+cv2.imwrite("black_dogs.jpg", gray_img)
+
+# %% [markdown]
+# #### Ядра
+
+# %%
+def gaussian_kernel(N):
+    sigma = (N - 1) / 6
+    center = (N + 1) / 2
+    i = np.arange(1, N+1) - center
+    j = np.arange(1, N+1) - center
+    ii, jj = np.meshgrid(i, j)
+    kernel = np.exp(-(ii**2 + jj**2) / (2 * sigma**2))
+    return kernel / np.sum(kernel)
+
+def box_kernel(N):
+    kernel = np.ones((N, N))
+    return kernel / np.sum(kernel)
+
+sharp_kernel = np.array([[0, -1, 0],
+                         [-1, 5, -1],
+                         [0, -1, 0]])
+
+edge_kernel = np.array([[-1, -1, -1],
+                        [-1, 8, -1],
+                        [-1, -1, -1]])
+
+negative_kernel = np.array([[0, 0, 0],
+                            [0, -1, 0],
+                            [0, 0, 0]])
+
+# %%
+img = np.array(gray_img)
+
+N_values = [7, 27, 57]
+
+gaussian_results = []
+for N in N_values:
+    kernel = gaussian_kernel(N)
+    result = convolve2d(img, kernel, mode='same', boundary='symm')
+    gaussian_results.append(result)
+
+box_results = []
+for N in N_values:
+    kernel = box_kernel(N)
+    result = convolve2d(img, kernel, mode='same', boundary='symm')
+    box_results.append(result)
+
+sharp_result = convolve2d(img, sharp_kernel, mode='same', boundary='symm')
+
+edge_result = convolve2d(img, edge_kernel, mode='same', boundary='symm')
+
+negative_result = convolve2d(img, negative_kernel, mode='same', boundary='symm')
+
+# %%
+
 
 

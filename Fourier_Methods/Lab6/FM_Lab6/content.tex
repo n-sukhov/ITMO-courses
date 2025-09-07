@@ -34,11 +34,21 @@
 Мы видим множество пиков, расположенных по диагонали на картинке. Выделим их, уберём и посмотрим, что получится (см. рис.\ref{3}).
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.45\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/fourier_spectrum_1_red.png}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/fourier_spectrum_1_red.png}
+        \caption{}
+        \label{3a}
+    \end{subfigure}
     \hfill
-    \includegraphics[width=0.45\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/fourier_spectrum_1_filtered.jpg}
-    \caption{Выделенные области с пиками на спектре (слева) и 
-    очищенный от пиков спектр (справа)}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+    \includegraphics[width=\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/fourier_spectrum_1_filtered.jpg}
+        \caption{}
+        \label{3b}
+    \end{subfigure}
+    \caption{Выделенные области с пиками на спектре (a) и 
+    очищенный спектр (b)}
     \label{3}
 \end{figure}
 
@@ -47,10 +57,20 @@
 Это происходит потому что, затирая пики, мы задеваем часть остальной информации изображения, от чего оно искажается.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.45\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/1.png}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/1.png}
+        \caption{}
+        \label{4a}
+    \end{subfigure}
     \hfill
-    \includegraphics[width=0.45\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/periodic_filtered_image.png}
-    \caption{Исходное изображение (слева) и отфильтрованное (справа)}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/periodic_filtered_image.png}
+        \caption{}
+        \label{4b}
+    \end{subfigure}
+    \caption{Исходное изображение (a) и отфильтрованное (b)}
     \label{4}
 \end{figure}
 \textbf{Выводы}\\
@@ -59,6 +79,89 @@
 гасим пики на спектре, тем больше информации мы задеваем, и изображение немного искажается (меняются оттенки), поэтому нельзя
 затирать их слишком сильно, нужно искать "золотую середину", когда периодичность убрана достаточно хорошо, и при этом нет 
 сильного изменения цветов на изображении, чтобы оно не стало совсем тусклым.
+
+\section{Исследование свёртки}
+Выберем изображение не очень большого размера (см. рис. \ref{5}).
+Преобразуем его в ЧБ (см. рис. \ref{6}).
+
+Выберем ядра свёртки:
+
+\begin{itemize}
+    \item Ядра размытия по Гауссу для трёх показательных нечётных значений \( N \geq 3 \) (выберем $N$ из {3, 7, 15}):
+    
+    \[\sigma = \frac{N - 1}{6}, \quad A_{ij} = \exp\left(-\frac{(i - \frac{N + 1}{2})^2 + (j - \frac{N + 1}{2})^2}{2\sigma^2}\right), \quad i, j \in \{1, \ldots, N\},\]
+    
+    \[K_\sigma = \frac{A}{\sum_{i,j} A_{i,j}}, \quad \text{где } A - \text{вся матрица}\]
+
+    \item Ядра блочного размытия для тех же значений \( N \):
+    
+    \[A_{ij} = 1, \quad i, j \in \{1, \ldots, N\}, \quad K_\square = \frac{A}{\sum_{i,j} A_{i,j}}\]
+
+    \item Ядро увеличения резкости:
+    
+    \[K_* = 
+    \begin{bmatrix}
+    0 & -1 & 0 \\
+    -1 & 5 & -1 \\
+    0 & -1 & 0
+    \end{bmatrix}\]
+
+    \item Ядро выделения краёв:
+    
+    \[K_\nabla = 
+    \begin{bmatrix}
+    -1 & -1 & -1 \\
+    -1 & 8 & -1 \\
+    -1 & -1 & -1
+    \end{bmatrix}\]
+
+    \item Ядро негатива:
+
+    \[K_{neg} = 
+    \begin{bmatrix}
+    0 & 0 & 0 \\
+    0 & -1 & 0 \\
+    0 & 0 & 0
+    \end{bmatrix}\]
+
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/dogs.jpg}
+        \caption{}
+        \label{5}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/black_dogs.jpg}
+        \caption{}
+        \label{6}
+    \end{subfigure}
+    \caption{Выбранное изображение (a) и ЧБ (b)}
+    \label{cat}
+\end{figure}
+
+Логарифм модуля образа исходной картинки представлен на рис. \ref{7}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{  }
+    \caption{Логарифм модуля образа}
+    \label{7}
+\end{figure}
+
+\subsection{Ядра размытия по Гауссу}
+
+\subsection{Ядра блочного размытия}
+
+\subsection{Ядро увеличения резкости}
+
+\subsection{Ядро выделения краёв}
+
+\subsection{Ядро негатива}
 
 
 \newpage

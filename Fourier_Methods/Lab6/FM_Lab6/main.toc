@@ -1,5 +1,6 @@
 \xpginauxfiletrue 
 \selectlanguage *{russian}
 \contentsline {section}{\numberline {1}Фильтрация изображений с периодичностью}{3}{section.1}%
-\contentsline {section}{\numberline {2}Приложение}{6}{section.2}%
+\contentsline {section}{\numberline {2}Исследование свёртки}{5}{section.2}%
+\contentsline {section}{\numberline {3}Приложение}{7}{section.3}%
 \contentsfinish 
