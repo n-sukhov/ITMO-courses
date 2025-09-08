@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  8 SEP 2025 23:46
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  8 SEP 2025 23:50
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1751,64 +1751,4 @@ B.pygtex
 
 LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(0)/m/n' in size <6> not
  available
-(Font)              size <10> substituted on input line 1.
-
-
-LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/m/n' in size <6> not
- available
-(Font)              size <10> substituted on input line 1.
-
-
-LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/b/n' undefined
-(Font)              using `TU/FiraCode-Regular.otf(1)/m/n' instead on input lin
-e 3.
-
-
-LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/b/n' in size <6> not
- available
-(Font)              size <10> substituted on input line 3.
-
-[18] [19]
-Overfull \hbox (72.17989pt too wide) in paragraph at lines 195--195
-\TU/FiraCode-Regular.otf(1)/b/n/10 plt[].[]title([][][][][][][][][][][][][][][]
-[][][][][][][][][][][][][][][]N[][][][][][][][][][][][])|  
- []
-
-[20] [21])
-Package hyperref Info: bookmark level for unknown listing defaults to 0 on inpu
-t line 304.
-) [22]
-
-Package caption Warning: Unused \captionsetup[table] on input line 44.
-See the caption package documentation for explanation.
-
-(./main.aux (./templates/titlepage.aux) (./templates/tocpage.aux)
-(./content.aux))
- ***********
-LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2024-01-22>
- ***********
-
-
-LaTeX Font Warning: Size substitutions with differences
-(Font)              up to 4.0pt have occurred.
-
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: DB6A9D7189DFD261BA6BB2467749D5A4;1782.
-Package logreq Info: Writing requests to 'main.run.xml'.
-\openout1 = `main.run.xml'.
-
- ) 
-Here is how much of TeX's memory you used:
- 44423 strings out of 474878
- 918217 string characters out of 5762516
- 2003369 words of memory out of 5000000
- 65748 multiletter control sequences out of 15000+600000
- 564071 words of font info for 102 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 91i,9n,136p,678b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-Output written on main.pdf (22 pages).
+(Fon
