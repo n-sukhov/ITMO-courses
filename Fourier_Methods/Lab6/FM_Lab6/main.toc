@@ -2,10 +2,10 @@
 \selectlanguage *{russian}
 \contentsline {section}{\numberline {1}Фильтрация изображений с периодичностью}{3}{section.1}%
 \contentsline {section}{\numberline {2}Исследование свёртки}{5}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Ядра размытия по Гауссу}{8}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.1}Ядра размытия по Гауссу}{7}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Ядра блочного размытия}{10}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Ядро увеличения резкости}{12}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Ядро выделения краёв}{14}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}Ядро негатива}{16}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.5}Ядро негатива}{15}{subsection.2.5}%
 \contentsline {section}{\numberline {3}Приложение}{18}{section.3}%
 \contentsfinish 

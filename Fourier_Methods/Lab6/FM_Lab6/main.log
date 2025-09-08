@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  8 SEP 2025 02:23
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  8 SEP 2025 23:34
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1689,10 +1689,15 @@ File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/dogs.jpg Graphic file
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/black_dogs.jpg Graphic
  file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/black_dogs.jpg>
+
+Underfull \hbox (badness 10000) in paragraph at lines 148--151
+
+ []
+
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/log.png Graphic 
 file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/log.png>
- [6]
+[6]
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/gaussian_comp.pn
 g Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/gaussian_comp.png>
@@ -1716,10 +1721,10 @@ aphic file (type bmp)
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/sharp_comp.png G
 raphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/sharp_comp.png>
+ [12]
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/sharp_log.png Gr
 aphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/sharp_log.png>
- [12]
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/edge_comp.png Gr
 aphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/edge_comp.png>
@@ -1735,12 +1740,11 @@ phic file (type bmp)
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/neg_log.png Grap
 hic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/neg_log.png>
- [16]
 File: /home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/phase_spectrums_
 conv.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/plots/phase_spectrums_conv.
 png>
- [17]
+ [16] [17]
 (./_minted-main/colorful.pygstyle)
 (./_minted-main/4810B8A23A30417929200EAD755210D81009B85D5B724D3092AEBA9E7B1CD59
 B.pygtex
@@ -1772,7 +1776,7 @@ Overfull \hbox (72.17989pt too wide) in paragraph at lines 195--195
 
 [20] [21])
 Package hyperref Info: bookmark level for unknown listing defaults to 0 on inpu
-t line 276.
+t line 297.
 ) [22]
 
 Package caption Warning: Unused \captionsetup[table] on input line 44.
@@ -1792,9 +1796,6 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: DB6A9D7189DFD261BA6BB2467749D5A4;1782.
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -1804,7 +1805,7 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 Here is how much of TeX's memory you used:
  44423 strings out of 474878
  918217 string characters out of 5762516
- 2002929 words of memory out of 5000000
+ 2003369 words of memory out of 5000000
  65748 multiletter control sequences out of 15000+600000
  564071 words of font info for 102 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
