@@ -213,7 +213,7 @@ draw_pics3(gaussian_kernel, "gaussian")
 # #### Блочное размытие
 
 # %%
-draw_pics3(box_kernel, "gaussian")
+draw_pics3(box_kernel, "box")
 
 # %% [markdown]
 # Util func
@@ -310,6 +310,70 @@ draw_pics(negative_kernel, "neg")
 # #### Сравнение гауссовского и блочного размытия
 
 # %%
+
+fig = plt.figure(figsize=(15, 13))
+
+for i, N in enumerate(N_values):
+    gaussian_kern = gaussian_kernel(N)
+    gaussian_conv = convolve2d(img, gaussian_kern, mode='same', boundary='symm')
+    
+    plt.subplot(2, 3, i+1)
+    plt.imshow(gaussian_conv, cmap='gray')
+    plt.title(f'Гауссовское: N={N}')
+    plt.axis('off')
+
+for i, N in enumerate(N_values):
+    box_kern = box_kernel(N)
+    box_conv = convolve2d(img, box_kern, mode='same', boundary='symm')
+    
+    plt.subplot(2, 3, i+4)
+    plt.imshow(box_conv, cmap='gray')
+    plt.title(f'Блочное: N={N}')
+    plt.axis('off')
+
+plt.tight_layout()
+plt.savefig(plt_folder + 'blur_comp.png', dpi=200, bbox_inches='tight')
+plt.show()
+
+# %%
+phase_original = np.angle(fftshift(fft2(img)))
+
+neg_conv = convolve2d(img, negative_kernel, mode='same', boundary='symm')
+phase_neg = np.angle(fftshift(fft2(neg_conv)))
+
+k_h, k_w = negative_kernel.shape
+fft_size = (h + k_h - 1, w + k_w - 1)
+fft_img_padded = fft2(img, s=fft_size)
+fft_kernel = fft2(negative_kernel, s=fft_size)
+result_fft = ifft2(fft_img_padded * fft_kernel)
+start_i = (fft_size[0] - h) // 2
+start_j = (fft_size[1] - w) // 2
+fft_result = np.real(result_fft[start_i:start_i+h, start_j:start_j+w])
+phase_neg_fft = np.angle(fftshift(fft2(fft_result)))
+
+fig = plt.figure(figsize=(15, 5))
+
+plt.subplot(1, 3, 1)
+plt.imshow(phase_original, cmap='hsv')
+plt.title('Фазовый спектр исходного изображения')
+plt.axis('off')
+plt.colorbar()
+
+plt.subplot(1, 3, 2)
+plt.imshow(phase_neg, cmap='hsv')
+plt.title('Фазовый спектр после обычной свертки')
+plt.axis('off')
+plt.colorbar()
+
+plt.subplot(1, 3, 3)
+plt.imshow(phase_neg_fft, cmap='hsv')
+plt.title('Фазовый спектр после Фурье')
+plt.axis('off')
+plt.colorbar()
+
+plt.tight_layout()
+plt.savefig(plt_folder + 'phase_spectrums_conv.png', dpi=200, bbox_inches='tight')
+plt.show()
 
 
 
