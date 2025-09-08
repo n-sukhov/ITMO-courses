@@ -7,5 +7,5 @@
 \contentsline {subsection}{\numberline {2.3}Ядро увеличения резкости}{13}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Ядро выделения краёв}{14}{subsection.2.4}%
 \contentsline {subsection}{\numberline {2.5}Ядро негатива}{16}{subsection.2.5}%
-\contentsline {section}{\numberline {3}Приложение}{18}{section.3}%
+\contentsline {section}{\numberline {3}Приложение}{19}{section.3}%
 \contentsfinish 
