@@ -1,0 +1,7 @@
+\xpginauxfiletrue 
+\selectlanguage *{russian}
+\contentsline {section}{\numberline {1}Одноканальная система в форме вход-выход}{3}{section.1}%
+\contentsline {section}{\numberline {2}Переход от формы вход-выход к форме вход-состояние-выход}{4}{section.2}%
+\contentsline {section}{\numberline {3}Многоканальная система в форме вход-выход}{8}{section.3}%
+\contentsline {section}{\numberline {4}Многоканальная система в форме вход-состояние-выход}{10}{section.4}%
+\contentsline {section}{\numberline {5}Приложение}{11}{section.5}%
