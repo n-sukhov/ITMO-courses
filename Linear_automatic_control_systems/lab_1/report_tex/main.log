@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  16 SEP 2025 22:33
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  16 SEP 2025 22:51
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1856,12 +1856,12 @@ es/plot_4.png>
  [10] [11]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 458.
+(mdframed)              on input line 452.
 
 
 LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(0)/m/n' in size <12> no
 t available
-(Font)              size <10> substituted on input line 458.
+(Font)              size <10> substituted on input line 452.
 
 
 Package fontspec Info: Font family 'FiraCode-Regular.otf(1)' created for font
@@ -1886,34 +1886,34 @@ guage=dflt;+calt;"
 
 LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/m/n' in size <12> no
 t available
-(Font)              size <10> substituted on input line 458.
+(Font)              size <10> substituted on input line 452.
 
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 467.
+(mdframed)              on input line 461.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 488.
+(mdframed)              on input line 482.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 503.
+(mdframed)              on input line 497.
 [12]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 512.
+(mdframed)              on input line 506.
 
-Overfull \hbox (13.94919pt too wide) in paragraph at lines 537--537
+Overfull \hbox (13.94919pt too wide) in paragraph at lines 531--531
 []\TU/FiraCode-Regular.otf(1)/m/n/10 legend("$u(t)$", "Transfer Function", "Con
 trollable Form", "Observable Form",[] 
  []
 
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 551.
+(mdframed)              on input line 545.
 [13]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 579.
+(mdframed)              on input line 573.
 ) [14]
 
 Package caption Warning: Unused \captionsetup[table] on input line 44.
@@ -1939,7 +1939,7 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 Here is how much of TeX's memory you used:
  45494 strings out of 474878
  940507 string characters out of 5762516
- 2027098 words of memory out of 5000000
+ 2027101 words of memory out of 5000000
  66792 multiletter control sequences out of 15000+600000
  573992 words of font info for 92 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
