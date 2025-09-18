@@ -1,7 +1,594 @@
+\section{Одноканальная система в форме вход-выход}
 
-%\newpage
-%\section{Приложение}
-%\begin{code}
-%	\inputminted[breaklines=true, xleftmargin=1em, linenos, frame=single, framesep=10pt, fontsize=\tiny, firstline=1, lastline=638]{python}{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/Lab6_listing.py}
-%	\caption{Листинг}
-%\end{code}
+Возьмём коэффициенты $a_2$, $a_1$, $a_0$, $b_2$, $b_1$ и $b_0$ из Таблицы 1 (файла задания по данной ЛР) в соответствии с нашим вариантом (27)  и рассмотрим математическую модель в форме дифференциального уравнения (ДУ):
+
+\begin{equation}
+    \dddot{y} + a_2 \ddot{y} + a_1 \dot{y} + a_0 y = b_2 \ddot{u} + b_1 \dot{u} + b_0 u.
+    \label{eq:model}
+\end{equation}
+
+На основании полученного ДУ с использованием блоков элементарных операций построим структурную схему одноканальной линейной динамической системы.
+
+Выполним моделирование при входном воздействии вида $u(t) = 1$ и нулевых начальных условиях: $\ddot{y}(0) = 0$, $\dot{y}(0) = 0$, $y(0) = 0$.
+
+\begin{par}
+\begin{flushleft}
+Перепишем в более удобном виде для создания структурной схемы в Simulink:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$y=\frac{1}{p}\left(b_2 u-a_2 y+\frac{1}{p}\left(b_1 u-a_1 y+\frac{1}{p}\left(b_0 u-a_0 y\right)\right)\right)$$
+\end{par}
+
+Получим структурную схему на рис. \ref{1}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/scheme_1.png}
+    \caption{Структурная схема одноканальной системы ВВ}
+    \label{1}
+\end{figure}
+
+А так же графики $u(t)$ и $y(t)$ на рис. \ref{2}.\\
+Выбранные коэффициенты для моделирования представлены в Приложении на стр. \pageref{app:coeffs}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_1.png}
+    \caption{Графики входа и выхода}
+    \label{2}
+\end{figure}
+
+
+
+\section{Переход от формы вход-выход к форме вход-состояние-выход}
+
+Для системы из Задания 1 определим передаточную функцию $W(p)$ (ПФ) и построим математические модели вход-состояние-выход (В-С-В) в
+\begin{itemize}
+    \item канонической управляемой форме;
+    \item канонической наблюдаемой форме;
+    \item канонической диагональной форме.
+\end{itemize}
+
+Для каждой из полученных моделей В-С-В построим структурные схемы с использованием блоков элементарных операций. На структурных схемах должны быть явно обозначены каналы, соответствующие компонентам векторов состояния $x$.
+
+Выполним моделирование четырех полученных форм (ПФ и трех форм В-С-В) представления системы при входном воздействии $u(t) = 1$ и нулевых начальных условиях. Сопоставим результаты моделирования и сделаем выводы.
+
+
+\begin{par}
+\begin{flushleft}
+Найдём передаточную функцию из нашего ДУ
+\end{flushleft}
+\end{par}
+
+$$(p^3 +a_2 p^2 +a_1 p+a_0 )y=(b_2 p^2 +b_1 p+b_0 )u$$
+
+
+\begin{par}
+$$y=\frac{b_2 p^2 +b_1 p+b_0 }{p^3 +a_2 p^2 +a_1 p+a_0 }[u]\Rightarrow W(p)=\frac{b_2 p^2 +b_1 p+b_0 }{p^3 +a_2 p^2 +a_1 p+a_0 }$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Если подставить коэффициенты: $W(p)=\frac{14p^2 +6p+16}{p^3 +9p^2 +23p+15}$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Построим математические модели:
+\end{flushleft}
+\end{par}
+
+Общий вид матричной записи: $W(p)=(C(Ip-A)^{-1} B+D)$, где
+матрицы: $A$ - системы, $B$ - управления, $C$ -наблюдения, $D$ - связи
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} Каноническая управляемая форма \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+$$\begin{array}{l}
+A_y =\left(\begin{array}{ccc}
+0 & 1 & 0\\
+0 & 0 & 1\\
+-\frac{a_0 }{a_3 } & -\frac{a_1 }{a_3 } & -\frac{a_2 }{a_3 }
+\end{array}\right)=\left(\begin{array}{ccc}
+0 & 1 & 0\\
+0 & 0 & 1\\
+-15 & -23 & -9
+\end{array}\right),~~B_y =\left(\begin{array}{c}
+0\\
+0\\
+1
+\end{array}\right)\\
+C_y =\left(\begin{array}{ccc}
+\frac{b_0 }{a_3 } & \frac{b_1 }{a_3 } & \frac{b_2 }{a_3 }
+\end{array}\right)=\left(\begin{array}{ccc}
+16 & 6 & 14
+\end{array}\right),~~D_y =[d]=[0]
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+$a_3$ в нашем случае равно 1, $d=0$.
+\end{flushleft}
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} Каноническая наблюдаемая форма \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+$$\begin{array}{l}
+A_н =\left(\begin{array}{ccc}
+0 & 0 & -\frac{a_0 }{a_3 }\\
+1 & 0 & -\frac{a_1 }{a_3 }\\
+0 & 1 & -\frac{a_2 }{a_3 }
+\end{array}\right)=\left(\begin{array}{ccc}
+0 & 0 & -15\\
+1 & 0 & -23\\
+0 & 1 & -9
+\end{array}\right),~~B_н =\left(\begin{array}{c}
+\frac{b_0 }{a_3 }\\
+\frac{b_1 }{a_3 }\\
+\frac{b_2 }{a_3 }
+\end{array}\right)=\left(\begin{array}{c}
+16\\
+6\\
+14
+\end{array}\right)\\
+C_н =\left(\begin{array}{ccc}
+0 & 0 & 1
+\end{array}\right),~~D_H =[d]=[0]
+\end{array}$$
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} Каноническая диагональная форма \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+$$A_д =\left(\begin{array}{ccc}
+\lambda_1  & 0 & 0\\
+0 & \lambda_2  & 0\\
+0 & 0 & \lambda_3 
+\end{array}\right),~~B_д =\left(\begin{array}{c}
+\beta_0 \\
+\beta_1 \\
+\beta_2 
+\end{array}\right),~~C_д =\left(\begin{array}{ccc}
+1 & 1 & 1
+\end{array}\right)$$
+\end{par}
+
+\begin{par}
+$$\begin{array}{l}
+\textrm{Найдём}\;\textrm{коэффициенты}\;{\lambda }:\\
+p^3 +9p^2 +23p+15=0\\
+\lambda_1 =-1\\
+\\
+\frac{p^3 +9p^2 +23p+15}{p+1}=p^2 +8p+15\Rightarrow \lambda_2 =-3,~~\lambda_3 =-5\\
+\\
+\textrm{Выразим}\;{\beta }:\\
+\\
+\frac{14p^2 +6p+16}{(p+1)(p+3)(p+5)}=\frac{\beta_1 }{p+1}+\frac{\beta_2 }{p+3}+\frac{\beta_3 }{p+5}\\
+\\
+\beta_1 (p^2 +8p+15)+\beta_2 (p^2 +6p+5)+\beta_3 (p^2 +4p+3)=14p^2 +6p+16\\
+\\
+\left\lbrace \begin{array}{c}
+\beta_1 +\beta_2 +\beta_3 =14\\
+8\beta_1 +6\beta_2 +4\beta_3 =6\\
+15\beta_1 +5\beta_2 +3\beta_3 =16
+\end{array}\right.
+\end{array}$$
+\end{par}
+\begin{par}
+$$\beta_1 =3,~~\beta_2 =-31,~~\beta_3 =42$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Получаем каноническую диагональную форму:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$A_д =\left(\begin{array}{ccc}
+-1 & 0 & 0\\
+0 & -3 & 0\\
+0 & 0 & -5
+\end{array}\right),~~B_д =\left(\begin{array}{c}
+3\\
+-31\\
+42
+\end{array}\right),~~C_д =\left(\begin{array}{ccc}
+1 & 1 & 1
+\end{array}\right)$$
+\end{par}
+
+\newpage
+Структурные схемы моделей представлены на рис. \ref{3}-\ref{6}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/scheme_2_Tf.png}
+    \caption{Структурная схема ПФ}
+    \label{3}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/scheme_2_contr.png}
+    \caption{Структурная схема канонической управляемой формы}
+    \label{4}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/scheme_2_obs.png}
+    \caption{Структурная схема канонической наблюдаемой формы}
+    \label{5}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/scheme_2_diag.png}
+    \caption{Структурная схема канонической диагональной формы}
+    \label{6}
+\end{figure}
+
+Посмотрим на графики входа и выходов на рис. \ref{7}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_2.png}
+    \caption{Графики входа и выходов}
+    \label{7}
+\end{figure}
+\textbf{Выводы}\\
+Как мы увидели на графиках по результатам моделирования, все 4
+способа задания математической модели ДУ полностью совпали (как и ожидалось из теории),
+это значит, что они эквивалентные друг другу и выбор модели зависит от
+конкретных целей анализа или синтеза системы. Более конкретно - представление модели в форме
+вход-состояние-выход неединственно, в отличие от вход-выход.
+
+
+\section{Многоканальная система в форме вход-выход}
+Возьмём коэффициенты $a_{11}(p)$, $a_{12}(p)$, $a_{21}(p)$, $a_{22}(p)$, $b_{11}(p)$, $b_{12}(p)$, $b_{21}(p)$ и $b_{22}(p)$ из Таблицы 2 (файла задания по данной ЛР) в соответствии с нашим вариантом (27) и рассмотрим систему
+$$
+A(p)y(t) = B(p)u(t),
+$$
+где
+$$
+A(p) = \left(\begin{array}{cc}
+a_{11}(p) & a_{12}(p) \\
+a_{21}(p) & a_{22}(p)
+\end{array}\right), \quad
+B(p) = \left(\begin{array}{cc}
+b_{11}(p) & b_{12}(p) \\
+b_{21}(p) & b_{22}(p)
+\end{array}\right).
+$$
+
+Определим для данной системы передаточную матрицу $W(p)$ (ПМ) и построим структурную схему двухканальной линейной динамической системы.
+
+Выполним моделирование при входных воздействиях $u_1(t) = 1(t)$ и $u_2(t) = \sin(t)$ и нулевых начальных условиях.
+
+\begin{par}
+\begin{flushleft}
+Наши матрицы выглядят так:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$A=\left(\begin{array}{cc}
+p+15 & p+4\\
+p+2 & p+6
+\end{array}\right),~~B=\left(\begin{array}{cc}
+6 & 6\\
+4 & 3
+\end{array}\right)$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Передаточная матрица:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$W(p)=A^{-1} (p)B(p)$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Найдём $A^{-1}$:
+\end{flushleft}
+\end{par}
+
+$$
+\det A(p)=(p+15)(p+6)-(p+4)(p+2)=(15+6-4-2)p+15\cdot 6-4\cdot 2=15p+82\\
+\\
+A^{-1} (p)=
+$$
+$$
+\frac{1}{15p+82}\left(\begin{array}{cc}
+p+6 & -p-4\\
+-p-2 & p+15
+\end{array}\right)
+$$
+Теперь $W(p)$:
+$$
+W(P)=\frac{1}{15p+82}\left(\begin{array}{cc}
+p+6 & -p-4\\
+-p-2 & p+15
+\end{array}\right)\left(\begin{array}{cc}
+6 & 6\\
+4 & 3
+\end{array}\right)=
+$$
+$$=\frac{1}{15p+82}\left(\begin{array}{cc}
+6(p+6)-4(p+4) & 6(p+6)-3(p+4)\\
+-6(p+2)+4(p+15) & -6(p+2)+3(p+15)
+\end{array}\right)=
+$$
+$$
+=\frac{1}{15p+82}\left(\begin{array}{cc}
+2p+20 & 3p+24\\
+48-2p & 33-3p
+\end{array}\right)=\left(\begin{array}{cc}
+\frac{2p+20}{15p+82} & \frac{3p+24}{15p+82}\\
+\frac{48-2p}{15p+82} & \frac{33-3p}{15p+82}
+\end{array}\right)
+$$
+
+Построим структурную схему данной двухканальной линейной динамической
+системы (см. рис. \ref{8}).\\
+Выполним моделирование и посмотрим на графики на рис. \ref{9}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/scheme_3.png}
+    \caption{Структурная схема двухканальной линейной динамической системы}
+    \label{8}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_3.png}
+    \caption{Графики входов и выходов}
+    \label{9}
+\end{figure}
+
+
+\section{Многоканальная система в форме вход-состояние-выход}
+Возьмём матрицы $A$, $B$ и $C$ из Таблицы 3 (файла задания по данной ЛР) в соответствии с нашим вариантом и рассмотрим систему
+\[
+\begin{cases}
+\dot{x} = Ax + Bu, \\
+y = Cx.
+\end{cases}
+\]
+
+Построим для данной системы структурную схему с использованием блоков элементарных операций. На структурной схеме должны быть явно обозначены каналы, соответствующие компонентам вектора состояния $x$.
+
+Выполним моделирование при входных воздействиях $u_1(t) = 1(t)$ и $u_2(t) = \sin(t)$ и нулевом начальном значении вектора состояния.
+
+Наши матрицы выглядят так:
+
+$$
+A=\left(\begin{array}{cc}
+0 & -7\\
+1 & -3
+\end{array}\right),~~B=\left(\begin{array}{cc}
+9 & 3\\
+4 & 5
+\end{array}\right),~~C=\left(\begin{array}{cc}
+4 & 6\\
+5 & 1
+\end{array}\right)$$
+
+Перепишем в более удобном виде для создания структурной схемы:
+
+$$
+\left(\begin{array}{c}
+x_1 \\
+x_2 
+\end{array}\right)=\frac{1}{p}\left(\begin{array}{cc}
+0 & -7\\
+1 & -3
+\end{array}\right)\left(\begin{array}{c}
+x_1 \\
+x_2 
+\end{array}\right)+\frac{1}{p}\left(\begin{array}{cc}
+9 & 3\\
+4 & 5
+\end{array}\right)\left(\begin{array}{c}
+u_1 \\
+u_2 
+\end{array}\right)
+$$
+$$
+\left(\begin{array}{c}
+x_1 \\
+x_2 
+\end{array}\right)=\left(\begin{array}{c}
+-7\frac{1}{p}x_2 \\
+\frac{1}{p}x_1 -3\frac{1}{p}x_2 
+\end{array}\right)+\left(\begin{array}{c}
+9\frac{1}{p}u_1 +3\frac{1}{p}u_2 \\
+4\frac{1}{p}u_1 +5\frac{1}{p}u_2 
+\end{array}\right)\Rightarrow \left\lbrace \begin{array}{c}
+x_1 =\frac{1}{p}\left(-7x_2 +9u_1 +3u_2 \right)\\
+x_2 =\frac{1}{p}\left(x_1 -3x_2 +4u_1 +5u_2 \right)
+\end{array}\right.
+$$
+Теперь нам намного лучше видны уравнения для компоненты вектора состояния,
+построим структурную схему (см. рис. \ref{10}).
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/scheme_4.png}
+    \caption{Структурная схема системы}
+    \label{10}
+\end{figure}
+
+А так же на графики входов и выходов на рис. \ref{11}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_4.png}
+    \caption{Графики входов и выходов}
+    \label{11}
+\end{figure}
+
+
+\newpage
+\section{Приложение}
+
+\matlabtitle{ Задание 1}
+\label{app:coeffs}
+
+\vspace{1em}
+\begin{matlabcode}
+a_2 = 9;
+a_1 = 23;
+a_0 = 15;
+b_2 = 14;
+b_1 = 6;
+b_0 = 16;
+\end{matlabcode}
+
+\begin{matlabcode}
+simtime = 10;
+plot_1 = sim("lab1_1.slx", simtime);
+plot(plot_1.y.Time, plot_1.y.Data, LineWidth=2, LineStyle="-");
+hold on;
+plot(plot_1.u.Time, plot_1.u.Data, LineWidth=2, LineStyle="--");
+xlim([-0.1 10.00]);
+ylim([0.00 1.25]);
+grid on;
+legend("$y(t)$", "$u(t)$", Location="best", FontSize=14,
+ Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$Signal$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);
+set(gca, FontSize=14); 
+hold off;
+exportgraphics(gcf, 'images/plot_1.png', Resolution=200);
+\end{matlabcode}
+
+\matlabtitle{Задание 2}
+
+\begin{matlabcode}
+A = [1, 1, 1;
+     8, 6, 4;
+     15, 5, 3];
+B = [14; 6; 16];
+X = A \ B
+\end{matlabcode}
+\begin{matlaboutput}
+X = 3x1    
+    3.0000
+  -31.0000
+   42.0000
+
+\end{matlaboutput}
+
+\begin{matlabcode}
+lam_1 = -1;
+lam_2 = -3;
+lam_3 = -5;
+beta_1 = 3;
+beta_2 = -31;
+beta_3 = 42;
+\end{matlabcode}
+
+\begin{matlabcode}
+simtime = 10;
+plot_Tf = sim("lab1_2_Tf.slx", simtime);
+plot_contr = sim("lab_1_2_contr.slx", simtime);
+plot_obs = sim("lab_1_2_obs.slx", simtime);
+plot_diag = sim("lab_1_2_diag.slx", simtime);
+
+plot(plot_Tf.u.Time, plot_Tf.u.Data, Linewidth=2, Linestyle="--",
+    Color="magent");
+hold on;
+plot(plot_Tf.y.Time, plot_Tf.y.Data, LineWidth=2.5, LineStyle="-",
+    Color="blue");
+hold on;
+plot(plot_contr.y.Time, plot_contr.y.Data, LineWidth=2.5, LineStyle="-.", 
+    Color="#FEC114");
+hold on;
+plot(plot_obs.y.Time, plot_obs.y.Data, LineWidth=2.5, LineStyle="--",
+    Color="#72A71F");
+hold on;
+plot(plot_diag.y.Time, plot_diag.y.Data, LineWidth=2.5, LineStyle=":",
+    Color="#FF4E00");
+
+xlim([-0.1 10.00]);
+ylim([0.00 1.25]);
+grid on;
+legend("$u(t)$", "Transfer Function", "Controllable Form", "Observable Form",
+    "Diagonal Form", Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$Signal$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);
+set(gca, FontSize=12); 
+hold off;
+exportgraphics(gcf, 'images/plot_2.png', Resolution=200);
+\end{matlabcode}
+
+
+\matlabtitle{Задание 3}
+
+
+\begin{matlabcode}
+simtime = 20;
+plot_3 = sim("lab_1_3.slx", simtime);
+plot(plot_3.y_1.Time, plot_3.y_1.Data, LineWidth=2, LineStyle="-");
+hold on;
+plot(plot_3.y_2.Time, plot_3.y_2.Data, LineWidth=2, LineStyle="-");
+hold on;
+plot(plot_3.u_1.Time, plot_3.u_1.Data, Linewidth=2, Linestyle="--");
+hold on;
+plot(plot_3.u_2.Time, plot_3.u_2.Data, Linewidth=2, Linestyle="--");
+xlim([-0.1 20.00]);
+ylim([-1.1 1.25]);
+grid on;
+legend("$y_1(t)$", "$y_2(t)$", "$u_1(t)$", "$u_2(t)$", Location="best",
+    FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$Signal$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);
+set(gca, FontSize=14); 
+hold off;
+exportgraphics(gcf, 'images/plot_3.png', Resolution=200);
+\end{matlabcode}
+
+
+
+\matlabtitle{Задание 4}
+
+\vspace{1em}
+\begin{matlabcode}
+simtime = 20;
+plot_4 = sim("lab_1_4.slx", simtime);
+plot(plot_4.y_1.Time, plot_4.y_1.Data, LineWidth=2, LineStyle="-");
+hold on;
+plot(plot_4.y_2.Time, plot_4.y_2.Data, LineWidth=2, LineStyle="-");
+hold on;
+plot(plot_4.u_1.Time, plot_4.u_1.Data, Linewidth=2, Linestyle="--");
+hold on;
+plot(plot_4.u_2.Time, plot_4.u_2.Data, Linewidth=2, Linestyle="--");
+xlim([-0.1 20.00]);
+ylim([-20.5 23]);
+grid on;
+legend("$y_1(t)$", "$y_2(t)$", "$u_1(t)$", "$u_2(t)$", Location="best",
+    FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$Signal$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);
+set(gca, FontSize=10); 
+hold off;
+exportgraphics(gcf, 'images/plot_4.png', Resolution=200);
+\end{matlabcode}
