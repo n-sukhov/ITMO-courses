@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  19 SEP 2025 22:25
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  19 SEP 2025 22:30
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1591,11 +1591,7 @@ Package csquotes Info: Redefining alias 'default' -> 'russian'.
 Package biblatex Warning: Load 'inputenc' before biblatex.
 
 (./main.aux (./templates/titlepage.aux) (./templates/tocpage.aux)
-(./content.aux
-
-LaTeX Warning: Label `9' multiply defined.
-
-))
+(./content.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
@@ -1805,13 +1801,12 @@ es/plot_1.png>
 
 
 
-]
+] [4]
 Overfull \hbox (38.34926pt too wide) in paragraph at lines 50--50
 |[]\TU/CMUSerif(1)/b/n/17.28 Переход от формы вход-выход к форме вход-состояние
 -
  []
 
-[4]
 Missing character: There is no н ("43D) in font lmmi8!
 Missing character: There is no н ("43D) in font lmmi8!
 Missing character: There is no н ("43D) in font lmmi8!
@@ -1854,9 +1849,6 @@ File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/plot_2.png>
  [8] [9]
-
-LaTeX Warning: Reference `9u' on page 10 undefined on input line 363.
-
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/scheme_3.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
@@ -1869,7 +1861,7 @@ File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/plot_3.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/plot_3.png>
-[10] [11]
+ [10] [11]
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/scheme_4.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
@@ -1959,12 +1951,6 @@ L3 programming layer <2024-01-22>
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 2.0pt have occurred.
 
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 0C52F933FFD19AB97440073EDD7B1AB7;1778.
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -1974,7 +1960,7 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 Here is how much of TeX's memory you used:
  45534 strings out of 474878
  943740 string characters out of 5762516
- 2027264 words of memory out of 5000000
+ 2027273 words of memory out of 5000000
  66828 multiletter control sequences out of 15000+600000
  573992 words of font info for 92 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
