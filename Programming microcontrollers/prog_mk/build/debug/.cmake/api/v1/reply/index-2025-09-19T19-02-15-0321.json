@@ -8,18 +8,18 @@
 		},
 		"paths" : 
 		{
-			"cmake" : "/usr/bin/cmake",
-			"cpack" : "/usr/bin/cpack",
-			"ctest" : "/usr/bin/ctest",
-			"root" : "/usr/share/cmake-3.28"
+			"cmake" : "/opt/st/stm32cubeclt_1.19.0_2/CMake/bin/cmake",
+			"cpack" : "/opt/st/stm32cubeclt_1.19.0_2/CMake/bin/cpack",
+			"ctest" : "/opt/st/stm32cubeclt_1.19.0_2/CMake/bin/ctest",
+			"root" : "/opt/st/stm32cubeclt_1.19.0_2/CMake/share/cmake-3.28"
 		},
 		"version" : 
 		{
 			"isDirty" : false,
 			"major" : 3,
 			"minor" : 28,
-			"patch" : 3,
-			"string" : "3.28.3",
+			"patch" : 1,
+			"string" : "3.28.1",
 			"suffix" : ""
 		}
 	},
@@ -35,7 +35,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cache-v2-b4b25ba9df08cce641da.json",
+			"jsonFile" : "cache-v2-3a875d80a050692d45d5.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cmakeFiles-v1-a5c32db30ba26cc50905.json",
+			"jsonFile" : "cmakeFiles-v1-a7ccd0c17cf50da4947b.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -53,7 +53,7 @@
 			}
 		},
 		{
-			"jsonFile" : "toolchains-v1-86cc14b8b23c39ebf528.json",
+			"jsonFile" : "toolchains-v1-3185ec4af50f9b11f04a.json",
 			"kind" : "toolchains",
 			"version" : 
 			{
@@ -90,7 +90,7 @@
 				"responses" : 
 				[
 					{
-						"jsonFile" : "cache-v2-b4b25ba9df08cce641da.json",
+						"jsonFile" : "cache-v2-3a875d80a050692d45d5.json",
 						"kind" : "cache",
 						"version" : 
 						{
@@ -108,7 +108,7 @@
 						}
 					},
 					{
-						"jsonFile" : "toolchains-v1-86cc14b8b23c39ebf528.json",
+						"jsonFile" : "toolchains-v1-3185ec4af50f9b11f04a.json",
 						"kind" : "toolchains",
 						"version" : 
 						{
@@ -117,7 +117,7 @@
 						}
 					},
 					{
-						"jsonFile" : "cmakeFiles-v1-a5c32db30ba26cc50905.json",
+						"jsonFile" : "cmakeFiles-v1-a7ccd0c17cf50da4947b.json",
 						"kind" : "cmakeFiles",
 						"version" : 
 						{
