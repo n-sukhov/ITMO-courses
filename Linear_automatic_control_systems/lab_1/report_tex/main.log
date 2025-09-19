@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  16 SEP 2025 22:51
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  19 SEP 2025 22:25
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1591,7 +1591,11 @@ Package csquotes Info: Redefining alias 'default' -> 'russian'.
 Package biblatex Warning: Load 'inputenc' before biblatex.
 
 (./main.aux (./templates/titlepage.aux) (./templates/tocpage.aux)
-(./content.aux))
+(./content.aux
+
+LaTeX Warning: Label `9' multiply defined.
+
+))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
@@ -1790,6 +1794,10 @@ File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/scheme_1.png>
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
+/images/plot_1_u.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
+es/plot_1_u.png>
+File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/plot_1.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/plot_1.png>
@@ -1798,7 +1806,7 @@ es/plot_1.png>
 
 
 ]
-Overfull \hbox (38.34926pt too wide) in paragraph at lines 44--44
+Overfull \hbox (38.34926pt too wide) in paragraph at lines 50--50
 |[]\TU/CMUSerif(1)/b/n/17.28 Переход от формы вход-выход к форме вход-состояние
 -
  []
@@ -1810,10 +1818,16 @@ Missing character: There is no н ("43D) in font lmmi8!
 Missing character: There is no д ("434) in font lmmi8!
 Missing character: There is no д ("434) in font lmmi8!
 Missing character: There is no д ("434) in font lmmi8!
-Missing character: There is no д ("434) in font lmmi8!
-Missing character: There is no д ("434) in font lmmi8!
-Missing character: There is no д ("434) in font lmmi8!
 [5]
+Missing character: There is no д ("434) in font lmmi8!
+Missing character: There is no д ("434) in font lmmi8!
+Missing character: There is no д ("434) in font lmmi8!
+
+Underfull \hbox (badness 10000) in paragraph at lines 217--221
+
+ []
+
+[6]
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/scheme_2_Tf.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
@@ -1830,38 +1844,49 @@ File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/scheme_2_diag.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/scheme_2_diag.png>
- [6]
+ [7]
+File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
+/images/plot_2_u.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
+es/plot_2_u.png>
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/plot_2.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/plot_2.png>
- [7]
+ [8] [9]
+
+LaTeX Warning: Reference `9u' on page 10 undefined on input line 363.
+
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/scheme_3.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/scheme_3.png>
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
+/images/plot_3_u.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
+es/plot_3_u.png>
+File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/plot_3.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/plot_3.png>
- [8] [9]
+[10] [11]
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/scheme_4.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/scheme_4.png>
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
+/images/plot_4_u.png Graphic file (type bmp)
+</home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
+es/plot_4_u.png>
+File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code
 /images/plot_4.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/imag
 es/plot_4.png>
- [10] [11]
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 452.
-
+ [12]
 
 LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(0)/m/n' in size <12> no
 t available
-(Font)              size <10> substituted on input line 452.
+(Font)              size <10> substituted on input line 473.
 
 
 Package fontspec Info: Font family 'FiraCode-Regular.otf(1)' created for font
@@ -1886,35 +1911,39 @@ guage=dflt;+calt;"
 
 LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/m/n' in size <12> no
 t available
-(Font)              size <10> substituted on input line 452.
+(Font)              size <10> substituted on input line 473.
 
+[13]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 461.
+(mdframed)              on input line 487.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 482.
+(mdframed)              on input line 496.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 497.
-[12]
+(mdframed)              on input line 517.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 506.
+(mdframed)              on input line 532.
+ [14]
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 541.
 
-Overfull \hbox (13.94919pt too wide) in paragraph at lines 531--531
+Overfull \hbox (13.94919pt too wide) in paragraph at lines 566--566
 []\TU/FiraCode-Regular.otf(1)/m/n/10 legend("$u(t)$", "Transfer Function", "Con
 trollable Form", "Observable Form",[] 
  []
 
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 545.
-[13]
+(mdframed)              on input line 580.
+[15]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 573.
-) [14]
+(mdframed)              on input line 608.
+) [16]
 
 Package caption Warning: Unused \captionsetup[table] on input line 44.
 See the caption package documentation for explanation.
@@ -1930,6 +1959,12 @@ L3 programming layer <2024-01-22>
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 2.0pt have occurred.
 
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 0C52F933FFD19AB97440073EDD7B1AB7;1778.
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -1937,12 +1972,12 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 45494 strings out of 474878
- 940507 string characters out of 5762516
- 2027101 words of memory out of 5000000
- 66792 multiletter control sequences out of 15000+600000
+ 45534 strings out of 474878
+ 943740 string characters out of 5762516
+ 2027264 words of memory out of 5000000
+ 66828 multiletter control sequences out of 15000+600000
  573992 words of font info for 92 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  91i,14n,136p,677b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (14 pages).
+Output written on main.pdf (16 pages).

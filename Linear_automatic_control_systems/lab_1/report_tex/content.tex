@@ -30,12 +30,18 @@ $$y=\frac{1}{p}\left(b_2 u-a_2 y+\frac{1}{p}\left(b_1 u-a_1 y+\frac{1}{p}\left(b
     \label{1}
 \end{figure}
 
-А так же графики $u(t)$ и $y(t)$ на рис. \ref{2}.\\
+А так же графики $u(t)$ и $y(t)$ на рис. \ref{2u}-\ref{2}.\\
 Выбранные коэффициенты для моделирования представлены в Приложении на стр. \pageref{app:coeffs}.
 \begin{figure}[H]
     \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_1_u.png}
+    \caption{График входа}
+    \label{2u}
+\end{figure}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_1.png}
-    \caption{Графики входа и выхода}
+    \caption{График выхода}
     \label{2}
 \end{figure}
 
@@ -210,10 +216,20 @@ $$A_д =\left(\begin{array}{ccc}
 1 & 1 & 1
 \end{array}\right)$$
 \end{par}
+$\ \ \ \ \ $Структурные схемы моделей представлены на рис. \ref{3}-\ref{6}.
+\\
+
+Посмотрим на графики входа и выходов на рис. \ref{7u}\ref{7}.
+\\
+\textbf{Выводы}\\
+Как мы увидели на графиках по результатам моделирования, все 4
+способа задания математической модели ДУ полностью совпали (как и ожидалось из теории),
+это значит, что они эквивалентные друг другу и выбор модели зависит от
+конкретных целей анализа или синтеза системы. Более конкретно - представление модели в форме
+вход-состояние-выход неединственно, в отличие от вход-выход.
+
 
 \newpage
-Структурные схемы моделей представлены на рис. \ref{3}-\ref{6}.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/scheme_2_Tf.png}
@@ -239,20 +255,18 @@ $$A_д =\left(\begin{array}{ccc}
     \label{6}
 \end{figure}
 
-Посмотрим на графики входа и выходов на рис. \ref{7}.
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_2_u.png}
+    \caption{График входа}
+    \label{7u}
+\end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_2.png}
-    \caption{Графики входа и выходов}
+    \caption{Графики выходов}
     \label{7}
 \end{figure}
-\textbf{Выводы}\\
-Как мы увидели на графиках по результатам моделирования, все 4
-способа задания математической модели ДУ полностью совпали (как и ожидалось из теории),
-это значит, что они эквивалентные друг другу и выбор модели зависит от
-конкретных целей анализа или синтеза системы. Более конкретно - представление модели в форме
-вход-состояние-выход неединственно, в отличие от вход-выход.
 
 
 \section{Многоканальная система в форме вход-выход}
@@ -346,7 +360,7 @@ $$
 
 Построим структурную схему данной двухканальной линейной динамической
 системы (см. рис. \ref{8}).\\
-Выполним моделирование и посмотрим на графики на рис. \ref{9}.
+Выполним моделирование и посмотрим на графики на рис. \ref{9u}-\ref{9}.
 
 \begin{figure}[H]
     \centering
@@ -356,8 +370,14 @@ $$
 \end{figure}
 \begin{figure}[H]
     \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_3_u.png}
+    \caption{Графики входов}
+    \label{9}
+\end{figure}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_3.png}
-    \caption{Графики входов и выходов}
+    \caption{Графики выходов}
     \label{9}
 \end{figure}
 
@@ -433,7 +453,13 @@ $$
     \label{10}
 \end{figure}
 
-А так же на графики входов и выходов на рис. \ref{11}.
+А так же на графики входов и выходов на рис. \ref{11u}-\ref{11}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_4_u.png}
+    \caption{Графики входов и выходов}
+    \label{11u}
+\end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_1/code/images/plot_4.png}
@@ -441,6 +467,15 @@ $$
     \label{11}
 \end{figure}
 
+\textbf{Общие выводы}\\
+В данной лабораторной работе мы научились строить структурные
+схемы в программном пакете Simulink из простейших блоков и
+с использовании блока \texttt{Transfer Fcv}. Были рассмотрены
+математические модели ДУ и линейных систем, канонические
+формы и передаточные функции. Построены графики входных
+сигналов, и графики выходов для выбранных моделей. Данная работа
+полезная для освоения базы, необходимой для дальнейшего
+изучения теории автоматического управления.
 
 \newpage
 \section{Приложение}
