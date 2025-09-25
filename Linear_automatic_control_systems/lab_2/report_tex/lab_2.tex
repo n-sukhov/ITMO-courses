@@ -1,0 +1,891 @@
+
+
+\matlabtitle{Задание 1}
+
+\begin{matlabcode}
+y_0_arr = [ 1 1 1 0.05 0.05 0 ];
+dot_y_0_arr = [ 0 0 0 0 0 0.1 ];
+lambda_1_arr = [ -4.5 -3.7+5i 29i 0.7+5i 4.5 -2.8 ];
+lambda_2_arr = [ -5.5 -3.7-5i -29i 0.7-5i 5.5 2.8 ];
+a_0_arr = zeros(1, 6);
+a_1_arr = zeros(1, 6);
+
+for k = 1:6
+    a_1_arr(k) = - lambda_1_arr(k) - lambda_2_arr(k);
+    a_0_arr(k) = lambda_1_arr(k) * lambda_2_arr(k);
+end
+fprintf('№  a_1\t\t a_0\n');
+\end{matlabcode}
+\begin{matlaboutput}
+№  a_1		 a_0
+\end{matlaboutput}
+\begin{matlabcode}
+for k = 1:6
+    fprintf('%1i %7.3f\t%7.3f\n', ...
+        k, a_1_arr(k), a_0_arr(k));
+end
+\end{matlabcode}
+\begin{matlaboutput}
+1  10.000	 24.750
+2   7.400	 38.690
+3   0.000	841.000
+4  -1.400	 25.490
+5 -10.000	 24.750
+6   0.000	 -7.840
+\end{matlaboutput}
+
+\begin{par}
+\begin{flushleft}
+Выведем общую формулу для вычисления $a_0 ,a_1$:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Характеристическое уравнение: $\lambda^2 +a_1 \lambda +a_0 =0$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Получим систему:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\left\lbrace \begin{array}{c}
+a_1 =-\lambda_1 -\lambda_2 \\
+a_0 =\lambda_1 \cdot \lambda_2 
+\end{array}\right.$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Вычислим коэффициеты:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Получаем:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{№  a\_1		 a\_0}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{1  10.000	 24.750}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{2   7.400	 38.690}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{3   0.000	841.000}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{4  -1.400	 25.490}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{5 -10.000	 24.750}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{6   0.000	 -7.840}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{Перепишем наше ДУ в более удобном виде для построения схемы:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$p^2 y+a_1 py+a_0 y=a_0 u\Rightarrow y=-\frac{1}{p}(a_1 y+\frac{1}{p}a_0 (y-u))$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Выразим начальные условия для интеграторов:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+1. $y(0)=\frac{1}{p}(-a_1 y-\frac{1}{p}a_0 (y-u))\Rightarrow$для второго интегратора начальное условие $y(0)$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+2. $py=(-a_1 y-\frac{1}{p}a_0 (y-u))=0\Rightarrow \frac{1}{p}a_0 (y-u)=-py-a_1 y\Rightarrow$для первого интегратора начальное условие $-\dot{y} (0)-a_1 y(0)$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Найдём аналитическое выражение для свободной составляющей движения системы $y_{\textrm{св}} (t)$ для каждого варианта:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+1. $\begin{array}{l}
+\left\lbrace \begin{array}{c}
+y_{св} (t)=C_1 e^{-4.5t} +C_2 e^{-5.5t} \\
+y(0)=1\\
+\dot{y} (0)=0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 +C_2 =1\\
+-4.5C_1 -5.5C_2 =0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 =5.5\\
+C_2 =-4.5
+\end{array}\right.\\
+y_{св} (t)=5.5e^{-4.5t} -4.5e^{-5.5t} 
+\end{array}$
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+2. $\begin{array}{l}
+\left\lbrace \begin{array}{c}
+y_{\textrm{св}} (t)=e^{-3.7t} (C_1 \sin (5t)+C_2 \cos (5t))\\
+y(0)=1\\
+\dot{y} (0)=0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_2 =1\\
+-3.7C_2 +5C_1 =0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 =0.74\\
+C_2 =1
+\end{array}\right.\\
+y_{\textrm{св}} (t)=e^{-3.7t} (0.74\sin (5t)+\cos (5t))
+\end{array}$
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+3. $\begin{array}{l}
+\left\lbrace \begin{array}{c}
+y_{св} (t)=C_1 \sin (29t)+C_2 \cos (29t)\\
+y(0)=1\\
+\dot{y} (0)=0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_2 =1\\
+29C_1 =0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 =0\\
+C_2 =1
+\end{array}\right.\\
+y_{\textrm{св}} (t)=\cos (29t)
+\end{array}$
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+4. $\begin{array}{l}
+\left\lbrace \begin{array}{c}
+y_{св} (t)=e^{0.7t} (C_1 \sin (5t)+C_2 \cos (5))\\
+y(0)=0.05\\
+\dot{y} (0)=0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_2 =0.05\\
+0.7C_2 +5C_1 =0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 =-0.007\\
+C_2 =0.05
+\end{array}\right.\\
+y_{\textrm{св}} (t)=e^{0.7t} (-0.007\sin (5t)+0.05\cos (5t))
+\end{array}$
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+5. $\begin{array}{l}
+\left\lbrace \begin{array}{c}
+y_{св} (t)=C_1 e^{5.5t} +C_2 e^{4.5t} \\
+y(0)=0.05\\
+\dot{y} (0)=0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 +C_2 =0.05\\
+5.5C_1 +4.5C_2 =0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 =-0.225\\
+C_2 =0.275
+\end{array}\right.\\
+y_{\textrm{св}} (t)=-0.225e^{5.5t} +0.275e^{4.5t} 
+\end{array}$
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+6. $\begin{array}{l}
+\left\lbrace \begin{array}{c}
+y_{св} (t)=C_1 e^{2.8t} +C_2 e^{-2.8t} \\
+y(0)=0\\
+\dot{y} (0)=0.1
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 +C_2 =0\\
+2.8C_1 -2.8C_2 =0.1
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+C_1 =0.017857\\
+C_2 =-0.017857
+\end{array}\right.\\
+y_{\textrm{св}} (t)=\frac{1}{56}e^{2.8t} -\frac{1}{56}e^{-2.8t} 
+\end{array}$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Видим, что для всех систем результаты моделирования и аналитического расчёта совпали.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Проанализируем результаты на основе моделирования и корневого критерия:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+1. \textbf{Моделирование: }график функции быстро уходит в ноль, похоже на ассимптотически устойчивую систему.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+   \textbf{Корневой критерий:} корни $\lambda_1 =-4.5,~~\lambda_2 =-5.5$, $Re(\lambda_i )<0\Rightarrow$ система действительно ассимптотически устойчива.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+2. \textbf{Моделирование: }график уходит в ноль, хотя в начале наблюдается небольшая осцилляция, похоже на ассимптотическую устойчивость.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+   \textbf{Корневой критерий:} корни $\lambda_{1,2} =-3.7\pm 5i$, $Re(\lambda_i )<0\Rightarrow$ система ассимптотически устойчива.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+3.  \textbf{Моделирование: }тут мы имеем дело с обыкновенным синусом, похоже на устойчивость, но не ассимптотическую.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+   \textbf{Корневой критерий:} корни $\lambda_{1,2} =\pm 29i$, $Re(\lambda_i )=0$ + не кратные корни $\Rightarrow$ граница устойчивости.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+4.  \textbf{Моделирование: }система похоже на неустойчивую, видим колебания с увеличивающейся амплитудой со временем.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+   \textbf{Корневой критерий:} корни $\lambda_{1,2} =0.7\pm 5i$, $Re(\lambda_i )>0\Rightarrow$ система неустойчива.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+5.  \textbf{Моделирование: }отрицательно растущая экспонента, система похожа не неустойчивую.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+   \textbf{Корневой критерий:} корни $\lambda_1 =4.5,~~\lambda_2 =5.5$, $Re(\lambda_i )>0\Rightarrow$ система неустойчива.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+6.  \textbf{Моделирование: }график экспоненциальный, видна неустойчивость системы.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+   \textbf{Корневой критерий:} корни $\lambda_{1,2} =\pm 2.8$, есть один корень с $Re(\lambda )>0$ - этого достаточно, чтобы сделать вывод о неустойчивости системы.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Выводы: }графики систем в нашем случае получились довольно наглядными, благодаря чему получилось визуально на основе моделирования оценить устойчивость, и данная оценка совпала со строгой проверкой при помощи корневого критерия. Результаты моделирования при помощи построения структурной схемы в симулинке совпали с аналитическими выводами формул. Коэффициенты $a$ довольно просто получилось найти при помощи характеристического уравнения для ДУ.
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+y_fm_array = {@y_fm_1, @y_fm_2, @y_fm_3, @y_fm_4, @y_fm_5, @y_fm_6};
+simtime = 5;
+time_interval = linspace(0, simtime, 10000);
+
+for k=1:6
+    y = y_fm_array{k}(time_interval);
+    dot_y_0 = dot_y_0_arr(k);
+    y_0 = y_0_arr(k);
+    a_0 = a_0_arr(k);
+    a_1 = a_1_arr(k);
+
+    plot_1 = sim("lab_2_1.slx", simtime);
+    plot(plot_1.y.Time, plot_1.y.Data, LineWidth=2, LineStyle="-");
+    hold on;
+    plot(time_interval, y, LineWidth=2, LineStyle="--");
+    
+    grid on;
+    legend("$Simulink\ model\ y_{CB}(t)$", "$Analytic\ y_{CB}(t)$", Location="best", FontSize=14, Interpreter="latex");
+    xlabel("$t, c$", Interpreter="latex");
+    ylabel("$Signal$", Interpreter="latex");
+    set(gcf, Position=[100, 100, 1200, 600]);   
+    set(gca, FontSize=14);
+    
+    hold off;
+    filename = sprintf('images/plot_1_%d.png', k);
+    exportgraphics(gcf, filename, 'Resolution', 200)
+end
+\end{matlabcode}
+\begin{center}
+\includegraphics[width=\maxwidth{120.42147516307075em}]{figure_0.eps}
+\end{center}
+
+
+\matlabtitle{Задание 2}
+
+\begin{par}
+\begin{flushleft}
+Определим постоянные $T$:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\begin{array}{l}
+\lambda_1 =-4.5,~~T_1 \cdot (-4.5)+1=0\Rightarrow T_1 =\frac{2}{9}\\
+\lambda_2 =-5.5,~~T_2 \cdot (-5.5)+1=0\Rightarrow T_2 =\frac{2}{11}
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Определим аналитически границу устойчивости. Будем опираться на критерий Гурвица
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\begin{array}{l}
+y=\frac{1}{p}\left(\frac{K}{(T_1 p+1)(T_2 p+1)}(g-y)\right),~~py(T_1 p+1)(T_2 p+1)+Ky=Kg,\\
+T_1 T_2 \dddot{y} +(T_1 +T_2 )\ddot{y} +\dot{y} +Ky=Kg;
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Составим матрицу Гурвица:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\left(\begin{array}{ccc}
+T_1 +T_2  & K & 0\\
+T_1 T_2  & 1 & 0\\
+0 & T_1 +T_2  & K
+\end{array}\right)$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Выпишем выражения для ведущих угловых миноров матрицы и условия ассимптотической устойчивости:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\Delta_1 =T_1 +T_2 ,>0~~\Delta_2 =T_1 +T_2 -KT_1 T_2 >0,~~\Delta_3 =K\cdot \Delta_2 =K(T_1 +T_2 -KT_1 T_2 )>0$$    
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Зафиксируем $T_2 =\frac{2}{11}$:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\left\lbrace \begin{array}{c}
+T_1 >-\frac{2}{11}\\
+K<\frac{11}{2}+\frac{1}{T_1 }\\
+K>0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+K<\frac{11}{2}+\frac{1}{T_1 }\\
+K>0
+\end{array}\right.$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Соответственно, область ассимптотической устойчивость ограничена прямыми $K=0,~~T_1 =0$ и ветвью гиперболы $K<\frac{11}{2}+\frac{1}{T_1 }$ в 1-м квадранте.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Визуализируем (см. рис. ...), граница устойчивости выделена зелёным цветом.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Зафиксируем $T_1 =\frac{2}{9}$:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\left\lbrace \begin{array}{c}
+T_2 >-\frac{2}{9}\\
+K<\frac{9}{2}+\frac{1}{T_2 }\\
+K>0
+\end{array}\right.\Rightarrow \left\lbrace \begin{array}{c}
+K<\frac{9}{2}+\frac{1}{T_2 }\\
+K>0
+\end{array}\right.$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Соответственно, область ассимптотической устойчивость ограничена прямыми $K=0,~~T_2 =0$ и ветвью гиперболы $K<\frac{9}{2}+\frac{1}{T_2 }$ в 1-м квадранте.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Визуализируем (см. рис. ...), граница устойчивости выделена зелёным цветом.
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+Зададимся 3-мя наборами параметров $K,T_1 ,T_2$:
+\end{flushleft}
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} Ассимптотическая устойчивость: $K=3,~~T_1 =17,~~T_2 =\frac{2}{9}$ \end{flushleft}}
+   \item{\begin{flushleft} Система на границе устойчивости: $K=0.7,~~T_1 =2,~~T_2 =5$ \end{flushleft}}
+   \item{\begin{flushleft} Неустойчивая система: $K=-1,~~T_1 =-3,~~T_2 =4$ \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+\begin{flushleft}
+Видим, что в случае ассимптотической устойчивости решение уравнения сходится к входному воздействию $g(t)=1$ - как и должно быть по теореме Ляпунова об ассимптотической устойчивости $\lim_{t\to \infty } ||y(t)-g(t)||=0$.  График представляет собой затухающие колебания.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+При границе устойчивости видим синусоидальный график.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+В случае неустойчивой системы у на образуются расходящиеся колебания.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Выводы:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+В данном задании мы научились работать с заданной структурной схемой, доставать оттуда нужные нам параметры. Использованный критерий Гурвица для данной задачи был весьма удобен, аналитические расчёты получились короткими и эффективными. С помощью него мы нашли области ассимптотической устойчивости системы при варьированных $T_i$, границу устойчивости и области неустойчивости системы. Также было выполнено моделирование при разлтичных комбинациях параметров для различных случаев устойчивости. Наш график выхода представил собой колебания, в зависимости от устойчивости системы, затухающие, не меняющие амплитуды или нарастающие. Результаты сошлись с аналитическими расчётами.
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+time_interval_T1 = linspace(-1, 4, 1000);
+
+T1_masked = time_interval_T1(time_interval_T1 > -2/11);
+line_2 = 5.5 + 1 ./ T1_masked;
+
+figure;
+
+positive_mask = T1_masked > 0;
+T1_positive = T1_masked(positive_mask);
+line_2_positive = line_2(positive_mask);
+fill([T1_positive, fliplr(T1_positive)], [line_2_positive, zeros(size(line_2_positive))], ...
+     [245, 170, 95]./255, EdgeColor='#53DB51', LineWidth=4, DisplayName='Область ассимптотической устойчивости');
+
+xline(-2/11, LineWidth=2, LineStyle="-", color="#0057ED", DisplayName="$T_1=-\frac{2}{11}$");
+hold on;
+
+negative_mask = T1_masked < 0;
+positive_mask = T1_masked > 0;
+plot(T1_masked(negative_mask), line_2(negative_mask), LineWidth=2, LineStyle="-", color="#7927F5", DisplayName="$K=\frac{11}{2}+\frac{1}{T_1}$");
+plot(T1_masked(positive_mask), line_2(positive_mask), LineWidth=1, LineStyle="-", color="#7927F5", HandleVisibility='off');
+
+hold on;
+yline(0, LineWidth=2, LineStyle="-", color="red", DisplayName="$K=0$");
+
+grid on;
+legend(Location="northeast", FontSize=14, Interpreter="latex");
+xlabel("$T_1$", Interpreter="latex");
+ylabel("$K$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);   
+set(gca, FontSize=14);
+xlim([-1, 3]);
+ylim([-10, 20]);
+xticks(-1:0.2:3);
+yticks(-10:1:20);
+set(gca, 'FontSize', 8);
+
+hold off;
+exportgraphics(gcf, 'images/plot_2_T2_fix.png', 'Resolution', 200)
+\end{matlabcode}
+\begin{center}
+\includegraphics[width=\maxwidth{120.42147516307075em}]{figure_1.eps}
+\end{center}
+\begin{matlabcode}
+time_interval_T2 = linspace(-1, 4, 1000);
+
+T2_masked = time_interval_T2(time_interval_T2 > -2/9);
+line_2 = 4.5 + 1 ./ T2_masked;
+
+figure;
+
+positive_mask = T2_masked > 0;
+T2_positive = T2_masked(positive_mask);
+line_2_positive = line_2(positive_mask);
+fill([T2_positive, fliplr(T2_positive)], [line_2_positive, zeros(size(line_2_positive))], ...
+     [245, 170, 95]./255, EdgeColor='#53DB51', LineWidth=4, DisplayName='Область ассимптотической устойчивости');
+
+xline(-2/9, LineWidth=2, LineStyle="-", color="#0057ED", DisplayName="$T_2=-\frac{2}{9}$");
+hold on;
+
+negative_mask = T2_masked < 0;
+positive_mask = T2_masked > 0;
+plot(T2_masked(negative_mask), line_2(negative_mask), LineWidth=2, LineStyle="-", color="#7927F5", DisplayName="$K=\frac{9}{2}+\frac{1}{T_2}$");
+plot(T2_masked(positive_mask), line_2(positive_mask), LineWidth=1, LineStyle="-", color="#7927F5", HandleVisibility='off');
+
+hold on;
+yline(0, LineWidth=2, LineStyle="-", color="red", DisplayName="$K=0$");
+
+grid on;
+legend(Location="northeast", FontSize=14, Interpreter="latex");
+xlabel("$T_1$", Interpreter="latex");
+ylabel("$K$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);   
+set(gca, FontSize=14);
+xlim([-1, 3]);
+ylim([-10, 20]);
+xticks(-1:0.2:3);
+yticks(-10:1:20); 
+set(gca, 'FontSize', 8);
+
+hold off;
+exportgraphics(gcf, 'images/plot_2_T1_fix.png', 'Resolution', 200)
+\end{matlabcode}
+\begin{center}
+\includegraphics[width=\maxwidth{120.42147516307075em}]{figure_2.eps}
+\end{center}
+
+
+\begin{matlabcode}
+K_arr = [ 3, 0.7, -1 ];
+T1_arr = [ 17, 2, -3 ];
+T2_arr = [ 2/9, 5, 4 ];
+type = ["Ассимптотически устойчивая система", "Система на границе устойчивости", "Неустойчивая система"];
+simtime_arr = [ 500, 200, 70 ];
+g = 1;
+
+for k=1:3
+    K = K_arr(k);
+    T1 = T1_arr(k);
+    T2 = T2_arr(k);
+    simtime = simtime_arr(k);
+
+    plot_1 = sim("lab_2_2.slx", simtime);
+    plot(plot_1.y.Time, plot_1.y.Data, LineWidth=2, LineStyle="-", DisplayName=type(k));
+    hold on;
+
+    grid on;
+    legend(Location="best", FontSize=14);
+    xlabel("$t, c$", Interpreter="latex");
+    ylabel("$Signal$", Interpreter="latex");
+    set(gcf, Position=[100, 100, 1200, 600]);   
+    set(gca, FontSize=14);
+    
+    hold off;
+    filename = sprintf('images/plot_2_KT1T2_%d.png', k);
+    exportgraphics(gcf, filename, 'Resolution', 200)
+end
+\end{matlabcode}
+\begin{center}
+\includegraphics[width=\maxwidth{120.42147516307075em}]{figure_3.eps}
+\end{center}
+
+\matlabtitle{Задание 3}
+
+\begin{par}
+\begin{flushleft}
+Рассмотрим систему
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\left\lbrace \begin{array}{c}
+\dot{x} =Ax\\
+g=Cx,
+\end{array}\right.~~x(0)\Rightarrow \left\lbrace \begin{array}{c}
+x(t)=e^{At} x(0)\\
+g(t)=Ce^{At} x(0)
+\end{array}\right.$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Имеем функцию желаемого выхода $g_ж (t)=\cos (-3t)+e^{-5t} \sin (7t)$,
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Найдём собственные числа: $\lambda_{1,2} =\pm 3i,~~\lambda_{3,4} -5\pm 7i\Rightarrow A=\left(\begin{array}{cccc}
+0 & 3 & 0 & 0\\
+-3 & 0 & 0 & 0\\
+0 & 0 & -5 & 7\\
+0 & 0 & -7 & -5
+\end{array}\right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+$e^{At} =\left(\begin{array}{cccc}
+e^0 \cos (3t) & e^0 \sin (3t) & 0 & 0\\
+-e^0 \sin (3t) & e^0 \cos (3t) & 0 & 0\\
+0 & 0 & e^{-5t} \cos (7t) & e^{-5t} \sin (7t)\\
+0 & 0 & -e^{-5t} \sin (7t) & e^{-5t} \cos (7t)
+\end{array}\right)=\left(\begin{array}{cccc}
+\cos (3t) & \sin (3t) & 0 & 0\\
+-\sin (3t) & \cos (3t) & 0 & 0\\
+0 & 0 & e^{-5t} \cos (7t) & e^{-5t} \sin (7t)\\
+0 & 0 & -e^{-5t} \sin (7t) & e^{-5t} \cos (7t)
+\end{array}\right)$;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$e^{At} x(0)=\left(\begin{array}{cccc}
+\cos (3t) & \sin (3t) & 0 & 0\\
+-\sin (3t) & \cos (3t) & 0 & 0\\
+0 & 0 & e^{-5t} \cos (7t) & e^{-5t} \sin (7t)\\
+0 & 0 & -e^{-5t} \sin (7t) & e^{-5t} \cos (7t)
+\end{array}\right)\left(\begin{array}{c}
+a_1 \\
+a_2 \\
+a_3 \\
+a_4 
+\end{array}\right)=\left(\begin{array}{c}
+a_1 \cos (3t)+a_2 \sin (3t)\\
+-a_1 \sin (3t)+a_2 \cos (3t)\\
+e^{-5t} \left(a_3 \cos (7t)+a_4 \sin (7t)\right)\\
+e^{-5t} \left(-a_3 \sin (7t)+a_4 \cos (7t)\right)
+\end{array}\right)$$   
+\end{par}
+
+\begin{par}
+$$\begin{array}{l}
+Ce^{At} x(0)=\left(\begin{array}{cccc}
+c_1  & c_2  & c_3  & c_4 
+\end{array}\right)\left(\begin{array}{c}
+a_1 \cos (3t)+a_2 \sin (3t)\\
+-a_1 \sin (3t)+a_2 \cos (3t)\\
+e^{-5t} \left(a_3 \cos (7t)+a_4 \sin (7t)\right)\\
+e^{-5t} \left(-a_3 \sin (7t)+a_4 \cos (7t)\right)
+\end{array}\right)=\\
+=c_1 (a_1 \cos (3t)+a_2 \sin (3t))+c_2 (-a_1 \sin (3t)+a_2 \cos (3t))+c_3 e^{-5t} (a_3 \cos (7t)+a_4 \sin (7t))+c_4 e^{-5t} (-a_3 \sin (7t)+a_4 \cos (7t))=\\
+=e^{-5t} \left\lbrack (a_3 c_3 +a_4 c_4 )\cos (7t)+(a_4 c_3 -a_3 c_4 )\sin (7t)\right\rbrack +(a_1 c_1 +a_2 c_2 )\cos (3t)+(a_2 c_1 -a_1 c_2 )\sin (3t)
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Получаем систему: $\left\lbrace \begin{array}{c}
+a_3 c_3 +a_4 c_4 =0\\
+a_4 c_3 -a_3 c_4 =1\\
+a_1 c_1 +a_2 c_2 =1\\
+a_2 c_1 -a_1 c_2 =0
+\end{array}\right.$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Возьмём следующий набор: $\left\lbrace \begin{array}{c}
+a_1 =1\\
+a_2 =0\\
+a_3 =0\\
+a_4 =1\\
+c_1 =1\\
+c_2 =0\\
+c_3 =1\\
+c_4 =0
+\end{array}\right.\Rightarrow x(0)=\left(\begin{array}{c}
+1\\
+0\\
+0\\
+1
+\end{array}\right),~~C=\left(\begin{array}{cccc}
+1 & 0 & 1 & 0
+\end{array}\right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Теперь выполним моделирование и проверим корректность найденных матриц.
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+A = [0, 3, 0, 0;
+     -3, 0, 0, 0;
+      0, 0, -5, 7;
+      0, 0, -7, -5];
+x_0 = [1; 0; 0; 1];
+C = [1, 0, 1, 0];
+
+simtime = 10;
+solver_time = 0.001;
+plot_3 = sim("lab_2_3.slx", simtime);
+
+plot(plot_3.g_ref.Time, plot_3.g_ref.Data, LineWidth=3, LineStyle="-", DisplayName="Задание формулой");
+hold on;
+plot(plot_3.y.Time, plot_3.y.Data, LineWidth=3, LineStyle="--", DisplayName="Выход генератора");
+
+grid on;
+legend(Location="best", FontSize=14);
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$Signal$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);   
+set(gca, FontSize=14);
+
+hold off;
+exportgraphics(gcf, 'images/plot_3.png', 'Resolution', 200)
+\end{matlabcode}
+\begin{center}
+\includegraphics[width=\maxwidth{120.42147516307075em}]{figure_4.eps}
+\end{center}
+\begin{matlabcode}
+simtime = 100;
+solver_time = 0.001;
+plot_3 = sim("lab_2_3.slx", simtime);
+
+plot(plot_3.y.Time, plot_3.g_ref.Data - plot_3.y.Data, LineWidth=2, LineStyle="-", color="red", DisplayName="Ошибка(шаг по времени 0.001)");
+
+grid on;
+legend(Location="best", FontSize=14);
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$Signal$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);   
+set(gca, FontSize=14);
+
+hold off;
+exportgraphics(gcf, 'images/plot_3_e.png', 'Resolution', 200)
+\end{matlabcode}
+\begin{center}
+\includegraphics[width=\maxwidth{120.42147516307075em}]{figure_5.eps}
+\end{center}
+\begin{matlabcode}
+simtime = 100;
+solver_time = 0.00001;
+plot_3 = sim("lab_2_3.slx", simtime);
+
+plot(plot_3.y.Time, plot_3.g_ref.Data - plot_3.y.Data, LineWidth=1, LineStyle="-", color="red", DisplayName="Ошибка(шаг по времени 0.00001)");
+
+grid on;
+legend(Location="best", FontSize=14);
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$Signal$", Interpreter="latex");
+set(gcf, Position=[100, 100, 1200, 600]);   
+set(gca, FontSize=14);
+
+hold off;
+exportgraphics(gcf, 'images/plot_3_e_100000.png', 'Resolution', 200)
+\end{matlabcode}
+\begin{center}
+\includegraphics[width=\maxwidth{120.42147516307075em}]{figure_6.eps}
+\end{center}
+
+
+\begin{matlabcode}
+function y = y_fm_1(t)
+    y = 5.5 .* exp(-4.5 .* t) - 4.5 .* exp(-5.5 .* t);
+end
+function y = y_fm_2(t)
+    y = exp(-3.7 .* t) .*(0.74 .* sin(5 .* t) + cos(5 .* t));
+end
+function y = y_fm_3(t)
+    y = cos(29 .* t);
+end
+function y = y_fm_4(t)
+    y = exp(0.7 .* t) .* (-0.007 .* sin(5 .* t) + 0.05 .* cos(5 .* t));
+end
+function y = y_fm_5(t)
+    y = -0.225 .* exp(5.5 .* t) + 0.275 .* exp(4.5 .* t);
+end
+function y = y_fm_6(t)
+    y = 1 ./ 56 .* exp(2.8 .* t) - 1 ./ 56 .* exp(-2.8 .* t);
+end
+\end{matlabcode}
+
+\end{document}
