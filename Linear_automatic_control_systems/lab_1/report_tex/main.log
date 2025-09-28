@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  19 SEP 2025 22:30
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  28 SEP 2025 20:56
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1264,7 +1264,7 @@ File: md-frame-1.mdf 2013/07/01\ 1.9b: md-frame-1
 \c@mdf@zref@counter=\count505
 Package zref Info: New property: mdf@pagevalue on input line 895.
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 24.
+Package hyperref Info: Option `colorlinks' set `true' on input line 23.
 \c@multititle=\count506
 \c@hastoc=\count507
 )
