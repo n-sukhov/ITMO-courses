@@ -1,5 +1,14 @@
 \section{Свободное движение}
 
+Рассмотрим систему 2-го порядка, заданную дифференциальным уравнением:
+\[
+\ddot{y} + a_1 \dot{y} + a_0 y = a_0 u \qquad (1)
+\]
+С использованием блоков элементарных операций построим структурную схему данной системы. На структурной схеме отметим блоки, на которых задаются начальные условия $y(0), \dot{y}(0)$. \\
+Для каждого из вариантов в Таблицах 1 и 2 (из задания по данной л/р) задано по шесть наборов значений корней характеристического уравнения $\lambda_1, \lambda_2$ и начальных условий $y(0), \dot{y}(0)$. В соответствии с вашим вариантом для каждого из шести экспериментов вычислим коэффициенты $a_1, a_0$ системы (1) и найдём аналитическое выражение для свободной составляющей её движения $y_{\text{св}}(t)$. \\
+Осуществим моделирование свободного движения системы для каждого из шести экспериментов и сопоставим результаты с полученными аналитически. \\
+Проанализируем устойчивость каждой из систем на основании моделирования и корневого критерия, сделаем соответствующие выводы о типе устойчивости.
+\\
 
 Выведем общую формулу для вычисления $a_0 ,a_1$:
 
@@ -36,7 +45,13 @@ a_0 =\lambda_1 \cdot \lambda_2
 \begin{par}
 $$p^2 y+a_1 py+a_0 y=a_0 u\Rightarrow y=-\frac{1}{p}(a_1 y+\frac{1}{p}a_0 (y-u))$$
 \end{par}
-
+Структурная схема предаставлена на рисунке \ref{1}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/scheme_1.png}
+    \caption{Структурная схема}
+    \label{1}
+\end{figure}
 
 Выразим начальные условия для интеграторов:
 
@@ -63,7 +78,8 @@ C_1 =5.5\\
 C_2 =-4.5
 \end{array}\right.\\
 y_{св} (t)=5.5e^{-4.5t} -4.5e^{-5.5t} 
-\end{array}$
+\end{array}$\\
+График представлен на рис. \ref{2}.
 
 \vspace{1em}
 
@@ -80,7 +96,8 @@ C_1 =0.74\\
 C_2 =1
 \end{array}\right.\\
 y_{\textrm{св}} (t)=e^{-3.7t} (0.74\sin (5t)+\cos (5t))
-\end{array}$
+\end{array}$\\
+График представлен на рис. \ref{3}.
 
 \vspace{1em}
 
@@ -97,7 +114,8 @@ C_1 =0\\
 C_2 =1
 \end{array}\right.\\
 y_{\textrm{св}} (t)=\cos (29t)
-\end{array}$
+\end{array}$\\
+График представлен на рис. \ref{4}.
 
 \vspace{1em}
 
@@ -114,9 +132,38 @@ C_1 =-0.007\\
 C_2 =0.05
 \end{array}\right.\\
 y_{\textrm{св}} (t)=e^{0.7t} (-0.007\sin (5t)+0.05\cos (5t))
-\end{array}$
+\end{array}$\\
+График представлен на рис. \ref{5}.
 
 \vspace{1em}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_1_1.png}
+    \caption{Сопоставление графиков выходов для набора 1}
+    \label{2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_1_2.png}
+    \caption{Сопоставление графиков выходов для набора 2}
+    \label{3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_1_3.png}
+    \caption{Сопоставление графиков выходов для набора 3}
+    \label{4}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_1_4.png}
+    \caption{Сопоставление графиков выходов для набора 4}
+    \label{5}
+\end{figure}
 
 5. $\begin{array}{l}
 \left\lbrace \begin{array}{c}
@@ -131,9 +178,16 @@ C_1 =-0.225\\
 C_2 =0.275
 \end{array}\right.\\
 y_{\textrm{св}} (t)=-0.225e^{5.5t} +0.275e^{4.5t} 
-\end{array}$
+\end{array}$\\
+График представлен на рис. \ref{6}.
 
 \vspace{1em}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_1_5.png}
+    \caption{Сопоставление графиков выходов для набора 5}
+    \label{6}
+\end{figure}
 
 6. $\begin{array}{l}
 \left\lbrace \begin{array}{c}
@@ -148,9 +202,18 @@ C_1 =0.017857\\
 C_2 =-0.017857
 \end{array}\right.\\
 y_{\textrm{св}} (t)=\frac{1}{56}e^{2.8t} -\frac{1}{56}e^{-2.8t} 
-\end{array}$
+\end{array}$\\
+График представлен на рис. \ref{7}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_1_6.png}
+    \caption{Сопоставление графиков выходов для набора 6}
+    \label{7}
+\end{figure}
+
 \\
-Видим, что для всех систем результаты моделирования и аналитического расчёта совпали.\\
+Видим, что для всех систем результаты моделирования и аналитического расчёта совпали.
 
 Проанализируем результаты на основе моделирования и корневого критерия:
 
@@ -191,6 +254,26 @@ y_{\textrm{св}} (t)=\frac{1}{56}e^{2.8t} -\frac{1}{56}e^{-2.8t}
 
 
 \section{Область устойчивости}
+Рассмотрим систему 3-го порядка, заданную структурной схемой, представленной на рисунке \ref{pic2}. Определим, при каких значениях постоянных времени $T_1$ и $T_2$ полюса соответствующих передаточных функций совпадут с первым набором корней $\lambda_1, \lambda_2$ из Задания 1. \\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/image.png}
+    \caption{Схема моделирования}
+    \label{pic2}
+\end{figure}
+
+Определим аналитически границу устойчивости в пространстве параметров $K$ и $T_1$ для системы с фиксированным значением $T_2$ (рассчитанным ранее), опираясь на критерий Гурвица. Приведём графическое изображение границы устойчивости на плоскости двух параметров $K(T_1)$ и определим область устойчивости системы. \\
+Аналогично определим аналитически границу устойчивости в пространстве параметров $K$ и $T_2$ для системы с фиксированным значением $T_1$ (рассчитанным ранее). Приведём графическое изображение границы устойчивости на плоскости двух параметров $K(T_2)$ и определим область устойчивости системы. \\
+Зададимся тремя наборами параметров $K, T_1, T_2$, соответствующих:
+\begin{itemize}
+\item асимптотически устойчивой системе;
+\item системе на границе устойчивости;
+\item неустойчивой системе.
+\end{itemize}
+Для каждого набора параметров осуществим моделирование при $g(t) = 1$. \\
+Сделаем выводы.
+\\
+
 
 Определим постоянные $T$:
 
@@ -221,11 +304,9 @@ T_1 T_2  & 1 & 0\\
 \end{array}\right)$$
 \end{par}
 
-Выпишем выражения для ведущих угловых миноров матрицы и условия ассимптотической устойчивости:
+Выпишем выражения для ведущих угловых миноров матрицы и условия ассимптотической устойчивости (миноры должны быть положительными):
 
-\begin{par}
 $$\Delta_1 =T_1 +T_2 ,>0~~\Delta_2 =T_1 +T_2 -KT_1 T_2 >0,~~\Delta_3 =K\cdot \Delta_2 =K(T_1 +T_2 -KT_1 T_2 )>0$$    
-\end{par}
 
 Зафиксируем $T_2 =\frac{2}{11}$:
 
@@ -242,8 +323,13 @@ K>0
 
 Соответственно, область ассимптотической устойчивость ограничена прямыми $K=0,~~T_1 =0$ и ветвью гиперболы $K<\frac{11}{2}+\frac{1}{T_1 }$ в 1-м квадранте.
 
-Визуализируем (см. рис. ...), граница устойчивости выделена зелёным цветом.
-
+Визуализируем (см. рис. \ref{8}), граница устойчивости выделена зелёным цветом.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_2_T2_fix.png}
+    \caption{$T_2 =\frac{2}{11}$}
+    \label{8}
+\end{figure}
 
 Зафиксируем $T_1 =\frac{2}{9}$:
 
@@ -261,8 +347,13 @@ K>0
 
 Соответственно, область ассимптотической устойчивость ограничена прямыми $K=0,~~T_2 =0$ и ветвью гиперболы $K<\frac{9}{2}+\frac{1}{T_2 }$ в 1-м квадранте.
 
-Визуализируем (см. рис. ...), граница устойчивости выделена зелёным цветом.
-
+Визуализируем (см. рис. \ref{9}), граница устойчивости выделена зелёным цветом.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_2_T1_fix.png}
+    \caption{$T_1 =\frac{2}{9}$}
+    \label{9}
+\end{figure}
 
 
 \vspace{1em}
@@ -270,11 +361,28 @@ K>0
 
 \begin{itemize}
 \setlength{\itemsep}{-1ex}
-   \item{\begin{flushleft} Ассимптотическая устойчивость: $K=3,~~T_1 =17,~~T_2 =\frac{2}{9}$ \end{flushleft}}
-   \item{\begin{flushleft} Система на границе устойчивости: $K=0.7,~~T_1 =2,~~T_2 =5$ \end{flushleft}}
-   \item{\begin{flushleft} Неустойчивая система: $K=-1,~~T_1 =-3,~~T_2 =4$ \end{flushleft}}
+   \item{\begin{flushleft} Ассимптотическая устойчивость (рис. \ref{10}): $K=3,~~T_1 =17,~~T_2 =\frac{2}{9}$ \end{flushleft}}
+   \item{\begin{flushleft} Система на границе устойчивости (рис. \ref{11}): $K=0.7,~~T_1 =2,~~T_2 =5$ \end{flushleft}}
+   \item{\begin{flushleft} Неустойчивая система (рис. \ref{12}): $K=-1,~~T_1 =-3,~~T_2 =4$ \end{flushleft}}
 \end{itemize}
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_2_KT1T2_1.png}
+    \caption{Ассимптотическая устойчивость}
+    \label{10}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_2_KT1T2_2.png}
+    \caption{Система на границе устойчивости}
+    \label{11}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_2_KT1T2_3.png}
+    \caption{Неустойчивая система}
+    \label{12}
+\end{figure}
 Видим, что в случае ассимптотической устойчивости решение уравнения сходится к входному воздействию $g(t)=1$ - как и должно быть по теореме Ляпунова об ассимптотической устойчивости $\lim_{t\to \infty } ||y(t)-g(t)||=0$.  График представляет собой затухающие колебания.
 
 При границе устойчивости видим синусоидальный график.
@@ -290,7 +398,15 @@ K>0
 
 
 \section{Автономный генератор}
-
+Для приведённого в Таблице 3 (из задания по данной л/р) для нашего варианта аналитически заданного сигнала $g_\text{ж}(t)$ в системе вида
+\[
+\begin{cases}
+\dot{x} = Ax \\
+g = Cx,
+\end{cases}x(0),
+\]
+зададим такие параметры $A, C$ и $x(0)$, чтобы выход системы при свободном движении совпадал с желаемым выходом $g_\text{ж}(t)$. Все полученные матрицы и вектора не должны включать в себя комплексных чисел. Выполним моделирование, подтверждающее правильность выбранных параметров.
+\\
 
 Рассмотрим систему
 
@@ -403,11 +519,44 @@ c_4 =0
 1 & 0 & 1 & 0
 \end{array}\right)$
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/scheme_3.png}
+    \caption{Структурная схема}
+    \label{13}
+\end{figure}
 
+Теперь выполним моделирование (для этого построим схему (рис. \ref{13}) в Simulink) и проверим корректность найденных матриц.
+Графики выходов на рис. \ref{14}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_3.png}
+    \caption{Графики выходов}
+    \label{14}
+\end{figure}
+Как видим, всё сошлось.
 
-Теперь выполним моделирование и проверим корректность найденных матриц.
+Посмотрим на графики ошибок (возьмём разные значение шага по времени для моделирования ради интереса) на рис. \ref{15}-\ref{16}.
+\\
+Видим, что есть накапливающаяся со временем ошибка, обусловленная численными вычислениями на уровне
+машинной точнть, при уменьшении шага по времени для моделирования, ошибка становится заметно меньше. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_3_e.png}
+    \caption{График ошибки}
+    \label{15}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_2/code/images/plot_3_e_100000.png}
+    \caption{График ошибки}
+    \label{16}
+\end{figure}
 
-
+\textbf{Общие выводы}\\
+В данной лабораторной работе мы научились моделировать свободное движение систем,
+рассмотрели разные случаи устойчивости, проанализировали их. Так же нашли матрицы для составления генератора и
+выполнили моделирование.
 
 
 \section{Приложение}
