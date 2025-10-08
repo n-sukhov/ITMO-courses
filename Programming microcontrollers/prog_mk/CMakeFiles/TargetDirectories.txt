@@ -1,3 +1,0 @@
-/home/ns/Desktop/ITMO-courses/Programming microcontrollers/prog_mk/CMakeFiles/prog_mk.dir
-/home/ns/Desktop/ITMO-courses/Programming microcontrollers/prog_mk/CMakeFiles/edit_cache.dir
-/home/ns/Desktop/ITMO-courses/Programming microcontrollers/prog_mk/CMakeFiles/rebuild_cache.dir
