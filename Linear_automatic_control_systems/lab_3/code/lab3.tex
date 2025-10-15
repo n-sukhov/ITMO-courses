@@ -1,0 +1,500 @@
+\matlabtitle{Задание 1}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&ТЕКСТ ЗАДАНИЯ+входные воздействия\&\&\&
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Возьмём структурную схему из \textbf{Задания 1 Лабораторной работы 2} для наших входных значений  $u(t)$ (см. рис. \&\&\&). 
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Рассмотрим второй, третий и четвертый набор коэффициентов $a_0 ,a_1$, рассчитанных в рамках \textbf{Задания 1 Лаб. работы 2}:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{№  a\_1		 a\_0}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{2   7.400	 38.690}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{3   0.000	841.000}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{4  -1.400	 25.490}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{Выполним для них моделирование движения системы согласно данным нам начальным условиям и входным воздействиям и посмотрим на полученные графики:}
+\end{flushleft}
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} \texttt{Набор 2 на рис. \&\&\& - \&\&\&} \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} \texttt{Набор 3 на рис. \&\&\& - \&\&\&} \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} \texttt{Набор 4 на рис. \&\&\& - \&\&\&} \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Анализ и выводы}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\texttt{При каждом из входных воздействий мы видим, что для любых взятых нами начальных условий 2-й набор коэффициентов делает систему ассимптотически устойчивой, 3-й - граница устойчивости и  4-й - делает систему неуйстойчивой. На рисунках видно, что при ассимптотической устойчивости графики систем со временем сходятся к функции входного воздействия, при границе усточивости колеблются в некоторой окрестности и при неустойчивости убегают от вида функции входного воздействия. Таким образом, в данном задании мы довольно наглядно на эксперименте проверили выводы из предыдущей лабораторной работы о том, при каких коэффициентах какой устойчивостью система обладает.}
+\end{flushleft}
+\end{par}
+
+
+
+\matlabtitle{Задание 2}
+
+\begin{par}
+\begin{flushleft}
+ Для системы 3-го порядка, заданной передаточной функцией
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$W(s)=\frac{|\lambda_1 \lambda_2 \lambda_3 |}{(s-\lambda_1 )(s-\lambda_2 )(s-\lambda_3 )},$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+исследуем зависимости качества переходной характеристики от выбора полюсов передаточной функции, для оценки качества используем такие показатели, как \textbf{перерегулирование} и \textbf{время переходного процесса}. Для этого зададимся \textbf{шестью} наборами полюсов $\lambda_1 ,\lambda_2$ и $\lambda_3$ с отрицательной вещественной частью. Половину наборов возьмем чисто вещественной, а во вторую половину включим комплексно-сопряженные полюса. В ходе исследования рекомендуется начинать с корней, имеющих равные вещественные части, а затем, фиксируя один или пару корней из набора, варьировать остальные. Проведем моделирование для выбранных наборов полюсов, определим значения времени переходных процессов и перерегулирования для каждого случая, сопоставим полученные результаты и сделаем выводы. Также сравним полученные значения перерегулирования с их верхними оценками на основании степени колебательности.
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+Выберем следующие набора полюсов $\lambda_1 ,\lambda_2 ,\lambda_2$: $\lbrace \lbrace -1,-1,-1\rbrace ,\lbrace -1,-1,-3\rbrace ,\lbrace -1,-3,-5\rbrace ,\lbrace -1,-1+4i,-1-4i\rbrace ,\lbrace -4,-1+4i,-1-4i\rbrace ,\lbrace -4,-1+8i,-1-8i\rbrace \rbrace$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Их расположение на комплексной плоскости на рисунках \&\&\&-\&\&\&.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Построим графики переходных процессов (см. рис. \&\&\&).
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&РИСУНОК
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Анализ и сравнение графиков}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Для начала введём основным понятия, необходимые для анализа.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textit{Установившееся значение и перерегулирование} относятся к динамическим показателям качества, то есть, они оцениваются по переходной характеристике.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Установившееся значение $y_{\textrm{уст}}$ - это предел функции $y(t)$ при $t\to \infty$. Перерегулирование - это временный выброс сигнала над $y_{\textrm{уст}}$, рассчитывается по формуле: $\sigma =\frac{|y_{max} -y_{уст} |}{|y_{уст} |}\cdot 100\%$. Время переходного процесса $\Delta$ - это интервал времени от начала внешнего воздействия до момента, после которого разница между сигналом и $y_{\textrm{уст}}$ не превышает определенного значения, в данной л/р примем $\Delta =0.05y_{\textrm{уст}}$: $|y(t)-y_{\textrm{уст}} |<\Delta$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textit{Степень колебательности} относится к корневым показателям качества, они определятся по расположению полюсов на комплексной плоскости. Степень колебательности равна $\mu =max_k \left|\frac{\textrm{Im}(\lambda_k )}{\textrm{Re}(\lambda_k )}\right|,~~k=\overline{1,n}$ для $n$ полюсов системы. Доминирующими полюсами называются те, что расположены ближе к мнимой оси. В случае, когда пара комплексных полюсов доминирует, для оценки перерегулирования можно использовать формулу: $\sigma_{\%} \le e^{-\pi /\mu } \cdot 100\%$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Для наших наборов получим:
+\end{flushleft}
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} $\lbrace -1,-1,-1\rbrace$: перерегулирование $0\%$, время переходного процесса $\approx 6.296$ \end{flushleft}}
+   \item{\begin{flushleft} $\lbrace -1,-1,-3\rbrace$: перерегулирование $0\%$, время переходного процесса $\approx 5.13$ \end{flushleft}}
+   \item{\begin{flushleft} $\lbrace -1,-3,-5\rbrace$: перерегулирование $0\%$, время переходного процесса $\approx 3.624$ \end{flushleft}}
+   \item{\begin{flushleft} $\lbrace -1,-1+4i,-1-4i\rbrace V$: перерегулирование $0\%$, время переходного процесса $\approx 2.781$ \end{flushleft}}
+   \item{\begin{flushleft} $\lbrace -4,-1+4i,-1-4i\rbrace$: перерегулирование $27.8\%$, время переходного процесса $\approx 2.739$ \end{flushleft}}
+   \item{\begin{flushleft} $\lbrace -4,-1+8i,-1-8i\rbrace$: перерегулирование $17.5\%$, время переходного процесса $\approx 2.176$ \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+\begin{flushleft}
+Для всех наборов с чисто вещественными корнями степень колебательности равна нулю, для остальных:
+\end{flushleft}
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} $\lbrace -1,-1+4i,-1-4i\rbrace$: $\mu =4$ \end{flushleft}}
+   \item{\begin{flushleft} $\lbrace -4,-1+4i,-1-4i\rbrace$: $\mu =4$ \end{flushleft}}
+   \item{\begin{flushleft} $\lbrace -4,-1+8i,-1-8i\rbrace$: $\mu =8$ \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+\begin{flushleft}
+Для последних двух наборов, получивших перерегулирование сделаем его верхнюю оценку на основе колебательности и сравним с полученными результатами по явной формуле для перерегулирования:
+\end{flushleft}
+\end{par}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item{\begin{flushleft} $\lbrace -4,-1+4i,-1-4i\rbrace$: $\sigma_{\%} \le e^{-\pi /4} \cdot 100\%\approx 45.6$ \end{flushleft}}
+   \item{\begin{flushleft} $\lbrace -4,-1+8i,-1-8i\rbrace$: $\sigma_{\%} \le e^{-\pi /8} \cdot 100\%\approx 67.5$ \end{flushleft}}
+\end{itemize}
+
+\begin{par}
+\begin{flushleft}
+Оценка получилась довольно грубой, но она выполняется.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Анализ и выводы}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\&\&\&ДОПИСАТЬ\&\&\&
+\end{flushleft}
+\end{par}
+
+
+
+
+
+\begin{matlabcode}
+a1_a0_arr = [ [7.4 38.69]; [0 841]; [-1.4 25.49] ];
+y0_dot_y0_arr = [ [-1 0]; [0 0]; [1 0] ];
+
+simtime = 4;
+
+for i=1:3
+    a_1 = a1_a0_arr(i,1);
+    a_0 = a1_a0_arr(i,2);
+    for k=1:3
+        y_0 = y0_dot_y0_arr(k,1);
+        dot_y_0 = y0_dot_y0_arr(k,2);
+    
+        plot_1 = sim("lab3_1_1.slx", simtime);
+        plot(plot_1.y.Time, plot_1.y.Data, LineWidth=1, LineStyle="-", ...
+            DisplayName=sprintf('$y(0)=%d, \\dot{y}(0)=%d$', y_0, dot_y_0));
+        hold on;
+    
+    end
+    grid on;
+    legend(Location="best", FontSize=14, Interpreter="latex");
+    xlabel("$t, c$", Interpreter="latex");
+    ylabel("$y(t)$", Interpreter="latex");
+    set(gcf, Position=[100, 100, 1200, 600]);   
+    set(gca, FontSize=14);
+    
+    hold off;
+    filename = sprintf('images/plot_1_u2_%d.png', i);
+    exportgraphics(gcf, filename, 'Resolution', 200)
+end
+
+for i=1:3
+    a_1 = a1_a0_arr(i,1);
+    a_0 = a1_a0_arr(i,2);
+    for k=1:3
+        y_0 = y0_dot_y0_arr(k,1);
+        dot_y_0 = y0_dot_y0_arr(k,2);
+    
+        plot_1 = sim("lab3_1_2.slx", simtime);
+        plot(plot_1.y.Time, plot_1.y.Data, LineWidth=1, LineStyle="-", ...
+            DisplayName=sprintf('$y(0)=%d, \\dot{y}(0)=%d$', y_0, dot_y_0));
+        hold on;
+    
+    end
+    grid on;
+    legend(Location="best", FontSize=14, Interpreter="latex");
+    xlabel("$t, c$", Interpreter="latex");
+    ylabel("$y(t)$", Interpreter="latex");
+    set(gcf, Position=[100, 100, 1200, 600]);   
+    set(gca, FontSize=14);
+    
+    hold off;
+    filename = sprintf('images/plot_1_u07t_%d.png', i);
+    exportgraphics(gcf, filename, 'Resolution', 200)
+end
+
+for i=1:3
+    a_1 = a1_a0_arr(i,1);
+    a_0 = a1_a0_arr(i,2);
+    for k=1:3
+        y_0 = y0_dot_y0_arr(k,1);
+        dot_y_0 = y0_dot_y0_arr(k,2);
+    
+        plot_1 = sim("lab3_1_3.slx", simtime);
+        plot(plot_1.y.Time, plot_1.y.Data, LineWidth=1, LineStyle="-", ...
+            DisplayName=sprintf('$y(0)=%d, \\dot{y}(0)=%d$', y_0, dot_y_0));
+        hold on;
+    
+    end
+    grid on;
+    legend(Location="best", FontSize=14, Interpreter="latex");
+    xlabel("$t, c$", Interpreter="latex");
+    ylabel("$y(t)$", Interpreter="latex");
+    set(gcf, Position=[100, 100, 1200, 600]);   
+    set(gca, FontSize=14);
+    
+    hold off;
+    filename = sprintf('images/plot_1_ucos4t_%d.png', i);
+    exportgraphics(gcf, filename, 'Resolution', 200)
+end
+\end{matlabcode}
+
+\begin{matlabcode}
+pole_sets = [
+    [-1, -1, -1];
+    [-1, -1, -3];
+    [-1, -3, -5];
+    [-1, -1+4i, -1-4i];
+    [-4, -1+4i, -1-4i];
+    [-4, -1+8i, -1-8i]
+];
+
+
+for i = 1:6
+    current_poles = pole_sets(i,:);
+    
+    figure;
+    xline(0, color="black", linestyle='-', LineWidth=0.5, HandleVisibility='off');
+    hold on;
+    yline(0, color="black", linestyle='-', LineWidth=0.5, HandleVisibility='off');
+    hold on;
+    pole_strs = arrayfun(@(p) sprintf('%.1f%+.1fi', real(p), imag(p)), current_poles, UniformOutput=false);
+    p1 = plot(real(current_poles(1)), imag(current_poles(1)), 'g.', MarkerSize=20, ...
+        DisplayName=sprintf('$\\lambda_{1}=%s$', pole_strs{1}));
+    hold on;
+    p2 = plot(real(current_poles(2)), imag(current_poles(2)), 'b.', MarkerSize=20, ...
+        DisplayName=sprintf('$\\lambda_{2}=%s$', pole_strs{2}));
+    hold on;
+    p3 = plot(real(current_poles(3)), imag(current_poles(3)), 'r.', MarkerSize=20, ...
+        DisplayName=sprintf('$\\lambda_{3}=%s$', pole_strs{3}));
+  
+    grid on;
+    xlabel("Re\{z\}", Interpreter="latex");
+    ylabel("Im\{z\}", Interpreter="latex");
+    title(sprintf('Set %d', i), Interpreter="latex");
+    legend(Location="best", FontSize=12, Interpreter="latex");
+    set(gca, FontSize=12);
+
+    xlim([-5, 1.0]);
+    ylim([-8.5, 8.5]);
+    hold off;
+    
+    filename = sprintf('images/poles_%d.png', i);
+    exportgraphics(gcf, filename, 'Resolution', 200);
+end
+
+t = 0:0.001:10; 
+u = ones(size(t));
+
+for i = 1:6
+    lambda_1 = pole_sets(i,1);
+    lambda_2 = pole_sets(i,2);
+    lambda_3 = pole_sets(i,3);
+
+    W = zpk([], [lambda_1, lambda_2, lambda_3], abs(lambda_1*lambda_2*lambda_3));
+    y = lsim(W, u, t);
+    y_st = dcgain(W);
+
+    delta = 0.05 * y_st;
+    transition_time = NaN;
+    
+    for j = 1:length(t)
+        if abs(y(j) - y_st) < delta
+            if all(abs(y(j:end) - y_st) < delta)
+                transition_time = t(j);
+                break;
+            end
+        end
+    end
+    
+    fprintf('Set %d: Время переходного процесса = %.3f с\n', i, transition_time);
+    
+    figure;
+    yline(y_st, 'r--', 'LineWidth', 1, DisplayName="$y_{steady}$");
+    hold on;
+    plot(t, y, 'LineWidth', 2, 'LineStyle', '-', DisplayName="$y(t)$");
+    grid on;
+    ylabel("$y(t)$", Interpreter="latex");
+    xlabel("$t, c$", Interpreter="latex");
+    title(sprintf('Set %d', i), Interpreter="latex");
+    legend(Location="best", FontSize=12, Interpreter="latex");
+    set(gcf, Position=[100, 100, 1200, 600]);
+    set(gca, FontSize=12);
+    ylim([0, 1.4]);
+    filename = sprintf('images/per_proc_%d.png', i);
+    exportgraphics(gcf, filename, 'Resolution', 200);
+end
+
+%Для перерeгулирования 
+for i = 5:6
+    lambda_1 = pole_sets(i,1);
+    lambda_2 = pole_sets(i,2);
+    lambda_3 = pole_sets(i,3);
+
+    W = zpk([], [lambda_1, lambda_2, lambda_3], abs(lambda_1*lambda_2*lambda_3));
+    y = lsim(W, u, t);
+    y_st = dcgain(W);
+    fprintf('Set %d: Перерегулирование = %.4f\n %', i, abs(max(y)-y_st)/y_st * 100);
+end
+
+
+\end{matlabcode}
