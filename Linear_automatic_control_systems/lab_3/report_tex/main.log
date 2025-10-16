@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  15 OCT 2025 04:14
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  15 OCT 2025 19:39
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1934,32 +1934,40 @@ Missing character: There is no у ("443) in font lmmi6!
 Missing character: There is no с ("441) in font lmmi6!
 Missing character: There is no т ("442) in font lmmi6!
 [15]
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 316.
-
-Overfull \hbox (7.79529pt too wide) in paragraph at lines 331--331
-[]            \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(0)=%d
-, \\dot{y}(0)=%d$[], y_0, dot_y_0));[] 
- []
-
-
-Overfull \hbox (7.79529pt too wide) in paragraph at lines 356--356
-[]            \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(0)=%d
-, \\dot{y}(0)=%d$[], y_0, dot_y_0));[] 
- []
-
-
-Overfull \hbox (7.79529pt too wide) in paragraph at lines 381--381
-[]            \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(0)=%d
-, \\dot{y}(0)=%d$[], y_0, dot_y_0));[] 
+Overfull \hbox (3.25562pt too wide) in paragraph at lines 313--314
+[]\TU/CMUSerif(1)/m/n/12 При дальнейшем увеличении мнимой части комплексных пол
+юсов ($\OMS/lmsy/m/n/12 f^^@\OT1/lmr/m/n/12 4\OML/lmm/m/it/12 ; \OMS/lmsy/m/n/1
+2 ^^@\OT1/lmr/m/n/12 1 + 8\OML/lmm/m/it/12 i; \OMS/lmsy/m/n/12 ^^@\OT1/lmr/m/n/
+12 1 \OMS/lmsy/m/n/12 ^^@
  []
 
 [16] [17]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 399.
- [18] [19]) [20]
+(mdframed)              on input line 339.
+
+Overfull \hbox (7.79529pt too wide) in paragraph at lines 354--354
+[]            \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(0)=%d
+, \\dot{y}(0)=%d$[], y_0, dot_y_0));[] 
+ []
+
+
+Overfull \hbox (7.79529pt too wide) in paragraph at lines 379--379
+[]            \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(0)=%d
+, \\dot{y}(0)=%d$[], y_0, dot_y_0));[] 
+ []
+
+
+Overfull \hbox (7.79529pt too wide) in paragraph at lines 404--404
+[]            \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(0)=%d
+, \\dot{y}(0)=%d$[], y_0, dot_y_0));[] 
+ []
+
+[18]
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 422.
+ [19] [20]) [21]
 
 Package caption Warning: Unused \captionsetup[table] on input line 44.
 See the caption package documentation for explanation.
@@ -1975,6 +1983,9 @@ L3 programming layer <2024-01-22>
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 2.0pt have occurred.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: C4C99818AB6BE1D1DC4DE98DC4624E71;601.
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -1982,12 +1993,12 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 45606 strings out of 474878
- 951015 string characters out of 5762516
- 2040245 words of memory out of 5000000
- 66890 multiletter control sequences out of 15000+600000
+ 45608 strings out of 474878
+ 951067 string characters out of 5762516
+ 2040246 words of memory out of 5000000
+ 66892 multiletter control sequences out of 15000+600000
  574000 words of font info for 93 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  91i,8n,136p,971b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (20 pages).
+Output written on main.pdf (21 pages).
