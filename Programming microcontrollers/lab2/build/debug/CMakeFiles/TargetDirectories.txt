@@ -1,0 +1,3 @@
+C:/Users/nsukh/Desktop/ITMO-courses/Programming microcontrollers/lab2/build/debug/CMakeFiles/lab2.dir
+C:/Users/nsukh/Desktop/ITMO-courses/Programming microcontrollers/lab2/build/debug/CMakeFiles/edit_cache.dir
+C:/Users/nsukh/Desktop/ITMO-courses/Programming microcontrollers/lab2/build/debug/CMakeFiles/rebuild_cache.dir
