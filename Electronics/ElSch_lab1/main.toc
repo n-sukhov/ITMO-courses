@@ -1,0 +1,10 @@
+\xpginauxfiletrue 
+\selectlanguage *{russian}
+\contentsline {section}{\numberline {1}Цель работы}{3}{section.1}%
+\contentsline {section}{\numberline {2}Исходные данные}{3}{section.2}%
+\contentsline {section}{\numberline {3}Снятие ВАХ полупроводникового диода}{3}{section.3}%
+\contentsline {section}{\numberline {4}Исследование однополупериодного выпрямителя}{4}{section.4}%
+\contentsline {section}{\numberline {5}Исследование двухполупериодного выпрямителя}{6}{section.5}%
+\contentsline {section}{\numberline {6}Исследование двухполупериодного выпрямителя с емкостным фильтром}{7}{section.6}%
+\contentsline {section}{\numberline {7}Выводы}{9}{section.7}%
+\contentsfinish 
