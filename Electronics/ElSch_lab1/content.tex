@@ -1,0 +1,173 @@
+\section{Цель работы}
+\begin{itemize}
+    \item Исследование вольт-амперной характеристики (ВАХ)
+полупроводникового диода
+    \item Исследование работы однополупериодного выпрямителя
+    \item Исследование работы мостового выпрямителя
+\end{itemize}
+
+\section{Исходные данные}
+
+Диод в соответствии с вариантом - \textbf{MUR460}.
+
+\section{Снятие ВАХ полупроводникового диода}
+\textbf{Электрическая схема (рис. \ref{el_sch_1}).}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/s1.png}
+    \caption{Схема}
+    \label{el_sch_1}
+\end{figure}
+\textbf{Осциллограмма (рис. \ref{osc_1}).}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/o1.png}
+    \caption{ВАХ}
+    \label{osc_1}
+\end{figure}
+
+\textbf{Расчёты}\\
+Определим статическое и динамическое сопротивление по двум точкам из ВАХ :\\
+$R_{пр}=\frac{U_{пр}}{I_{пр}}=\frac{1.3047584}{7.942252}=0.164$ [Ом]\\
+$R_{пр}=\frac{\Delta U_{пр}}{\Delta I_{пр}}=\frac{1.7813295 - 1.3047584}{16.976843 - 7.942252}=0.0527$ [Ом]\\
+
+Пороговое напряжение равно $\approx550$мВ.\\
+Определим напряжение пробоя (рис. \ref{osc_11}):
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/o11.png}
+    \caption{Определение пробоя}
+    \label{osc_11}
+\end{figure}
+Получаем $800$ В. Это значение больше максимального обратного ($600$ В по документации).
+
+
+
+\section{Исследование однополупериодного выпрямителя}
+\textbf{Электрическая схема (рис. \ref{el_sch_2}).}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/s2.png}
+    \caption{Схема}
+    \label{el_sch_2}
+\end{figure}
+\textbf{Осциллограмма (рис. \ref{osc_2}).}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/o2.png}
+    \caption{ВАХ}
+    \label{osc_2}
+\end{figure}
+
+\textbf{Расчёты}\\
+Максимальное мгновенное напряжение $\approx 9.5$В.\\
+Среденевыпрямленное напряжение:
+$U_{\text{ВЫХ ср}} = \frac{1}{T} \int_0^T U_m \sin(\omega t)  dt = \frac{U_m}{\pi}=\frac{9.5}{3.14}=3.025$B.\\
+Максимально обратное напряжение равно $\approx 9.5$В (см рис. \ref{f}).
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/o22.png}
+    \caption{ВАХ}
+    \label{f}
+\end{figure}
+
+
+\section{Исследование двухполупериодного выпрямителя}
+\textbf{Электрическая схема (рис. \ref{el_sch_3}).}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/s3.png}
+    \caption{Схема}
+    \label{el_sch_3}
+\end{figure}
+\textbf{Осциллограмма (рис. \ref{osc_3}).}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/o3.png}
+    \caption{ВАХ}
+    \label{osc_3}
+\end{figure}
+\textbf{Расчёты}\\
+Максимальное мгновенное напряжение $\approx 9.7$В.\\
+Cредневыпрямленное значение
+напряжения на выходе выпрямителя:
+$
+U_{\text{Вых ср}} = \frac{2U_m}{\pi} \approx 0,9U_m=8.73
+$\\
+Максимально обратное напряжение равно $\approx 9.06$В (см рис. \ref{f}).
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/fs.png}
+    \caption{ВАХ}
+    \label{fs}
+\end{figure}
+
+
+
+\section{Исследование двухполупериодного выпрямителя с
+емкостным фильтром}
+\textbf{Электрическая схема (рис. \ref{el_sch_4}).}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/s4.png}
+    \caption{Схема}
+    \label{el_sch_4}
+\end{figure}
+\textbf{Осциллограмма (рис. \ref{osc_4}).}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{/home/ns/Desktop/ITMO-courses/Electronics/ElSch_lab1/img/o4.png}
+    \caption{ВАХ}
+    \label{osc_4}
+\end{figure}
+
+\textbf{Расчёты}\\
+Максимальное значение напряжения $0.6$Вб минимальное $-9.36$В.\\
+Среднее значение $-4.3316$В.\\
+Определим коэффициент пульсаций:
+$$
+k = \frac{U_{\text{ВЫХ}_{max}} - U_{\text{ВЫХ}_{min}}}{U_{\text{ВЫХ}_{cp}}}\approx2.308
+$$
+Коэффициент пульсаций получился больше чем у двухполупериодного выпрямителя $(k\approx0,67)$.\\
+\textit{Анализ}\\
+Увеличение емкости не влияет значиительно на $k$, как и изменение частоты.
+
+
+
+
+
+\section{Выводы}
+В ходе лабораторной работы были экспериментально исследованы характеристики и режимы работы полупроводникового диода MUR460.
+
+\begin{enumerate}
+    \item \textbf{Вольт-амперная характеристика диода MUR460}:
+    \begin{itemize}
+        \item Определено пороговое напряжение диода $\approx 550$ мВ
+        \item Рассчитано статическое сопротивление: $R_{пр} = 0.164$ Ом
+        \item Рассчитано динамическое сопротивление: $r_{пр} = 0.0527$ Ом
+        \item Экспериментально определено напряжение пробоя $\approx 800$ В, что превышает паспортное значение 600 В
+    \end{itemize}
+    
+    \item \textbf{Однополупериодный выпрямитель}:
+    \begin{itemize}
+        \item Получено средневыпрямленное напряжение $U_{вых ср} = 3.025$ В
+        \item Определено максимальное обратное напряжение на диоде $\approx 9.5$ В
+        \item Подтверждена низкая эффективность однополупериодной схемы
+    \end{itemize}
+    
+    \item \textbf{Двухполупериодный мостовой выпрямитель}:
+    \begin{itemize}
+        \item Получено средневыпрямленное напряжение $U_{вых ср} = 8.73$ В
+        \item Коэффициент пульсаций составил $k \approx 0.67$
+        \item Подтверждено преимущество двухполупериодной схемы по эффективности выпрямления
+    \end{itemize}
+    
+    \item \textbf{Двухполупериодный выпрямитель с емкостным фильтром}:
+    \begin{itemize}
+        \item Наблюдается значительное увеличение коэффициента пульсаций до $k \approx 2.308$
+        \item Изменение емкости конденсатора и частоты не оказывает существенного влияния на коэффициент пульсаций в данной конфигурации
+        \item Обнаружена инверсия полярности выходного напряжения
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Общий вывод}: Экспериментальные результаты в целом соответствуют теоретическим ожиданиям. Наблюдаемое превышение напряжения пробоя может быть связано с условиями проведения эксперимента. Мостовая схема выпрямления подтвердила свои преимущества перед однополупериодной по эффективности.
