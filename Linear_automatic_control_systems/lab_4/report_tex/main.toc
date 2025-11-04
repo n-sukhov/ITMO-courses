@@ -1,0 +1,9 @@
+\xpginauxfiletrue 
+\selectlanguage *{russian}
+\contentsline {section}{\numberline {1}Задача стабилизации с идеальным дифференцирующим звеном}{3}{section.1}%
+\contentsline {section}{\numberline {2}Задача стабилизации с реальным дифференцирующим звеном}{5}{section.2}%
+\contentsline {section}{\numberline {3}Задача слежения для системы с астатизмом нулевого порядка (П-регулятор)}{7}{section.3}%
+\contentsline {section}{\numberline {4}Задача слежения для системы с астатизмом первого порядка (И-регулятор)}{12}{section.4}%
+\contentsline {section}{\numberline {5}Задача слежения для системы с астатизмом первого порядка (ПИ-регулятор)}{19}{section.5}%
+\contentsline {section}{\numberline {6}Задача слежения за гармоническим сигналом (регулятор общего вида)}{24}{section.6}%
+\contentsline {section}{\numberline {7}Приложение}{28}{section.7}%
