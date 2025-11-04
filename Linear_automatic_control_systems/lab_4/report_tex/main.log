@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  4 NOV 2025 23:36
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  4 NOV 2025 23:48
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2033,12 +2033,12 @@ es/plot_6_err.png>
 [26] [27]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1039.
+(mdframed)              on input line 1049.
 
 
 LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(0)/m/n' in size <12> no
 t available
-(Font)              size <10> substituted on input line 1039.
+(Font)              size <10> substituted on input line 1049.
 
 
 Package fontspec Info: Font family 'FiraCode-Regular.otf(1)' created for font
@@ -2063,10 +2063,10 @@ guage=dflt;+calt;"
 
 LaTeX Font Warning: Font shape `TU/FiraCode-Regular.otf(1)/m/n' in size <12> no
 t available
-(Font)              size <10> substituted on input line 1039.
+(Font)              size <10> substituted on input line 1049.
 
 
-Overfull \hbox (26.2569pt too wide) in paragraph at lines 1060--1060
+Overfull \hbox (26.2569pt too wide) in paragraph at lines 1070--1070
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_1.y.Time, plot_1.y.Data, LineWid
 th=2, color="red", LineStyle="-", ...[] 
  []
@@ -2074,34 +2074,35 @@ th=2, color="red", LineStyle="-", ...[]
 [28]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1073.
+(mdframed)              on input line 1083.
 
-Overfull \hbox (32.41074pt too wide) in paragraph at lines 1084--1084
+Overfull \hbox (32.41074pt too wide) in paragraph at lines 1094--1094
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_1.y.Time, plot_1.y.Data, LineWid
 th=4, color="red", LineStyle="--", ...[] 
  []
 
+[29]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1100.
+(mdframed)              on input line 1110.
 
-Overfull \hbox (44.71843pt too wide) in paragraph at lines 1118--1118
+Overfull \hbox (44.71843pt too wide) in paragraph at lines 1128--1128
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_31.g.Time, plot_31.g.Data, LineW
 idth=3, color="red", LineStyle="--", ...[] 
  []
 
 
-Overfull \hbox (7.79526pt too wide) in paragraph at lines 1143--1143
+Overfull \hbox (7.79526pt too wide) in paragraph at lines 1153--1153
 []                \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$e(t
 ), k=%.1f$[], k), Color=colors(i,:))[] 
  []
 
-[29] [30]
+[30]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1165.
+(mdframed)              on input line 1175.
 
-Overfull \hbox (44.71843pt too wide) in paragraph at lines 1179--1179
+Overfull \hbox (44.71843pt too wide) in paragraph at lines 1189--1189
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_31.g.Time, plot_31.g.Data, LineW
 idth=2, color="red", LineStyle="--", ...[] 
  []
@@ -2109,15 +2110,15 @@ idth=2, color="red", LineStyle="--", ...[]
 [31]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1219.
+(mdframed)              on input line 1229.
 
-Overfull \hbox (7.79526pt too wide) in paragraph at lines 1235--1235
+Overfull \hbox (7.79526pt too wide) in paragraph at lines 1245--1245
 []                \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(t
 ), k=%.3f$[], k), Color=colors(i,:))[] 
  []
 
 
-Overfull \hbox (57.02612pt too wide) in paragraph at lines 1239--1239
+Overfull \hbox (57.02612pt too wide) in paragraph at lines 1249--1249
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_41.g.Time, plot_41.g.Data, LineW
 idth=3, color="black", LineStyle="--", ...[] 
  []
@@ -2125,15 +2126,15 @@ idth=3, color="black", LineStyle="--", ...[]
 [32]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1278.
+(mdframed)              on input line 1288.
 
-Overfull \hbox (44.71843pt too wide) in paragraph at lines 1292--1292
+Overfull \hbox (44.71843pt too wide) in paragraph at lines 1302--1302
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_42.g.Time, plot_42.g.Data, LineW
 idth=2, color="red", LineStyle="--", ...[] 
  []
 
 
-Overfull \hbox (7.79526pt too wide) in paragraph at lines 1317--1317
+Overfull \hbox (7.79526pt too wide) in paragraph at lines 1327--1327
 []                \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$e(t
 ), k=%.3f$[], k), Color=colors(i,:))[] 
  []
@@ -2141,9 +2142,9 @@ Overfull \hbox (7.79526pt too wide) in paragraph at lines 1317--1317
 [33]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1339.
+(mdframed)              on input line 1349.
 
-Overfull \hbox (44.71843pt too wide) in paragraph at lines 1353--1353
+Overfull \hbox (44.71843pt too wide) in paragraph at lines 1363--1363
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_43.g.Time, plot_43.g.Data, LineW
 idth=2, color="red", LineStyle="--", ...[] 
  []
@@ -2151,15 +2152,15 @@ idth=2, color="red", LineStyle="--", ...[]
 [34]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1393.
+(mdframed)              on input line 1403.
 
-Overfull \hbox (7.79523pt too wide) in paragraph at lines 1411--1411
+Overfull \hbox (7.79523pt too wide) in paragraph at lines 1421--1421
 []                \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(t
 ), k_p=%.1f, k_i=%.1f$[], k_p, k_i))[] 
  []
 
 
-Overfull \hbox (44.71843pt too wide) in paragraph at lines 1415--1415
+Overfull \hbox (44.71843pt too wide) in paragraph at lines 1425--1425
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_51.g.Time, plot_51.g.Data, LineW
 idth=2, color="red", LineStyle="--", ...[] 
  []
@@ -2167,9 +2168,9 @@ idth=2, color="red", LineStyle="--", ...[]
 [35]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1432.
+(mdframed)              on input line 1442.
 
-Overfull \hbox (7.79523pt too wide) in paragraph at lines 1454--1454
+Overfull \hbox (7.79523pt too wide) in paragraph at lines 1464--1464
 []                \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$e(t
 ), k_p=%.1f, k_i=%.1f$[], k_p, k_i))[] 
  []
@@ -2177,34 +2178,36 @@ Overfull \hbox (7.79523pt too wide) in paragraph at lines 1454--1454
 [36]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1472.
+(mdframed)              on input line 1482.
 
-Overfull \hbox (7.79523pt too wide) in paragraph at lines 1487--1487
+Overfull \hbox (7.79523pt too wide) in paragraph at lines 1497--1497
 []                \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$y(t
 ), k_p=%.1f, k_i=%.1f$[], k_p, k_i))[] 
  []
 
 
-Overfull \hbox (57.02612pt too wide) in paragraph at lines 1491--1491
+Overfull \hbox (57.02612pt too wide) in paragraph at lines 1501--1501
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_52.g.Time, plot_52.g.Data, LineW
 idth=2, color="black", LineStyle="--", ...[] 
  []
 
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1508.
+(mdframed)              on input line 1518.
 
-Overfull \hbox (7.79523pt too wide) in paragraph at lines 1521--1521
+Overfull \hbox (7.79523pt too wide) in paragraph at lines 1531--1531
 []                \TU/FiraCode-Regular.otf(1)/m/n/10 DisplayName=sprintf([]$e(t
 ), k_p=%.1f, k_i=%.1f$[], k_p, k_i))[] 
  []
 
+Package mdframed Info: Not enough space on this page on input line 1546.
 [37]
+Package mdframed Info: Not enough space on this page on input line 1546.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 1540.
+(mdframed)              on input line 1550.
 
-Overfull \hbox (38.56459pt too wide) in paragraph at lines 1550--1550
+Overfull \hbox (38.56459pt too wide) in paragraph at lines 1560--1560
 []\TU/FiraCode-Regular.otf(1)/m/n/10 plot(plot_61.g.Time, plot_61.g.Data, LineW
 idth=2, color="red", LineStyle="-", ...[] 
  []
@@ -2232,10 +2235,10 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 45713 strings out of 474878
- 957106 string characters out of 5762516
- 2032195 words of memory out of 5000000
- 66990 multiletter control sequences out of 15000+600000
+ 45709 strings out of 474878
+ 957020 string characters out of 5762516
+ 2029101 words of memory out of 5000000
+ 66986 multiletter control sequences out of 15000+600000
  573992 words of font info for 92 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  91i,10n,136p,791b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
