@@ -669,8 +669,8 @@ $$W(s)=\frac{1}{4s^2 +0.6s+1},~~V=2.5,~~A\sin (\omega t)=3\sin (0.4t)$$
 
 \begin{par}
 $$\begin{array}{l}
-W_{g\to y} (s)=\frac{W(s)H(s)}{1+W(s)H(s)}=\frac{\left(k_П +\frac{k_И }{s}\right)\cdot \frac{1}{4s^2 +0.6s+1}}{1+\left(k_П +\frac{k_И }{s}\right)\cdot \frac{1}{4s^2 +0.6s+1}}=\frac{k_П s+k_И }{s(4s^2 +0.6s+1)+k_П s+k_И }=\\
-=\frac{k_П s+k_И }{4s^3 +0.6s^2 +(1+k_П )s+k_И }
+W_{g\to y} (s)=\frac{W(s)H(s)}{1+W(s)H(s)}=\frac{\left(k_\text{П} +\frac{k_\text{И} }{s}\right)\cdot \frac{1}{4s^2 +0.6s+1}}{1+\left(k_\text{П} +\frac{k_\text{И} }{s}\right)\cdot \frac{1}{4s^2 +0.6s+1}}=\frac{k_\text{П} s+k_\text{И} }{s(4s^2 +0.6s+1)+k_\text{П} s+k_\text{И} }=\\
+=\frac{k_\text{П} s+k_\text{И} }{4s^3 +0.6s^2 +(1+k_\text{П} )s+k_\text{И} }
 \end{array}$$
 \end{par}
 
@@ -678,35 +678,35 @@ W_{g\to y} (s)=\frac{W(s)H(s)}{1+W(s)H(s)}=\frac{\left(k_П +\frac{k_И }{s}\rig
 Найдем такие $k$, при которых замкнутая система является ассимптотически устойчивой.
 
 
-$4s^3 +0.6s^2 +(1+k_П )s+k_И =0$, воспользуемся критерием Гурвица, матрица Гурвица:
+$4s^3 +0.6s^2 +(1+k_\text{П} )s+k_\text{И} =0$, воспользуемся критерием Гурвица, матрица Гурвица:
 
 \begin{par}
 $$A=\left(\begin{array}{ccc}
-0.6 & k_И  & 0\\
-4 & 1+k_П  & 0\\
-0 & 0.6 & k_И 
+0.6 & k_\text{И}  & 0\\
+4 & 1+k_\text{П}  & 0\\
+0 & 0.6 & k_\text{И} 
 \end{array}\right)$$
 \end{par}
 
 
-Ведущие угловые миноры матрицы Гурвица: $\Delta_1 =0.6,~~\Delta_2 =0.6(1+k_П )-4k_И ,~~\Delta_3 =k_И \cdot \Delta_2 =k_И (0.6(1+k_П )-4k_И )$
+Ведущие угловые миноры матрицы Гурвица: $\Delta_1 =0.6,~~\Delta_2 =0.6(1+k_\text{П} )-4k_\text{И} ,~~\Delta_3 =k_\text{И} \cdot \Delta_2 =k_\text{И} (0.6(1+k_\text{П} )-4k_\text{И} )$
 
 
 Следовательно, система ассимптотически устойчива при:
 
 \begin{par}
 $$\left\lbrace \begin{array}{c}
-k_И >0\\
-~~0.6(1+k_П )-4k_И >0\\
-k_П >-1
+k_\text{И} >0\\
+~~0.6(1+k_\text{П} )-4k_\text{И} >0\\
+k_\text{П} >-1
 \end{array}\right.~~\Rightarrow \left\lbrace \begin{array}{c}
-k_И \in \left(0,~0.15(1+k_П )\right)\\
-k_П >-1
+k_\text{И} \in \left(0,~0.15(1+k_\text{П} )\right)\\
+k_\text{П} >-1
 \end{array}\right.$$
 \end{par}
 
 
-Зададимся значениями $k_П =\lbrace 1,2\rbrace$, $k_И =\lbrace 0.1,0.2\rbrace$. Таким образом, рассмотрим комбинации параметров: $(k_П ,k_И )=(1,0.1),~~(1,0.2),~~(2,0.1),~~(2,0.2)$.
+Зададимся значениями $k_\text{П} =\lbrace 1,2\rbrace$, $k_\text{И} =\lbrace 0.1,0.2\rbrace$. Таким образом, рассмотрим комбинации параметров: $(k_\text{П} ,k_\text{И} )=(1,0.1),~~(1,0.2),~~(2,0.1),~~(2,0.2)$.
 
 
 Проведем исследование для двух режимов работы.
@@ -722,8 +722,8 @@ k_П >-1
 
 \begin{par}
 $$\begin{array}{l}
-E(s)=\frac{1}{1+W(s)H(s)}G(s)=\frac{1}{1+\left(k_П +\frac{k_И }{s}\right)\cdot \frac{1}{4s^2 +0.6s+1}}\cdot \frac{V}{s^2 }=\frac{s(4s^2 +0.6s+1)}{s(4s^2 +0.6s+1)+k_П s+k_И }\cdot \frac{V}{s^2 }=\\
-=\frac{V(4s^2 +0.6s+1)}{s(4s^3 +0.6s^2 +(1+k_П )s+k_И )}
+E(s)=\frac{1}{1+W(s)H(s)}G(s)=\frac{1}{1+\left(k_\text{П} +\frac{k_\text{И} }{s}\right)\cdot \frac{1}{4s^2 +0.6s+1}}\cdot \frac{V}{s^2 }=\frac{s(4s^2 +0.6s+1)}{s(4s^2 +0.6s+1)+k_\text{П} s+k_\text{И} }\cdot \frac{V}{s^2 }=\\
+=\frac{V(4s^2 +0.6s+1)}{s(4s^3 +0.6s^2 +(1+k_\text{П} )s+k_\text{И} )}
 \end{array}$$
 \end{par}
 
@@ -731,22 +731,22 @@ E(s)=\frac{1}{1+W(s)H(s)}G(s)=\frac{1}{1+\left(k_П +\frac{k_И }{s}\right)\cdot
 Согласно теореме о конечном значении, если все полюса $s\cdot E(s)$ имеют отрицательную вещественную часть, $\lim_{t\to +\infty } y(t)=\lim_{s\to 0} sY(s)$.
 
 
-$s\cdot E(s)=\frac{V(4s^2 +0.6s+1)}{4s^3 +0.6s^2 +(1+k_П )s+k_И }$, полюса данной передаточной функции отрицательны, так как ранее мы уже подбирали диапазон $k$, соответствующий отрицательным полюсам передаточной функции с таким же знаменателем. Можем применнить теорему о конечном значении и найти установившуюся ошибку:
+$s\cdot E(s)=\frac{V(4s^2 +0.6s+1)}{4s^3 +0.6s^2 +(1+k_\text{П} )s+k_\text{И} }$, полюса данной передаточной функции отрицательны, так как ранее мы уже подбирали диапазон $k$, соответствующий отрицательным полюсам передаточной функции с таким же знаменателем. Можем применнить теорему о конечном значении и найти установившуюся ошибку:
 
 \begin{par}
-$$e_{\text{уст}} =\lim_{s\to 0} s\cdot E(s)=\lim_{s\to 0} \frac{V(4s^2 +0.6s+1)}{4s^3 +0.6s^2 +(1+k_П )s+k_И }=\frac{V(4\cdot 0^2 +0.6\cdot 0+1)}{4\cdot 0^3 +0.6\cdot 0^2 +(1+k_П )\cdot 0+k_И }=\frac{V}{k_И }$$
+$$e_{\text{уст}} =\lim_{s\to 0} s\cdot E(s)=\lim_{s\to 0} \frac{V(4s^2 +0.6s+1)}{4s^3 +0.6s^2 +(1+k_\text{П} )s+k_\text{И} }=\frac{V(4\cdot 0^2 +0.6\cdot 0+1)}{4\cdot 0^3 +0.6\cdot 0^2 +(1+k_\text{П} )\cdot 0+k_\text{И} }=\frac{V}{k_\text{И} }$$
 \end{par}
 
 
 Как видим, пропорциональный коэффициент не влияет на значение установившейся ошибки.
 
 
-Рассчитаем для каждого $k_И$:
+Рассчитаем для каждого $k_\text{И}$:
 
 \begin{itemize}
 \setlength{\itemsep}{-1ex}
-   \item{\begin{flushleft} $\displaystyle k_И =0.1,~~e_{\text{уст}} =\frac{2.5}{0.1}=25$ \end{flushleft}}
-   \item{\begin{flushleft} $\displaystyle k_И =0.2,~~e_{\text{уст}} =\frac{2.5}{0.2}=12.5$ \end{flushleft}}
+   \item{\begin{flushleft} $\displaystyle k_\text{И} =0.1,~~e_{\text{уст}} =\frac{2.5}{0.1}=25$ \end{flushleft}}
+   \item{\begin{flushleft} $\displaystyle k_\text{И} =0.2,~~e_{\text{уст}} =\frac{2.5}{0.2}=12.5$ \end{flushleft}}
 \end{itemize}
 
 
