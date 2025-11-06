@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  4 NOV 2025 23:48
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.7.22)  6 NOV 2025 12:19
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1931,60 +1931,17 @@ Overfull \hbox (5.04051pt too wide) in paragraph at lines 627--628
 Missing character: There is no у ("443) in font lmmi8!
 Missing character: There is no с ("441) in font lmmi8!
 Missing character: There is no т ("442) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
 [19]
 Missing character: There is no у ("443) in font lmmi8!
 Missing character: There is no с ("441) in font lmmi8!
 Missing character: There is no т ("442) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi6!
-Missing character: There is no И ("418) in font lmmi6!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no П ("41F) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
-Missing character: There is no И ("418) in font lmmi8!
+
+Overfull \hbox (5.51433pt too wide) detected at line 737
+\OML/lmm/m/it/12 e[] \OT1/lmr/m/n/12 = [] \OML/lmm/m/it/12 s \OMS/lmsy/m/n/12 ^
+^A \OML/lmm/m/it/12 E\OT1/lmr/m/n/12 (\OML/lmm/m/it/12 s\OT1/lmr/m/n/12 ) = [] 
+[] = [] = []
+ []
+
 File: /home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_4/code
 /images/scheme_51.png Graphic file (type bmp)
 </home/ns/Desktop/ITMO-courses/Linear_automatic_control_systems/lab_4/code/imag
@@ -2241,6 +2198,6 @@ Here is how much of TeX's memory you used:
  66986 multiletter control sequences out of 15000+600000
  573992 words of font info for 92 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 91i,10n,136p,791b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 91i,12n,136p,791b,3905s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (39 pages).
