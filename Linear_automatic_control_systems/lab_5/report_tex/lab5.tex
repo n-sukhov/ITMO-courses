@@ -1,0 +1,1425 @@
+% This LaTeX was auto-generated from MATLAB code.
+% To make changes, update the MATLAB code and export to LaTeX again.
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{epstopdf}
+\usepackage[table]{xcolor}
+\usepackage{matlab}
+\usepackage[paperheight=795pt,paperwidth=614pt,top=72pt,bottom=72pt,right=72pt,left=72pt,heightrounded]{geometry}
+
+\sloppy
+\epstopdfsetup{outdir=./}
+\graphicspath{ {./lab5_media/} }
+
+\matlabmultipletitles
+
+\begin{document}
+
+\matlabtitle{Исследование типовых динамических звеньев}
+
+\begin{par}
+\begin{flushleft}
+\textbackslash{}section\{Исследование типовых динамических звеньев\}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+В рамках данной лабораторной работы необходимо исследовать реальные объекты, сопоставим их с известными нам типовыми динамическими звеньями и получим их передаточные функции в стандартизированной форме (через коэффициенты усиления $K$ и постоянные времени $T$). Затем запишем аналитические выражения для временных (переходной и весовой) и частотных (АЧХ, ФЧХ, ЛАЧХ и ЛФЧХ) характеристик исследуемых звеньев. Проведем моделирование с целью получения графического представления всех перечисленных характеристик и сравним с теоретическими для данного типового звена.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Вариант 27}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbackslash{}subsection\{ДПТ\}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Даны уравнения двигателя постоянного тока независимого возбуждения:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+$J\dot{\omega} =M$, $M=k_{\textrm{m}} I$, $I=\frac{U+\varepsilon_{\textrm{i}} }{R}$, $\varepsilon_i =-k_{\textrm{e}} \omega$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Возьмем из \textbf{Таблицы 1} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $k_{\textrm{m}} =0.3824$ Н·м/А — конструктивная постоянная по моменту;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $k_{\textrm{e}} =0.3824$ В·с — конструктивная постоянная по ЭДС;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $J=0.0019$ кг·м\textasciicircum{}2 — момент инерции ротора;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $R=4.6296$ Ом — активное сопротивление обмоток ротора.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Входом объекта считаем $U(t)$, а выходом $\omega (t)$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Найдём передаточную функцию и определим тип звена:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\begin{array}{l}
+J\dot{\omega} =k_m \cdot \frac{U-k_e \omega }{R}=\frac{k_m }{R}U-\frac{k_e k_m }{R}\omega ,~~J\dot{\omega} +\frac{k_e k_m }{R}\omega =\frac{k_m }{R}U\\
+\frac{JR}{k_e k_m }\dot{\omega} +\omega =\frac{1}{k_e }U
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Передаточная функция: $W(s)=\frac{K}{Ts+1}$, где $K=\frac{1}{k_e }=\frac{1}{0.3824}=2.615,~~T=\frac{JR}{k_e k_m }=\frac{0.0019\cdot 4.6296}{0.3824\cdot 0.3824}=0.0602$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Типовое звено - \textit{реальное усилительное}.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Запишем аналитические выражения для временных и частотных характеристик:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$W(j\omega )=\frac{K}{T(j\omega )+1}=\frac{K-KT(j\omega )}{T^2 \omega^2 +1}=\frac{K}{T^2 \omega^2 +1}-\frac{KT\omega }{T^2 \omega^2 +1}j$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{Ts+1}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{T}\cdot \frac{1}{s+\frac{1}{T}}\right\rbrace =\frac{K}{T}e^{-\frac{t}{T}}$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s(Ts+1)}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}-\frac{K}{s+\frac{1}{T}}\right\rbrace =K\left(1-e^{-\frac{t}{T}} \right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+АЧХ: 
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\begin{array}{l}
+A(\omega )=|W(j\omega )|=\sqrt{{\textrm{Re}}^2 (W)+{\textrm{Im}}^2 (W)}=\sqrt{{\left(\frac{K}{T^2 \omega^2 +1}\right)}^2 +{\left(\frac{KT\omega }{T^2 \omega^2 +1}\right)}^2 }=\\
+=\sqrt{\frac{K^2 +T^2 K^2 \omega^2 }{(T^2 \omega^2 +1)^2 }}=\frac{K}{\sqrt{T^2 \omega^2 +1}}
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ФЧХ:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$\varphi (\omega )=\arg W(j\omega )=\textrm{atan2}(\textrm{Im}(W),\textrm{Re}(W))=\textrm{atan2}\left(-\frac{KT\omega }{1+T^2 \omega^2 },\frac{K}{1+T^2 \omega^2 }\right)$$
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+ЛАЧХ и ЛФЧХ находятся из формулы: $\lg (W(j\omega ))=\lg (A(\omega ))+j\lg (e)\phi (\omega )$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛАЧХ: $L(\omega )=20\lg \left(A(\omega )\right)=20\lg K-20\lg \sqrt{T^2 \omega^2 +1}$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛФЧХ: $\varphi (\omega )=\textrm{atan}\left(\frac{\textrm{Im}(W)}{\textrm{Re}(W)}\right)=-\textrm{atan}(T\omega )$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+\textbackslash{}subsection\{ДПТ 2.0\}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Даны уравнения двигателя постоянного тока независимого возбуждения:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+$J\dot{\omega} =M$, $M=k_{\textrm{m}} I$, $I=\frac{U+\varepsilon }{R}$, $\varepsilon =\varepsilon_{\textrm{i}} +\varepsilon_{\textrm{s}}$, $\varepsilon_{\textrm{i}} =-k_{\textrm{e}} \omega$, $\varepsilon_{\textrm{s}} =-L\dot{I}$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Возьмем из \textbf{Таблицы 1} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $k_{\textrm{m}} =0.3824$ Н·м/А — конструктивная постоянная по моменту;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $k_{\textrm{e}} =0.3824$ В·с — конструктивная постоянная по ЭДС;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $J=0.0019$ кг·м\textasciicircum{}2 — момент инерции ротора;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $R=4.6296$ Ом — активное сопротивление обмоток ротора.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $L=1.1194$ Гн — индуктивность обмоток ротора.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Входом объекта считаем $U(t)$, а выходом $\omega (t)$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Найдём передаточную функцию и определим тип звена:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+ $$\begin{array}{l}
+J\dot{\omega} =k_m \cdot \frac{U+\varepsilon }{R}=k_m \cdot \frac{U-k_e \omega -L\dot{I} }{R},~~JR\dot{\omega} =k_m U-k_e k_m \omega -Lk_m \dot{I} \\
+JL\ddot{\omega} +JR\dot{\omega} +k_e k_m \omega =k_m U,~~\frac{JL}{k_e k_m }\ddot{\omega} +\frac{JR}{k_e k_m }\dot{\omega} +\omega =\frac{1}{k_e }U
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Передаточная функция: $W(s)=\frac{K}{T^2 s^2 +2\xi Ts+1}$, где $\begin{array}{l}
+K=\frac{1}{k_e }=2.615,~~T=\sqrt{\frac{JL}{k_e k_m }}=\sqrt{\frac{0.0019\cdot 1.1194}{0.3824\cdot 0.3824}}=\sqrt{0.01458}=0.1207,\\
+\xi =\frac{R\sqrt{J}}{2\sqrt{Lk_e k_m }}=\frac{4.6296\cdot \sqrt{0.0019}}{2\cdot \sqrt{1.1194\cdot 0.3824\cdot 0.3824}}=\frac{0.2018}{2\cdot 0.3781}=0.2668.
+\end{array}$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Типовое звено - \textit{колебательное}.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Запишем аналитические выражения для временных и частотных характеристик:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$W(j\omega )=\frac{K}{1-T^2 \omega^2 +j(2\xi T\omega )}=\frac{K(1-T^2 \omega^2 -j2\xi T\omega )}{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }=\frac{K(1-T^2 \omega^2 )}{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }-j\frac{2K\xi T\omega }{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Весовая:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+ $$\begin{array}{l}
+w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{T^2 s^2 +2\xi Ts+1}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K/T^2 }{s^2 +2\frac{\xi }{T}s+\frac{1}{T^2 }}\right\rbrace =\\
+={\mathcal{L}}^{-1} \left\lbrace \frac{K/T^2 }{{\left(s+\frac{\xi }{T}\right)}^2 +\frac{1-\xi^2 }{T^2 }}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K/T^2 }{{\left(s+\frac{\xi }{T}\right)}^2 +{\left(\frac{\sqrt{1-\xi^2 }}{T}\right)}^2 }\right\rbrace =\\
+=\frac{K/T^2 }{\frac{\sqrt{1-\xi^2 }}{T}}e^{-\frac{\xi }{T}t} \sin \left(\frac{\sqrt{1-\xi^2 }}{T}t\right)=\frac{K}{T\sqrt{1-\xi^2 }}e^{-\frac{\xi }{T}t} \sin \left(\frac{\sqrt{1-\xi^2 }}{T}t\right)
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Переходная:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+ $$\begin{array}{l}
+h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s(T^2 s^2 +2\xi Ts+1)}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}-\frac{K(s+\frac{2\xi }{T})}{s^2 +\frac{2\xi }{T}s+\frac{1}{T^2 }}\right\rbrace =\\
+={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}-K\cdot \frac{s+\frac{\xi }{T}}{(s+\frac{\xi }{T})^2 +{\left(\frac{\sqrt{1-\xi^2 }}{T}\right)}^2 }-\frac{K\xi }{T}\cdot \frac{1}{(s+\frac{\xi }{T})^2 +{\left(\frac{\sqrt{1-\xi^2 }}{T}\right)}^2 }\right\rbrace =\\
+=K-Ke^{-\frac{\xi }{T}t} \left\lbrack \cos \left(\frac{\sqrt{1-\xi^2 }}{T}t\right)+\frac{\xi }{\sqrt{1-\xi^2 }}\sin \left(\frac{\sqrt{1-\xi^2 }}{T}t\right)\right\rbrack 
+\end{array}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+АЧХ: 
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$A(\omega )=|W(j\omega )|=\sqrt{{\textrm{Re}}^2 (W)+{\textrm{Im}}^2 (W)}=\sqrt{\frac{K^2 }{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }}=\frac{K}{\sqrt{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\textrm{atan2}\left(-2\xi T\omega ,\,1-T^2 \omega^2 \right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛАЧХ: $L(\omega )=20\lg (A(\omega ))=20\lg K-10\lg \left\lbrack (1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 \right\rbrack$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛФЧХ: $\varphi (\omega )=-\textrm{atan}\left(\frac{2\xi T\omega }{1-T^2 \omega^2 }\right)$
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+
+\vspace{1em}
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+\textbackslash{}subsection\{Конденсируй-умножай\}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Дано уравнение конденсатора:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+$I=C\frac{dU}{dt}$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Возьмем из \textbf{Таблицы 2} инструкции по выполнению данной л/р значение, которое соответствует нашему варианту, для следующих величин:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $C=354$ мкФ — ёмкость конденсатора.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Входом объекта считаем $I(t)$, а выходом $U(t)$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Найдём передаточную функцию и определим тип звена:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+$I=C\dot{U}$, Передаточная функция: $W(s)=\frac{K}{s}$, где $K=\frac{1}{C}=\frac{1}{3.54\cdot 10^{-4} }=2824.86$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Типовое звено - \textit{идеальное интегрирующее.}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Запишем аналитические выражения для временных и частотных характеристик:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$W(j\omega )=\frac{K}{j\omega }=-j\frac{K}{\omega }=0-j\frac{K}{\omega }$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}\right\rbrace =K$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s^2 }\right\rbrace =Kt$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+АЧХ: $A(\omega )=|W(j\omega )|=\sqrt{{\textrm{Re}}^2 (W)+{\textrm{Im}}^2 (W)}=\sqrt{0^2 +{\left(\frac{K}{\omega }\right)}^2 }=\frac{K}{\omega }$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\textrm{atan2}\left(-\frac{K}{\omega },\,0\right)=-\frac{\pi }{2}$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛАЧХ: $L(\omega )=20\lg (A(\omega ))=20\lg K-20\lg \omega$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛФЧХ: $\varphi (\omega )=-\frac{\pi }{2}$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+
+\vspace{1em}
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+\textbackslash{}subsection\{Пружинка\}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Даны уравнения пружинного маятника:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+$F_{\textrm{упр}} =-k\cdot x$, $F=m\cdot a$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Возьмем из \textbf{Таблицы 3} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $M=26$ кг — масса груза;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $k=72$ Н/м — коэффициент жесткости пружины.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Входом объекта считаем $F_{ext} (t)$ (некую внешнюю силу, направленную соосно движению маятника), а выходом $x(t)$. Считаем, что маятник движется ортогонально силе тяжести (см. рисунок ???).
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+???РИСУНОК???
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Найдём передаточную функцию и определим тип звена:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$F=m\cdot a=m\ddot{x} ,~~m\ddot{x} =-kx+F_{ext} ,~~\frac{m}{k}\ddot{x} +x=\frac{F_{ext} }{k}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Передаточная функция: $W(s)=\frac{K}{T^2 s^2 +1}$, где $K=\frac{1}{k}=\frac{1}{72}=0.01389,~~T=\sqrt{\frac{m}{k}}=\sqrt{\frac{26}{72}}=\sqrt{0.3611}=0.6009$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Типовое звено - \textit{консервативное}.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Запишем аналитические выражения для временных и частотных характеристик:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$W(j\omega )=\frac{K}{1-T^2 \omega^2 }$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{T^2 s^2 +1}\right\rbrace =\frac{K}{T}\sin \left(\frac{t}{T}\right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s(T^2 s^2 +1)}\right\rbrace =K\left(1-\cos \left(\frac{t}{T}\right)\right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+АЧХ: $A(\omega )=|W(j\omega )|=\sqrt{{\textrm{Re}}^2 (W)+{\textrm{Im}}^2 (W)}=\frac{K}{\left|1-T^2 \omega^2 \right|}$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\left\lbrace \begin{array}{cc}
+0, & \omega \le \frac{1}{T},\\
+-\pi , & \omega >\frac{1}{T},
+\end{array}\right.$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛАЧХ: $L(\omega )=20\lg A(\omega )=20\lg K-20\lg \left(1-T^2 \omega^2 \right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛФЧХ: $\varphi (\omega )=\left\lbrace \begin{array}{cc}
+0, & \omega \le \frac{1}{T},\\
+-\pi , & \omega >\frac{1}{T},
+\end{array}\right.$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+
+\vspace{1em}
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+\textbackslash{}subsection\{Что ты такое?\}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+На рисунке ??? представлена принципиальная схема регулятора на операционном усилителе. Возьмем из \textbf{Таблицы 4} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $R_{\textrm{1}} =2609$ Ом — сопротивление входного резистора;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $R_{\textrm{2}} =13809$ Ом — сопротивление резистора отрицательной обратной связи;
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+• $C=266$  — емкость конденсатора отрицательной обратной связи.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Входом объекта считаем $U_{\textrm{ВХ}} (t)$, а выходом $U_{\textrm{ВЫХ}}$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Помимо соответствия типовому звену определим тип регулятора.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textit{В рамках этого задания разрешается не учитывать инверсию рассматриваемого регулятора.}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+???РИСУНОК???
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Найдём передаточную функцию и определим тип звена:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Составим систему на основе схемы:
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$I_1 =\frac{U_{\textrm{ВХ}} }{R_1 },~~\frac{U_{\textrm{ВХ}} }{R_1 }=-\frac{U_{\textrm{ВЫХ}} }{\left(R_2 +\frac{1}{Cs}\right)},~~W(s)=\frac{U_{\textrm{ВЫХ}} }{U_{\textrm{ВХ}} }=\frac{R_2 +\frac{1}{Cs}}{-R_1 }=\frac{\frac{1}{-R_1 C}(CR_2 s+1)}{s}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Передаточная функция: $W(s)=\frac{K(Ts+1)}{s}$, где $K=\frac{1}{-R_1 C}=\frac{1}{2609\cdot 266\cdot 10^{-6} }=1.441,~~T=CR_2 =266\cdot 10^{-6} \cdot 13809=3.673$.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Типовое звено - \textit{изодромное. }Тип регулятора - \textit{пропорционально-интегральный (ПИ)}.
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Запишем аналитические выражения для временных и частотных характеристик:}
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$W(j\omega )=\frac{K(T(j\omega )+1)}{j\omega }=KT-\frac{K}{\omega }j$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K(Ts+1)}{s}\right\rbrace =K(T\delta (t)+1)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K(Ts+1)}{s^2 }\right\rbrace =K(T+t)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+АЧХ: 
+\end{flushleft}
+\end{par}
+
+\begin{par}
+$$A(\omega )=|W(j\omega )|=\sqrt{{\textrm{Re}}^2 (W)+{\textrm{Im}}^2 (W)}=\sqrt{(KT)^2 +{\left(\frac{K}{\omega }\right)}^2 }=K\sqrt{T^2 +\frac{1}{\omega^2 }}$$
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\textrm{atan2}\left(-\frac{K}{\omega },\,KT\right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛАЧХ: $L(\omega )=20\lg (A(\omega ))=20\lg K+10\lg \left(T^2 +\frac{1}{\omega^2 }\right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+ЛФЧХ: $\varphi (\omega )=-\textrm{atan}\left(\frac{1}{T\omega }\right)$
+\end{flushleft}
+\end{par}
+
+\begin{par}
+\begin{flushleft}
+\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+\textbackslash{}subsection\{Выводы\}
+\end{flushleft}
+\end{par}
+
+
+\vspace{1em}
+\begin{par}
+\begin{flushleft}
+\textbackslash{}section\{Приложение\}
+\end{flushleft}
+\end{par}
+
+\matlabtitle{ДПТ}
+
+\begin{matlabcode}
+K = 2.615;
+T = 0.0602;
+simtime = 0.6;
+
+out_h = sim("lab5_1_step.slx", simtime);
+
+figure;
+set(gcf, AutoResizeChildren="off", Position=[100 100 1200 1200]);
+
+subplot(2,1,1);
+hold on;
+
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, simulation");
+
+t = out_h.y.Time;
+plot(t, K*(1 - exp(-t/T)), "r--", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, analytical");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gca, FontSize=14);
+title("Step response", Interpreter="latex");
+hold off;
+
+subplot(2,1,2);
+hold on;
+
+out_w = sim("lab5_1_imp.slx", simtime);
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, simulation");
+
+t = out_w.w.Time;
+plot(t, (K/T)*exp(-t/T), "r--", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, analytical");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gca, FontSize=14);
+title("Impulse response", Interpreter="latex");
+hold off;
+
+exportgraphics(gcf, "images/plot_dpt.png", Resolution=200);
+\end{matlabcode}
+
+
+\begin{matlabcode}
+K = 2.615;
+T = 0.0602;
+
+sys = tf(K, [T 1]);
+
+w = linspace(0, 1000, 100000);
+
+[mag, phase] = bode(sys, w);
+mag = squeeze(mag);
+phase = squeeze(phase);
+phase = unwrap(phase * pi/180) * 180/pi;
+
+A_analytic = K ./ sqrt((T*w).^2 + 1);
+phi_analytic = -atan(T*w);
+
+figure(Position=[100 100 1400 900]);
+set(gcf, Color='w');
+
+subplot(2,2,1);
+plot(w, mag, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, A_analytic, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$A(\omega)$', Interpreter='latex');
+title('AFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+subplot(2,2,2);
+plot(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('PFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+
+subplot(2,2,3);
+semilogx(w, 20*log10(mag), ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, 20*log10(A_analytic), ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$L(\omega)$, dB', Interpreter='latex');
+title('LAFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+subplot(2,2,4);
+semilogx(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('LPFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+set(findall(gcf, Type='axes'), FontSize=14);
+exportgraphics(gcf, 'images/freq_dpt.png', Resolution=300);
+\end{matlabcode}
+
+
+\matlabtitle{ДПТ 2.0}
+
+\begin{matlabcode}
+K = 2.615;
+T = 0.1207;
+xi = 0.2668;
+simtime = 3;
+
+figure;
+set(gcf, AutoResizeChildren="off", Position=[100 100 1200 1200]);
+
+subplot(2,1,1);
+hold on;
+
+out_h = sim("lab5_2_step.slx", simtime);
+
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, simulation");
+
+t = out_h.y.Time;
+wd = sqrt(1 - xi^2)/T;
+h_analytic = K * (1 - exp(-xi*t/T) .* (cos(wd*t) + (xi/sqrt(1-xi^2))*sin(wd*t)));
+plot(t, h_analytic, "r--", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, analytical");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gca, FontSize=14);
+title("Step response", Interpreter="latex");
+hold off;
+
+subplot(2,1,2);
+hold on;
+
+out_w = sim("lab5_2_imp.slx", simtime);
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, simulation");
+
+t = out_w.w.Time;
+wd = sqrt(1 - xi^2)/T;
+w_analytic = (K/(T*sqrt(1-xi^2))) * exp(-xi*t/T) .* sin(wd*t);
+plot(t, w_analytic, "r--", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, analytical");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gca, FontSize=14);
+title("Impulse response", Interpreter="latex");
+hold off;
+
+exportgraphics(gcf, "images/plot_dpt2.png", Resolution=200);
+\end{matlabcode}
+
+
+\begin{matlabcode}
+K = 2.615;
+T = 0.1207;
+xi = 0.2668;
+sys = tf(K, [T^2, 2*xi*T, 1]);
+
+w = linspace(0, 1000, 10000);
+
+[mag, phase] = bode(sys, w);
+mag = squeeze(mag); phase = squeeze(phase);
+phase = unwrap(phase * pi/180) * 180/pi;
+
+den = (1 - T^2*w.^2).^2 + (2*xi*T*w).^2;
+A_analytic = K ./ sqrt(den);
+phi_analytic = atan2(-2*xi*T*w, 1 - T^2*w.^2);
+
+figure(Position=[100 100 1400 900]);
+set(gcf, Color='w');
+
+subplot(2,2,1);
+plot(w, mag, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, A_analytic, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$A(\omega)$', Interpreter='latex');
+title('AFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+xlim([0, 100]);
+
+subplot(2,2,2);
+plot(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('PFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+xlim([0, 100]);
+
+subplot(2,2,3);
+semilogx(w, 20*log10(mag), ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, 20*log10(A_analytic), ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$L(\omega)$, dB', Interpreter='latex');
+title('LAFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+subplot(2,2,4);
+semilogx(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('LPFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+set(findall(gcf, Type='axes'), FontSize=14);
+exportgraphics(gcf, 'images/freq_dpt2.png', Resolution=300);
+\end{matlabcode}
+
+
+\matlabtitle{Конденсируй-умножай}
+
+\begin{matlabcode}
+K = 2824.86;
+simtime = 1;
+
+figure;
+set(gcf, AutoResizeChildren="off", Position=[100 100 1200 1200]);
+
+subplot(2,1,1);
+hold on;
+
+out_h = sim("lab5_3_step.slx", simtime);
+
+
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, simulation");
+
+t = out_h.y.Time;
+plot(t, K*t, "r--", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, analytical");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gca, FontSize=14);
+title("Step response", Interpreter="latex");
+hold off;
+
+subplot(2,1,2);
+hold on;
+
+out_w = sim("lab5_3_imp.slx", simtime);
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, simulation");
+
+t = out_w.w.Time;
+plot(t, K*ones(size(t)), "r--", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, analytical");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gca, FontSize=14);
+title("Impulse response", Interpreter="latex");
+hold off;
+
+exportgraphics(gcf, "images/plot_cap.png", Resolution=200);
+\end{matlabcode}
+
+
+\begin{matlabcode}
+K = 2824.86;
+sys = tf(K, [1 0]);
+w = linspace(1e-3, 100, 100000);
+
+[mag, phase] = bode(sys, w);
+mag = squeeze(mag); phase = squeeze(phase);
+phase = unwrap(phase * pi/180) * 180/pi;
+
+A_analytic = K ./ w;
+phi_analytic = -pi/2 * ones(size(w));
+
+figure(Position=[100 100 1400 900]);
+set(gcf, Color='w');
+
+subplot(2,2,1);
+plot(w, mag, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, A_analytic, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$A(\omega)$', Interpreter='latex');
+title('AFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+xlim([0, 0.1]);
+
+subplot(2,2,2);
+plot(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('PFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+subplot(2,2,3);
+semilogx(w, 20*log10(mag), ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, 20*log10(A_analytic), ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$L(\omega)$, dB', Interpreter='latex');
+title('LAFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+subplot(2,2,4);
+semilogx(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('LPFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+set(findall(gcf, Type='axes'), FontSize=14);
+exportgraphics(gcf, 'images/freq_cap.png', Resolution=300);
+\end{matlabcode}
+
+
+\matlabtitle{Пружинка}
+
+\begin{matlabcode}
+K = 0.01389;
+T = 0.6009;
+simtime = 10;
+
+figure;
+set(gcf, AutoResizeChildren="off", Position=[100 100 1200 1200]);
+
+subplot(2,1,1);
+hold on;
+
+out_h = sim("lab5_4_step.slx", simtime);
+
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, simulation");
+
+t = out_h.y.Time;
+plot(t, K*(1 - cos(t/T)), "r--", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, analytical");
+
+grid on;
+legend(Location="southoutside", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gca, FontSize=10);
+title("Step response", Interpreter="latex");
+hold off;
+
+subplot(2,1,2);
+hold on;
+
+out_w = sim("lab5_4_imp.slx", simtime);
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, simulation");
+
+t = out_w.w.Time;
+plot(t, (K/T)*sin(t/T), "r--", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, analytical");
+
+grid on;
+legend(Location="southoutside", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gca, FontSize=10);
+title("Impulse response", Interpreter="latex");
+hold off;
+exportgraphics(gcf, "images/plot_spring.png", Resolution=200);
+\end{matlabcode}
+
+
+\begin{matlabcode}
+K = 0.01389;
+T = 0.6009;
+sys = tf(K, [T^2, 0, 1]);
+
+w = linspace(0, 100, 10000);
+
+[mag, phase] = bode(sys, w);
+mag = squeeze(mag); phase = squeeze(phase);
+phase = unwrap(phase * pi/180) * 180/pi;
+
+A_analytic = K ./ abs(1 - T^2*w.^2);
+phi_analytic = zeros(size(w));
+phi_analytic(w > 1/T) = -pi;
+
+figure(Position=[100 100 1400 900]);
+set(gcf, Color='w');
+
+subplot(2,2,1);
+plot(w, mag, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, A_analytic, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$A(\omega)$', Interpreter='latex');
+title('AFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+xlim([0, 5]);
+
+subplot(2,2,2);
+plot(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('PFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+xlim([0, 5]);
+
+subplot(2,2,3);
+semilogx(w, 20*log10(mag), ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, 20*log10(A_analytic), ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$L(\omega)$, dB', Interpreter='latex');
+title('LAFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+subplot(2,2,4);
+semilogx(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('LPFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+set(findall(gcf, Type='axes'), FontSize=14);
+exportgraphics(gcf, 'images/freq_spring.png', Resolution=300);
+\end{matlabcode}
+
+
+\matlabtitle{Что ты такое?}
+
+\begin{matlabcode}
+K = 1.441;
+T = 3.673;
+simtime = 1;
+
+figure;
+set(gcf, AutoResizeChildren="off", Position=[100 100 1200 1200]);
+
+subplot(2,1,1);
+hold on;
+
+out_h = sim("lab5_5_step.slx", simtime);
+
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, simulation");
+
+t = out_h.y.Time;
+plot(t, K*(T + t), "r--", ...
+     LineWidth=4, ...
+     DisplayName="$h(t)$, analytical");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gca, FontSize=14);
+title("Step response", Interpreter="latex");
+hold off;
+
+subplot(2,1,2);
+hold on;
+
+out_w = sim("lab5_5_imp.slx", [ -0.1, simtime ]);
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, simulation");
+
+t = out_w.w.Time;
+plot(t, K*ones(size(t)), "r--", ...
+     LineWidth=4, ...
+     DisplayName="$w(t)$, analytical");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gca, FontSize=14);
+title("Impulse response", Interpreter="latex");
+ytickformat('%.2f')
+ylim([1.4, 1.5]);
+xlim([0, simtime]);
+hold off;
+exportgraphics(gcf, "images/plot_pi.png", Resolution=200);
+\end{matlabcode}
+
+
+\begin{matlabcode}
+K = 1.441;
+T = 3.673;
+sys = tf(K*[T 1], [1 0]);
+
+w = linspace(0, 1000, 10000);
+
+[mag, phase] = bode(sys, w);    
+mag = squeeze(mag); phase = squeeze(phase);
+phase = unwrap(phase * pi/180) * 180/pi;
+
+A_analytic = K * sqrt(T^2 + 1./w.^2);
+phi_analytic = atan2(-1, T*w);
+
+figure(Position=[100 100 1400 900]);
+set(gcf, Color='w');
+
+subplot(2,2,1);
+plot(w, mag, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, A_analytic, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$A(\omega)$', Interpreter='latex');
+title('AFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+xlim([0, 10]);
+
+subplot(2,2,2);
+plot(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+plot(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('PFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+xlim([0, 10]);
+
+subplot(2,2,3);
+semilogx(w, 20*log10(mag), ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, 20*log10(A_analytic), ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$L(\omega)$, dB', Interpreter='latex');
+title('LAFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+subplot(2,2,4);
+semilogx(w, phase, ...
+    Color='b', LineWidth=3, DisplayName='Simulation');
+hold on;
+semilogx(w, phi_analytic*180/pi, ...
+    Color='r', LineStyle='--', LineWidth=3, DisplayName='Analytical');
+grid on; box on;
+xlabel('$\omega$, rad/s', Interpreter='latex');
+ylabel('$\varphi(\omega), ^\circ$', Interpreter='latex');
+title('LPFR', Interpreter='latex');
+legend(Location='best', Interpreter='latex', FontSize=12);
+
+set(findall(gcf, Type='axes'), FontSize=14);
+exportgraphics(gcf, 'images/freq_pi.png', Resolution=300);
+\end{matlabcode}
+
+\end{document}
