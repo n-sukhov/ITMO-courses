@@ -1,60 +1,33 @@
 
-
 \begin{document}
 
 \matlabtitle{Исследование типовых динамических звеньев}
 
-
 \textbackslash{}section\{Исследование типовых динамических звеньев\}
-
-
 
 В рамках данной лабораторной работы необходимо исследовать реальные объекты, сопоставим их с известными нам типовыми динамическими звеньями и получим их передаточные функции в стандартизированной форме (через коэффициенты усиления $K$ и постоянные времени $T$). Затем запишем аналитические выражения для временных (переходной и весовой) и частотных (АЧХ, ФЧХ, ЛАЧХ и ЛФЧХ) характеристик исследуемых звеньев. Проведем моделирование с целью получения графического представления всех перечисленных характеристик и сравним с теоретическими для данного типового звена.
 
-
-
 \textbf{Вариант 27}
-
-
 
 \textbackslash{}subsection\{ДПТ\}
 
-
-
 Даны уравнения двигателя постоянного тока независимого возбуждения:
-
-
 
 $J\dot{\omega} =M$, $M=k_{\text{m}} I$, $I=\frac{U+\varepsilon_{\text{i}} }{R}$, $\varepsilon_i =-k_{\text{e}} \omega$.
 
-
-
 Возьмем из \textbf{Таблицы 1} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
-
-
 
 • $k_{\text{m}} =0.3824$ Н·м/А — конструктивная постоянная по моменту;
 
-
-
 • $k_{\text{e}} =0.3824$ В·с — конструктивная постоянная по ЭДС;
-
-
 
 • $J=0.0019$ кг·м\textasciicircum{}2 — момент инерции ротора;
 
-
-
 • $R=4.6296$ Ом — активное сопротивление обмоток ротора.
-
-
 
 Входом объекта считаем $U(t)$, а выходом $\omega (t)$.
 
-
-
 \textbf{Найдём передаточную функцию и определим тип звена:}
-
 
 \begin{par}
 $$\begin{array}{l}
@@ -63,33 +36,21 @@ J\dot{\omega} =k_m \cdot \frac{U-k_e \omega }{R}=\frac{k_m }{R}U-\frac{k_e k_m }
 \end{array}$$
 \end{par}
 
-
 Передаточная функция: $W(s)=\frac{K}{Ts+1}$, где $K=\frac{1}{k_e }=\frac{1}{0.3824}=2.615,~~T=\frac{JR}{k_e k_m }=\frac{0.0019\cdot 4.6296}{0.3824\cdot 0.3824}=0.0602$.
-
-
 
 Типовое звено - \textit{реальное усилительное}.
 
-
-
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
-
 
 \begin{par}
 $$W(j\omega )=\frac{K}{T(j\omega )+1}=\frac{K-KT(j\omega )}{T^2 \omega^2 +1}=\frac{K}{T^2 \omega^2 +1}-\frac{KT\omega }{T^2 \omega^2 +1}j$$
 \end{par}
 
-
 Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{Ts+1}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{T}\cdot \frac{1}{s+\frac{1}{T}}\right\rbrace =\frac{K}{T}e^{-\frac{t}{T}}$
-
-
 
 Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s(Ts+1)}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}-\frac{K}{s+\frac{1}{T}}\right\rbrace =K\left(1-e^{-\frac{t}{T}} \right)$
 
-
-
 АЧХ: 
-
 
 \begin{par}
 $$\begin{array}{l}
@@ -98,9 +59,7 @@ A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{{\left
 \end{array}$$
 \end{par}
 
-
 ФЧХ:
-
 
 \begin{par}
 $$\varphi (\omega )=\arg W(j\omega )=\text{atan2}(\text{Im}(W),\text{Re}(W))=\text{atan2}\left(-\frac{KT\omega }{1+T^2 \omega^2 },\frac{K}{1+T^2 \omega^2 }\right)$$
@@ -110,15 +69,9 @@ $$\varphi (\omega )=\arg W(j\omega )=\text{atan2}(\text{Im}(W),\text{Re}(W))=\te
 
 ЛАЧХ и ЛФЧХ находятся из формулы: $\lg (W(j\omega ))=\lg (A(\omega ))+j\lg (e)\phi (\omega )$.
 
-
-
 ЛАЧХ: $L(\omega )=20\lg \left(A(\omega )\right)=20\lg K-20\lg \sqrt{T^2 \omega^2 +1}$
 
-
-
 ЛФЧХ: $\varphi (\omega )=\text{atan}\left(\frac{\text{Im}(W)}{\text{Re}(W)}\right)=-\text{atan}(T\omega )$
-
-
 
 \textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
 
@@ -128,46 +81,25 @@ $$\varphi (\omega )=\arg W(j\omega )=\text{atan2}(\text{Im}(W),\text{Re}(W))=\te
 
 \textbackslash{}subsection\{ДПТ 2.0\}
 
-
-
 Даны уравнения двигателя постоянного тока независимого возбуждения:
-
-
 
 $J\dot{\omega} =M$, $M=k_{\text{m}} I$, $I=\frac{U+\varepsilon }{R}$, $\varepsilon =\varepsilon_{\text{i}} +\varepsilon_{\text{s}}$, $\varepsilon_{\text{i}} =-k_{\text{e}} \omega$, $\varepsilon_{\text{s}} =-L\dot{I}$.
 
-
-
 Возьмем из \textbf{Таблицы 1} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
-
-
 
 • $k_{\text{m}} =0.3824$ Н·м/А — конструктивная постоянная по моменту;
 
-
-
 • $k_{\text{e}} =0.3824$ В·с — конструктивная постоянная по ЭДС;
-
-
 
 • $J=0.0019$ кг·м\textasciicircum{}2 — момент инерции ротора;
 
-
-
 • $R=4.6296$ Ом — активное сопротивление обмоток ротора.
-
-
 
 • $L=1.1194$ Гн — индуктивность обмоток ротора.
 
-
-
 Входом объекта считаем $U(t)$, а выходом $\omega (t)$.
 
-
-
 \textbf{Найдём передаточную функцию и определим тип звена:}
-
 
 \begin{par}
  $$\begin{array}{l}
@@ -176,28 +108,20 @@ JL\ddot{\omega} +JR\dot{\omega} +k_e k_m \omega =k_m U,~~\frac{JL}{k_e k_m }\ddo
 \end{array}$$
 \end{par}
 
-
 Передаточная функция: $W(s)=\frac{K}{T^2 s^2 +2\xi Ts+1}$, где $\begin{array}{l}
 K=\frac{1}{k_e }=2.615,~~T=\sqrt{\frac{JL}{k_e k_m }}=\sqrt{\frac{0.0019\cdot 1.1194}{0.3824\cdot 0.3824}}=\sqrt{0.01458}=0.1207,\\
 \xi =\frac{R\sqrt{J}}{2\sqrt{Lk_e k_m }}=\frac{4.6296\cdot \sqrt{0.0019}}{2\cdot \sqrt{1.1194\cdot 0.3824\cdot 0.3824}}=\frac{0.2018}{2\cdot 0.3781}=0.2668.
 \end{array}$
 
-
-
 Типовое звено - \textit{колебательное}.
 
-
-
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
-
 
 \begin{par}
 $$W(j\omega )=\frac{K}{1-T^2 \omega^2 +j(2\xi T\omega )}=\frac{K(1-T^2 \omega^2 -j2\xi T\omega )}{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }=\frac{K(1-T^2 \omega^2 )}{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }-j\frac{2K\xi T\omega }{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }$$
 \end{par}
 
-
 Весовая:
-
 
 \begin{par}
  $$\begin{array}{l}
@@ -207,9 +131,7 @@ w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \fr
 \end{array}$$
 \end{par}
 
-
 Переходная:
-
 
 \begin{par}
  $$\begin{array}{l}
@@ -219,29 +141,22 @@ h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^
 \end{array}$$
 \end{par}
 
-
 АЧХ: 
-
 
 \begin{par}
 $$A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{\frac{K^2 }{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }}=\frac{K}{\sqrt{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }}$$
 \end{par}
 
-
 ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\text{atan2}\left(-2\xi T\omega ,\,1-T^2 \omega^2 \right)$
 
-
-
 ЛАЧХ: $L(\omega )=20\lg (A(\omega ))=20\lg K-10\lg \left\lbrack (1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 \right\rbrack$
-
-
 
 ЛФЧХ: $\varphi (\omega )=-\text{atan}\left(\frac{2\xi T\omega }{1-T^2 \omega^2 }\right)$
 
 
 
-
 \textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+
 
 
 
@@ -250,73 +165,42 @@ $$A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{\fra
 
 \textbackslash{}subsection\{Конденсируй-умножай\}
 
-
-
 Дано уравнение конденсатора:
-
-
 
 $I=C\frac{dU}{dt}$.
 
-
-
 Возьмем из \textbf{Таблицы 2} инструкции по выполнению данной л/р значение, которое соответствует нашему варианту, для следующих величин:
-
-
 
 • $C=354$ мкФ — ёмкость конденсатора.
 
-
-
 Входом объекта считаем $I(t)$, а выходом $U(t)$.
-
-
 
 \textbf{Найдём передаточную функцию и определим тип звена:}
 
-
-
 $I=C\dot{U}$, Передаточная функция: $W(s)=\frac{K}{s}$, где $K=\frac{1}{C}=\frac{1}{3.54\cdot 10^{-4} }=2824.86$.
-
-
 
 Типовое звено - \textit{идеальное интегрирующее.}
 
-
-
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
-
 
 \begin{par}
 $$W(j\omega )=\frac{K}{j\omega }=-j\frac{K}{\omega }=0-j\frac{K}{\omega }$$
 \end{par}
 
-
 Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}\right\rbrace =K$
-
-
 
 Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s^2 }\right\rbrace =Kt$
 
-
-
 АЧХ: $A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{0^2 +{\left(\frac{K}{\omega }\right)}^2 }=\frac{K}{\omega }$
-
-
 
 ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\text{atan2}\left(-\frac{K}{\omega },\,0\right)=-\frac{\pi }{2}$
 
-
-
 ЛАЧХ: $L(\omega )=20\lg (A(\omega ))=20\lg K-20\lg \omega$
-
-
 
 ЛФЧХ: $\varphi (\omega )=-\frac{\pi }{2}$
 
-
-
 \textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+
 
 
 
@@ -325,91 +209,56 @@ $$W(j\omega )=\frac{K}{j\omega }=-j\frac{K}{\omega }=0-j\frac{K}{\omega }$$
 
 \textbackslash{}subsection\{Пружинка\}
 
-
-
 Даны уравнения пружинного маятника:
-
-
 
 $F_{\text{упр}} =-k\cdot x$, $F=m\cdot a$
 
-
-
 Возьмем из \textbf{Таблицы 3} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
-
-
 
 • $M=26$ кг — масса груза;
 
-
-
 • $k=72$ Н/м — коэффициент жесткости пружины.
-
-
 
 Входом объекта считаем $F_{ext} (t)$ (некую внешнюю силу, направленную соосно движению маятника), а выходом $x(t)$. Считаем, что маятник движется ортогонально силе тяжести (см. рисунок ???).
 
-
-
 ???РИСУНОК???
 
-
-
 \textbf{Найдём передаточную функцию и определим тип звена:}
-
 
 \begin{par}
 $$F=m\cdot a=m\ddot{x} ,~~m\ddot{x} =-kx+F_{ext} ,~~\frac{m}{k}\ddot{x} +x=\frac{F_{ext} }{k}$$
 \end{par}
 
-
 Передаточная функция: $W(s)=\frac{K}{T^2 s^2 +1}$, где $K=\frac{1}{k}=\frac{1}{72}=0.01389,~~T=\sqrt{\frac{m}{k}}=\sqrt{\frac{26}{72}}=\sqrt{0.3611}=0.6009$.
-
-
 
 Типовое звено - \textit{консервативное}.
 
-
-
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
-
 
 \begin{par}
 $$W(j\omega )=\frac{K}{1-T^2 \omega^2 }$$
 \end{par}
 
-
 Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{T^2 s^2 +1}\right\rbrace =\frac{K}{T}\sin \left(\frac{t}{T}\right)$
-
-
 
 Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s(T^2 s^2 +1)}\right\rbrace =K\left(1-\cos \left(\frac{t}{T}\right)\right)$
 
-
-
 АЧХ: $A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\frac{K}{\left|1-T^2 \omega^2 \right|}$
-
-
 
 ФЧХ: $\varphi (\omega )=\left\lbrace \begin{array}{cc}
 0, & \omega <\frac{1}{T},\\
 \pi , & \omega >\frac{1}{T},
 \end{array}\right.$
 
-
-
 ЛАЧХ: $L(\omega )=20\lg A(\omega )=20\lg K-20\lg \left(1-T^2 \omega^2 \right)$
-
-
 
 ЛФЧХ: $\varphi (\omega )=\left\lbrace \begin{array}{cc}
 0, & \omega <\frac{1}{T},\\
 \pi , & \omega >\frac{1}{T},
 \end{array}\right.$
 
-
-
 \textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+
 
 
 
@@ -418,98 +267,57 @@ $$W(j\omega )=\frac{K}{1-T^2 \omega^2 }$$
 
 \textbackslash{}subsection\{Что ты такое?\}
 
-
-
 На рисунке ??? представлена принципиальная схема регулятора на операционном усилителе. Возьмем из \textbf{Таблицы 4} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
-
-
 
 • $R_{\text{1}} =2609$ Ом — сопротивление входного резистора;
 
-
-
 • $R_{\text{2}} =13809$ Ом — сопротивление резистора отрицательной обратной связи;
-
-
 
 • $C=266$  — емкость конденсатора отрицательной обратной связи.
 
-
-
 Входом объекта считаем $U_{\text{ВХ}} (t)$, а выходом $U_{\text{ВЫХ}}$.
-
-
 
 Помимо соответствия типовому звену определим тип регулятора.
 
-
-
 \textit{В рамках этого задания разрешается не учитывать инверсию рассматриваемого регулятора.}
-
-
 
 ???РИСУНОК???
 
-
-
 \textbf{Найдём передаточную функцию и определим тип звена:}
 
-
-
 Составим систему на основе схемы:
-
 
 \begin{par}
 $$I_1 =\frac{U_{\text{ВХ}} }{R_1 },~~\frac{U_{\text{ВХ}} }{R_1 }=-\frac{U_{\text{ВЫХ}} }{\left(R_2 +\frac{1}{Cs}\right)},~~W(s)=\frac{U_{\text{ВЫХ}} }{U_{\text{ВХ}} }=\frac{R_2 +\frac{1}{Cs}}{-R_1 }=\frac{\frac{1}{-R_1 C}(CR_2 s+1)}{s}$$
 \end{par}
 
-
 Передаточная функция: $W(s)=\frac{K(Ts+1)}{s}$, где $K=\frac{1}{-R_1 C}=\frac{1}{2609\cdot 266\cdot 10^{-6} }=1.441,~~T=CR_2 =266\cdot 10^{-6} \cdot 13809=3.673$.
-
-
 
 Типовое звено - \textit{изодромное. }Тип регулятора - \textit{пропорционально-интегральный (ПИ)}.
 
-
-
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
-
 
 \begin{par}
 $$W(j\omega )=\frac{K(T(j\omega )+1)}{j\omega }=KT-\frac{K}{\omega }j$$
 \end{par}
 
-
 Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K(Ts+1)}{s}\right\rbrace =K(T\delta (t)+1)$
-
-
 
 Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K(Ts+1)}{s^2 }\right\rbrace =K(T+t)$
 
-
-
 АЧХ: 
-
 
 \begin{par}
 $$A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{(KT)^2 +{\left(\frac{K}{\omega }\right)}^2 }=K\sqrt{T^2 +\frac{1}{\omega^2 }}$$
 \end{par}
 
-
 ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\text{atan2}\left(-\frac{K}{\omega },\,KT\right)$
-
-
 
 ЛАЧХ: $L(\omega )=20\lg (A(\omega ))=20\lg K+10\lg \left(T^2 +\frac{1}{\omega^2 }\right)$
 
-
-
 ЛФЧХ: $\varphi (\omega )=-\text{atan}\left(\frac{1}{T\omega }\right)$
 
-
-
 \textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
-
 
 
 
@@ -517,54 +325,291 @@ $$A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{(KT)
 
 
 
-
 \textbackslash{}section\{Приложение\}
-
 
 \matlabtitle{ДПТ}
 
 \begin{matlabcode}
+K = 2.615;
+T = 0.0602;
+simtime = 0.6;
 
+out_h = sim("lab5_1_step.slx", simtime);
 
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
 
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, modeling");
+
+t = out_h.y.Time;
+plot(t, K*(1 - exp(-t/T)), "r--", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, analytic");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=14);
+exportgraphics(gcf, "images/plot_dpt_h.png", Resolution=200);
+hold off;
+out_w = sim("lab5_1_imp.slx", simtime);
+
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, modeling");
+
+t = out_w.w.Time;
+plot(t, (K/T)*exp(-t/T), "r--", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, analytic");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=14);
+exportgraphics(gcf, "images/plot_dpt_w.png", Resolution=200);
+hold off;
 \end{matlabcode}
 
 
 \matlabtitle{ДПТ 2.0}
 
 \begin{matlabcode}
+K = 2.615;
+T = 0.1207;
+xi = 0.2668;
+simtime = 3;
 
+out_h = sim("lab5_2_step.slx", simtime);
 
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
 
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, modeling");
+
+t = out_h.y.Time;
+wd = sqrt(1 - xi^2)/T;
+h_anal = K * (1 - exp(-xi*t/T) .* (cos(wd*t) + (xi/sqrt(1-xi^2))*sin(wd*t)));
+plot(t, h_anal, "r--", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, analytic");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=14);
+exportgraphics(gcf, "images/plot_dpt2_h.png", Resolution=200);
+hold off;
+out_w = sim("lab5_2_imp.slx", simtime);
+
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, modeling");
+
+t = out_w.w.Time;
+wd = sqrt(1 - xi^2)/T;
+w_anal = (K/(T*sqrt(1-xi^2))) * exp(-xi*t/T) .* sin(wd*t);
+plot(t, w_anal, "r--", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, analytic");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=14);
+exportgraphics(gcf, "images/plot_dpt2_w.png", Resolution=200);
+hold off;
 \end{matlabcode}
 
 
 \matlabtitle{Конденсируй-умножай}
 
 \begin{matlabcode}
+K = 2824.86;
+simtime = 1;
 
+out_h = sim("lab5_3_step.slx", simtime);
 
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
 
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, modeling");
 
+t = out_h.y.Time;
+plot(t, K*t, "r--", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, analytic");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=14);
+exportgraphics(gcf, "images/plot_cap_h.png", Resolution=200);
+hold off;
+out_w = sim("lab5_3_imp.slx", simtime);
+
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, modeling");
+
+t = out_w.w.Time;
+plot(t, K*ones(size(t)), "r--", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, analytic");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=14);
+exportgraphics(gcf, "images/plot_cap_w.png", Resolution=200);
+hold off;
 \end{matlabcode}
 
 
 \matlabtitle{Пружинка}
 
 \begin{matlabcode}
+K = 0.01389;
+T = 0.6009;
+simtime = 10;
 
+out_h = sim("lab5_4_step.slx", simtime);
 
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
 
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, modeling");
+
+t = out_h.y.Time;
+plot(t, K*(1 - cos(t/T)), "r--", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, analytic");
+
+grid on;
+legend(Location="southoutside", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=10);
+exportgraphics(gcf, "images/plot_spring_h.png", Resolution=200);
+hold off;
+out_w = sim("lab5_4_imp.slx", simtime);
+
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, modeling");
+
+t = out_w.w.Time;
+plot(t, (K/T)*sin(t/T), "r--", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, analytic");
+
+grid on;
+legend(Location="southoutside", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=10);
+exportgraphics(gcf, "images/plot_spring_w.png", Resolution=200);
+hold off;
 \end{matlabcode}
 
 
 \matlabtitle{Что ты такое?}
 
 \begin{matlabcode}
+K = 1.441;
+T = 3.673;
+simtime = 1;
 
+out_h = sim("lab5_5_step.slx", simtime);
 
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
 
+plot(out_h.y.Time, out_h.y.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, modeling");
 
+t = out_h.y.Time;
+plot(t, K*(T + t), "r--", ...
+     LineWidth=3, ...
+     DisplayName="$h(t)$, analytic");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$h(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=14);
+exportgraphics(gcf, "images/plot_pi_h.png", Resolution=200);
+hold off;
+out_w = sim("lab5_5_imp.slx", [ -0.1, simtime ]);
+figure;
+set(gcf, AutoResizeChildren="off");
+hold on;
+
+plot(out_w.w.Time, out_w.w.Data, "b", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, modeling");
+
+t = out_w.w.Time;
+plot(t, K*ones(size(t)), "r--", ...
+     LineWidth=3, ...
+     DisplayName="$w(t)$, analytic");
+
+grid on;
+legend(Location="best", FontSize=14, Interpreter="latex");
+xlabel("$t, c$", Interpreter="latex");
+ylabel("$w(t)$", Interpreter="latex");
+set(gcf, Position=[100 100 1200 600]);
+set(gca, FontSize=14);
+ytickformat('%.2f')
+ylim([1.4, 1.5]);
+xlim([0, simtime]);
+exportgraphics(gcf, "images/plot_pi_w.png", Resolution=200);
+hold off;
 \end{matlabcode}
 
 \end{document}
