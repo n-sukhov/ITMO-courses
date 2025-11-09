@@ -1,59 +1,56 @@
+% This LaTeX was auto-generated from MATLAB code.
+% To make changes, update the MATLAB code and export to LaTeX again.
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{epstopdf}
+\usepackage[table]{xcolor}
+\usepackage{matlab}
+\usepackage[paperheight=795pt,paperwidth=614pt,top=72pt,bottom=72pt,right=72pt,left=72pt,heightrounded]{geometry}
+
+\sloppy
+\epstopdfsetup{outdir=./}
+\graphicspath{ {./lab5_media/} }
+
+\matlabmultipletitles
 
 \begin{document}
 
 \matlabtitle{Исследование типовых динамических звеньев}
 
-
 \textbackslash{}section\{Исследование типовых динамических звеньев\}
-
-
 
 В рамках данной лабораторной работы необходимо исследовать реальные объекты, сопоставим их с известными нам типовыми динамическими звеньями и получим их передаточные функции в стандартизированной форме (через коэффициенты усиления $K$ и постоянные времени $T$). Затем запишем аналитические выражения для временных (переходной и весовой) и частотных (АЧХ, ФЧХ, ЛАЧХ и ЛФЧХ) характеристик исследуемых звеньев. Проведем моделирование с целью получения графического представления всех перечисленных характеристик и сравним с теоретическими для данного типового звена.
 
-
-
 \textbf{Вариант 27}
-
-
 
 \textbackslash{}subsection\{ДПТ\}
 
-
-
 Даны уравнения двигателя постоянного тока независимого возбуждения:
 
-
-
-$J\dot{\omega} =M$, $M=k_{\textrm{m}} I$, $I=\frac{U+\varepsilon_{\textrm{i}} }{R}$, $\varepsilon_i =-k_{\textrm{e}} \omega$.
-
-
+$J\dot{\omega} =M$, $M=k_{\text{m}} I$, $I=\frac{U+\varepsilon_{\text{i}} }{R}$, $\varepsilon_i =-k_{\text{e}} \omega$.
 
 Возьмем из \textbf{Таблицы 1} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
 
+• $k_{\text{m}} =0.3824$ Н·м/А — конструктивная постоянная по моменту;
 
-
-• $k_{\textrm{m}} =0.3824$ Н·м/А — конструктивная постоянная по моменту;
-
-
-
-• $k_{\textrm{e}} =0.3824$ В·с — конструктивная постоянная по ЭДС;
-
-
+• $k_{\text{e}} =0.3824$ В·с — конструктивная постоянная по ЭДС;
 
 • $J=0.0019$ кг·м\textasciicircum{}2 — момент инерции ротора;
 
-
-
 • $R=4.6296$ Ом — активное сопротивление обмоток ротора.
-
-
 
 Входом объекта считаем $U(t)$, а выходом $\omega (t)$.
 
-
-
 \textbf{Найдём передаточную функцию и определим тип звена:}
-
 
 \begin{par}
 $$\begin{array}{l}
@@ -62,106 +59,69 @@ J\dot{\omega} =k_m \cdot \frac{U-k_e \omega }{R}=\frac{k_m }{R}U-\frac{k_e k_m }
 \end{array}$$
 \end{par}
 
-
 Передаточная функция: $W(s)=\frac{K}{Ts+1}$, где $K=\frac{1}{k_e },~~T=\frac{JR}{k_e k_m }$.
-
-
 
 Типовое звено - \textit{реальное усилительное}.
 
-
-
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
 
-
 \begin{par}
-$$W(j\omega )=\frac{K}{T(j\omega )+1}=\frac{K-KT(j\omega )}{T^2 \omega^2 +1}=\frac{K}{T^2 \omega^2 +1}+\frac{KT\omega }{T^2 \omega^2 +1}j$$
+$$W(j\omega )=\frac{K}{T(j\omega )+1}=\frac{K-KT(j\omega )}{T^2 \omega^2 +1}=\frac{K}{T^2 \omega^2 +1}-\frac{KT\omega }{T^2 \omega^2 +1}j$$
 \end{par}
 
+Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{Ts+1}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{T}\cdot \frac{1}{s+\frac{1}{T}}\right\rbrace =\frac{K}{T}e^{-\frac{t}{T}}$
+
+Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s(Ts+1)}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}-\frac{K}{s+\frac{1}{T}}\right\rbrace =K\left(1-e^{-\frac{t}{T}} \right)$
 
 АЧХ: 
 
-
 \begin{par}
 $$\begin{array}{l}
-A(\omega )=|W(j\omega )|=\sqrt{{\textrm{Re}}^2 (W)+{\textrm{Im}}^2 (W)}=\sqrt{{\left(\frac{K}{T^2 \omega^2 +1}\right)}^2 +{\left(\frac{KT\omega }{T^2 \omega^2 +1}\right)}^2 }=\\
+A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{{\left(\frac{K}{T^2 \omega^2 +1}\right)}^2 +{\left(\frac{KT\omega }{T^2 \omega^2 +1}\right)}^2 }=\\
 =\sqrt{\frac{K^2 +T^2 K^2 \omega^2 }{(T^2 \omega^2 +1)^2 }}=\frac{K}{\sqrt{T^2 \omega^2 +1}}=
 \end{array}$$
 \end{par}
 
-
 ФЧХ:
 
-
 \begin{par}
-$$\varphi (\omega )=\arg W(j\omega )=\textrm{atan2}(\textrm{Im}(W),\textrm{Re}(W))=\textrm{atan2}\left(-\frac{KT\omega }{1+T^2 \omega^2 },\frac{K}{1+T^2 \omega^2 }\right)=$$
+$$\varphi (\omega )=\arg W(j\omega )=\text{atan2}(\text{Im}(W),\text{Re}(W))=\text{atan2}\left(-\frac{KT\omega }{1+T^2 \omega^2 },\frac{K}{1+T^2 \omega^2 }\right)=$$
 \end{par}
 
 
-\vspace{1em}
 
 ЛАЧХ и ЛФЧХ находятся из формулы: $\lg (W(j\omega ))=\lg (A(\omega ))+j\lg (e)\phi (\omega )$.
 
-
-
 ЛАЧХ: $L(\omega )=20\lg \left(A(\omega )\right)=20\lg K-20\lg \sqrt{T^2 \omega^2 +1}=$
 
-
-
-ЛФЧХ: $\varphi (\omega )=\textrm{atan}\left(\frac{\textrm{Im}(W)}{\textrm{Re}(W)}\right)=-\textrm{atan}(T\omega )=$
-
-
-
-\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+ЛФЧХ: $\varphi (\omega )=\text{atan}\left(\frac{\text{Im}(W)}{\text{Re}(W)}\right)=-\text{atan}(T\omega )=$
 
 
 
-\vspace{1em}
 
-\vspace{1em}
+
 
 \textbackslash{}subsection\{ДПТ 2.0\}
 
-
-
 Даны уравнения двигателя постоянного тока независимого возбуждения:
 
-
-
-$J\dot{\omega} =M$, $M=k_{\textrm{m}} I$, $I=\frac{U+\varepsilon }{R}$, $\varepsilon =\varepsilon_{\textrm{i}} +\varepsilon_{\textrm{s}}$, $\varepsilon_{\textrm{i}} =-k_{\textrm{e}} \omega$, $\varepsilon_{\textrm{s}} =-L\dot{I}$.
-
-
+$J\dot{\omega} =M$, $M=k_{\text{m}} I$, $I=\frac{U+\varepsilon }{R}$, $\varepsilon =\varepsilon_{\text{i}} +\varepsilon_{\text{s}}$, $\varepsilon_{\text{i}} =-k_{\text{e}} \omega$, $\varepsilon_{\text{s}} =-L\dot{I}$.
 
 Возьмем из \textbf{Таблицы 1} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
 
+• $k_{\text{m}} =0.3824$ Н·м/А — конструктивная постоянная по моменту;
 
-
-• $k_{\textrm{m}} =0.3824$ Н·м/А — конструктивная постоянная по моменту;
-
-
-
-• $k_{\textrm{e}} =0.3824$ В·с — конструктивная постоянная по ЭДС;
-
-
+• $k_{\text{e}} =0.3824$ В·с — конструктивная постоянная по ЭДС;
 
 • $J=0.0019$ кг·м\textasciicircum{}2 — момент инерции ротора;
 
-
-
 • $R=4.6296$ Ом — активное сопротивление обмоток ротора.
-
-
 
 • $L=1.1194$ Гн — индуктивность обмоток ротора.
 
-
-
 Входом объекта считаем $U(t)$, а выходом $\omega (t)$.
 
-
-
 \textbf{Найдём передаточную функцию и определим тип звена:}
-
 
 \begin{par}
  $$\begin{array}{l}
@@ -170,213 +130,152 @@ JL\ddot{\omega} +JR\dot{\omega} +k_e k_m \omega =k_m U,~~\frac{JL}{k_e k_m }\ddo
 \end{array}$$
 \end{par}
 
-
 Передаточная функция: $W(s)=\frac{K}{T^2 s^2 +2\xi Ts+1}$, где $K=\frac{1}{k_e },~~T=\sqrt{\frac{JL}{k_e k_m }},~~\xi =\frac{R\sqrt{J}}{2\sqrt{Lk_e k_m }}$.
-
-
 
 Типовое звено - \textit{колебательное 2-го порядка}.
 
-
-
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
 
+\begin{par}
+$$W(j\omega )=\frac{K}{1-T^2 \omega^2 +j(2\xi T\omega )}=\frac{K(1-T^2 \omega^2 -j2\xi T\omega )}{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }=\frac{K(1-T^2 \omega^2 )}{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }-j\frac{2K\xi T\omega }{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }$$
+\end{par}
+
+Весовая:
+
+\begin{par}
+ $$\begin{array}{l}
+w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{T^2 s^2 +2\xi Ts+1}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K/T^2 }{s^2 +2\frac{\xi }{T}s+\frac{1}{T^2 }}\right\rbrace =\\
+={\mathcal{L}}^{-1} \left\lbrace \frac{K/T^2 }{{\left(s+\frac{\xi }{T}\right)}^2 +\frac{1-\xi^2 }{T^2 }}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K/T^2 }{{\left(s+\frac{\xi }{T}\right)}^2 +{\left(\frac{\sqrt{1-\xi^2 }}{T}\right)}^2 }\right\rbrace =\\
+=\frac{K/T^2 }{\frac{\sqrt{1-\xi^2 }}{T}}e^{-\frac{\xi }{T}t} \sin \left(\frac{\sqrt{1-\xi^2 }}{T}t\right)=\frac{K}{T\sqrt{1-\xi^2 }}e^{-\frac{\xi }{T}t} \sin \left(\frac{\sqrt{1-\xi^2 }}{T}t\right)
+\end{array}$$
+\end{par}
+
+Переходная:
+
+\begin{par}
+ $$\begin{array}{l}
+h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s(T^2 s^2 +2\xi Ts+1)}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}-\frac{K(s+\frac{2\xi }{T})}{s^2 +\frac{2\xi }{T}s+\frac{1}{T^2 }}\right\rbrace =\\
+={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}-K\cdot \frac{s+\frac{\xi }{T}}{(s+\frac{\xi }{T})^2 +{\left(\frac{\sqrt{1-\xi^2 }}{T}\right)}^2 }-\frac{K\xi }{T}\cdot \frac{1}{(s+\frac{\xi }{T})^2 +{\left(\frac{\sqrt{1-\xi^2 }}{T}\right)}^2 }\right\rbrace =\\
+=K-Ke^{-\frac{\xi }{T}t} \left\lbrack \cos \left(\frac{\sqrt{1-\xi^2 }}{T}t\right)+\frac{\xi }{\sqrt{1-\xi^2 }}\sin \left(\frac{\sqrt{1-\xi^2 }}{T}t\right)\right\rbrack 
+\end{array}$$
+\end{par}
+
+АЧХ: 
+
+\begin{par}
+$$\begin{array}{l}
+A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{\frac{K^2 }{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }}=\\
+=\frac{K}{\sqrt{(1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 }}
+\end{array}$$
+\end{par}
+
+ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\text{atan2}\left(-2\xi T\omega ,\,1-T^2 \omega^2 \right)=$
+
+ЛАЧХ: $L(\omega )=20\lg (A(\omega ))=20\lg K-10\lg \left\lbrack (1-T^2 \omega^2 )^2 +(2\xi T\omega )^2 \right\rbrack =$
+
+ЛФЧХ: $\varphi (\omega )=-\text{atan}\left(\frac{2\xi T\omega }{1-T^2 \omega^2 }\right)$
 
 
-\vspace{1em}
-
-АЧХ: $A(\omega )=|W(j\omega )|=\sqrt{{\textrm{Re}}^2 (W)+{\textrm{Im}}^2 (W)}=$
 
 
 
-ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\textrm{atan2}(\textrm{Im}(W),\textrm{Re}(W))=$
 
 
 
-ЛАЧХ: $L(\omega )=20\lg \left(A(\omega )\right)=$
 
-
-
-ЛФЧХ: $\varphi (\omega )=\textrm{atan}\left(\frac{\textrm{Re}(W)}{\textrm{Im}(W)}\right)=$
-
-
-
-\vspace{1em}
-
-\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
-
-
-
-\vspace{1em}
-
-\vspace{1em}
-
-\vspace{1em}
 
 \textbackslash{}subsection\{Конденсируй-умножай\}
 
-
-
 Дано уравнение конденсатора:
-
-
 
 $I=C\frac{dU}{dt}$.
 
-
-
 Возьмем из \textbf{Таблицы 2} инструкции по выполнению данной л/р значение, которое соответствует нашему варианту, для следующих величин:
-
-
 
 • $C=354$ мкФ — ёмкость конденсатора.
 
-
-
 Входом объекта считаем $I(t)$, а выходом $U(t)$.
 
-
-
 \textbf{Найдём передаточную функцию и определим тип звена:}
-
-
 
 $I=C\dot{U}$, Передаточная функция: $W(s)=\frac{K}{s}$, где $K=\frac{1}{C}$.
 
-
-
 Типовое звено - \textit{идеальное интегрирующее.}
-
-
 
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
 
+\begin{par}
+$$W(j\omega )=\frac{K}{j\omega }=-j\frac{K}{\omega }=0-j\frac{K}{\omega }$$
+\end{par}
+
+Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s}\right\rbrace =K$
+
+Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s^2 }\right\rbrace =Kt$
+
+АЧХ: $A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\sqrt{0^2 +{\left(\frac{K}{\omega }\right)}^2 }=\frac{K}{\omega }$
+
+ФЧХ: $\varphi (\omega )=\arg W(j\omega )=\text{atan2}\left(-\frac{K}{\omega },\,0\right)=-\frac{\pi }{2}$
+
+ЛАЧХ: $L(\omega )=20\lg (A(\omega ))=20\lg K-20\lg \omega$
+
+ЛФЧХ: $\varphi (\omega )=-\frac{\pi }{2}$
 
 
-\vspace{1em}
-
-\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
 
 
 
-\vspace{1em}
 
-\vspace{1em}
 
-\vspace{1em}
 
 \textbackslash{}subsection\{Пружинка\}
 
-
-
 Даны уравнения пружинного маятника:
 
-
-
-$F_{\textrm{упр}} =-k\cdot x$, $F=m\cdot a$
-
-
+$F_{\text{упр}} =-k\cdot x$, $F=m\cdot a$
 
 Возьмем из \textbf{Таблицы 3} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
 
-
-
 • $M=26$ кг — масса груза;
-
-
 
 • $k=72$ Н/м — коэффициент жесткости пружины.
 
-
-
 Входом объекта считаем $F_{ext} (t)$ (некую внешнюю силу, направленную соосно движению маятника), а выходом $x(t)$. Считаем, что маятник движется ортогонально силе тяжести (см. рисунок ???).
-
-
 
 ???РИСУНОК???
 
-
-
 \textbf{Найдём передаточную функцию и определим тип звена:}
-
 
 \begin{par}
 $$F=m\cdot a=m\ddot{x} ,~~m\ddot{x} =-kx+F_{ext} ,~~\frac{m}{k}\ddot{x} +x=\frac{F_{ext} }{k}$$
 \end{par}
 
-
 Передаточная функция: $W(s)=\frac{K}{T^2 s^2 +1}$, где $K=\frac{1}{k},~~T=\sqrt{\frac{m}{k}}$.
-
-
 
 Типовое звено - \textit{консервативное}.
 
-
-
 \textbf{Запишем аналитические выражения для временных и частотных характеристик:}
 
+\begin{par}
+$$W(j\omega )=\frac{K}{1-T^2 \omega^2 }$$
+\end{par}
 
+Весовая: $w(t)={\mathcal{L}}^{-1} \lbrace W(s)\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{T^2 s^2 +1}\right\rbrace =\frac{K}{T}\sin \left(\frac{t}{T}\right)$
 
-\vspace{1em}
+Переходная: $h(t)={\mathcal{L}}^{-1} \left\lbrace \frac{W(s)}{s}\right\rbrace ={\mathcal{L}}^{-1} \left\lbrace \frac{K}{s(T^2 s^2 +1)}\right\rbrace =K\left\lbrack 1-\cos \left(\frac{t}{T}\right)\right\rbrack$
 
-\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
+АЧХ: $A(\omega )=|W(j\omega )|=\sqrt{{\text{Re}}^2 (W)+{\text{Im}}^2 (W)}=\frac{K}{\left|1-T^2 \omega^2 \right|}$
 
+ФЧХ: $\varphi (\omega )=\left\lbrace \begin{array}{cc}
+0, & \omega <\frac{1}{T},\\
+\pi , & \omega >\frac{1}{T},
+\end{array}\right.$
 
+ЛАЧХ: $L(\omega )=20\lg A(\omega )=20\lg K-20\lg \left(1-T^2 \omega^2 \right)$
 
-\vspace{1em}
+ЛФЧХ: $\varphi (\omega )=\left\lbrace \begin{array}{cc}
+0, & \omega <\frac{1}{T},\\
+\pi , & \omega >\frac{1}{T},
+\end{array}\right.$
 
-\vspace{1em}
-
-\vspace{1em}
-
-\textbackslash{}subsection\{Что ты такое?\}
-
-
-
-На рисунке ??? представлена принципиальная схема регулятора на операционном усилителе. Возьмем из \textbf{Таблицы 4} инструкции по выполнению данной л/р значения, которые соответствуют нашему варианту, для следующих величин:
-
-
-
-• $R_{\textrm{1}} =2609$ Ом — сопротивление входного резистора;
-
-
-
-• $R_{\textrm{2}} =13809$ Ом — сопротивление резистора отрицательной обратной связи;
-
-
-
-• $C=266$  — емкость конденсатора отрицательной обратной связи.
-
-
-
-Входом объекта считаем $U_{\textrm{ВХ}} (t)$, а выходом $U_{\textrm{ВЫХ}}$.
-
-
-
-Помимо соответствия типовому звену определим тип регулятора.
-
-
-
-\textit{В рамках этого задания разрешается не учитывать инверсию рассматриваемого регулятора.}
-
-
-
-???РИСУНОК???
-
-
-
-\textbf{Найдём передаточную функцию и определим тип звена:}
-
-
-
-\vspace{1em}
-
-\textbf{Запишем аналитические выражения для временных и частотных характеристик:}
-
-
-
-\vspace{1em}
-
-\textbf{Графики временных и частотных характеристик полученные в результате моделирования, их сравнение с построенными на основании аналитических выражений:}
 
 
