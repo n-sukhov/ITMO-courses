@@ -27,10 +27,12 @@ void set_led_pattern(uint8_t pattern) {
     GPIOC->ODR = (GPIOC->ODR & ~(0xFF << 4)) | (pattern << 4);
 }
 
-void USART2_Init(void) {
+void USART_Init(void) {
+    // Включаем тактирование USART2 и GPIOA
     RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
     
+    //Переводим GPIOA в режим альтернативной функции для использования USART
     GPIOA->MODER &= ~(GPIO_MODER_MODER2_Msk | GPIO_MODER_MODER3_Msk);
     GPIOA->MODER |= (2 << GPIO_MODER_MODER2_Pos) | (2 << GPIO_MODER_MODER3_Pos);
     
@@ -39,16 +41,18 @@ void USART2_Init(void) {
     
     USART2->BRR = (104 << 4) | 3;
     
+    // Включаем передатчик, приёмник и генерацию прерываний
     USART2->CR1 |= USART_CR1_TE | USART_CR1_RE | USART_CR1_RXNEIE;
     
     USART2->CR1 |= USART_CR1_UE;
     
+    // Включаем прерывание USART2 в контроллере прерываний и устанавливает высший приоритет
     NVIC_EnableIRQ(USART2_IRQn);
     NVIC_SetPriority(USART2_IRQn, 0);
 }
 
 void USART2_SendChar(uint8_t ch) {
-    while (!(USART2->SR & USART_SR_TXE));
+    while (!(USART2->SR & USART_SR_TXE));   
     USART2->DR = ch;
 }
 
@@ -60,9 +64,8 @@ void USART2_SendString(char *str) {
 
 // функция для отправки отладочной информации
 void SendDebug(char *message) {
-    USART2_SendString("[DEBUG] ");
     USART2_SendString(message);
-    USART2_SendString("\r\n");
+    USART2_SendString("\n");
 }
 
 // отправка пакета
@@ -86,33 +89,23 @@ void ProcessCommand(uint8_t command, uint8_t *data, uint8_t data_length) {
     
     switch(command) {
         case CMD_ECHO:
-            SendDebug("CMD_ECHO received");
             SendPacket(CMD_ECHO, data, data_length);
             break;
             
         case CMD_LEDS_ALL_ON:
-            SendDebug("CMD_LEDS_ALL_ON received");
             set_led_pattern(0xFF); // Все светодиоды включены
             SendPacket(CMD_LEDS_ALL_ON, data, data_length);
             break;
             
         case CMD_LEDS_ALL_OFF:
-            SendDebug("CMD_LEDS_ALL_OFF received");
             set_led_pattern(0x00); // Все светодиоды выключены
             SendPacket(CMD_LEDS_ALL_OFF, data, data_length);
             break;
             
         case CMD_SET_SINGLE_LED:
-            SendDebug("CMD_SET_SINGLE_LED received");
             if(data_length >= 2) {
                 uint8_t led_num = data[0];
                 uint8_t led_state = data[1];
-                
-                USART2_SendString("[LED] LED ");
-                USART2_SendChar('0' + led_num);
-                USART2_SendString(" -> ");
-                USART2_SendChar('0' + led_state);
-                USART2_SendString("\r\n");
                 
                 if(led_num < 8) {
                     uint8_t current_pattern = (GPIOC->ODR >> 4) & 0xFF;
@@ -128,7 +121,6 @@ void ProcessCommand(uint8_t command, uint8_t *data, uint8_t data_length) {
             break;
             
         case CMD_LED_STATE:
-            SendDebug("CMD_LED_STATE received");
             response_data[0] = (GPIOC->ODR >> 4) & 0xFF;
             SendPacket(CMD_LED_STATE, response_data, 1);
             break;
@@ -175,21 +167,18 @@ int main(void) {
 
     GPIOC->MODER &= ~(3 << 26);
     GPIOC->PUPDR &= ~(3 << 26);
-    GPIOC->PUPDR |= (1 << 26); // Pull-up
+    GPIOC->PUPDR |= (1 << 26);
     
     GPIOD->MODER &= ~(3 << 4);
     GPIOD->PUPDR &= ~(3 << 4);
-    GPIOD->PUPDR |= (1 << 4); // Pull-up
+    GPIOD->PUPDR |= (1 << 4);
 
     // Инициализация USART
-    USART2_Init();
+    USART_Init();
     
     // Инициализация светодиодов
     set_led_pattern(0x01);
     
-    SendDebug("System STARTED");
-    SendDebug("Ready for commands...");
-
     uint32_t last_button1 = 1;
     uint32_t last_button2 = 1;
 
