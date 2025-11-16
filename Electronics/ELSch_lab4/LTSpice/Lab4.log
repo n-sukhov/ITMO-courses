@@ -1,0 +1,21 @@
+Circuit: * C:\Users\nsukh\Desktop\ITMO-courses\Electronics\ELSch_lab4\LTSpice\Lab4.asc
+
+Direct Newton iteration for .op point succeeded.
+
+Date: Mon Nov 17 00:24:35 2025
+Total elapsed time: 0.329 seconds.
+
+tnom = 27
+temp = 27
+method = modified trap
+totiter = 17802
+traniter = 17792
+tranpoints = 7936
+accept = 7682
+rejected = 254
+matrix size = 12
+fillins = 6
+solver = Normal
+Matrix Compiler1: 1.17 KB object code size  0.2/0.1/[0.1]
+Matrix Compiler2: 1.18 KB object code size  0.1/0.1/[0.1]
+

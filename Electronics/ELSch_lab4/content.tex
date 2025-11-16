@@ -1,22 +1,53 @@
 \section{Цель работы}
-\begin{itemize}
-    \item
-\end{itemize}
+Исследование мультивибратора.
 
 \section{Исходные данные}
+\begin{itemize}
+    \item Модель транзистора – 2N3904;
+    \item $E=5$В, $R_1=R_4=1$кОм, $R_2=R_3=50$кОм, $T=2$с;
+    \item При $C_1 = C_2 = C$ и $R_2 = R_3 = R$ значение емкости конденсатора по формуле: $T = 0.7(R C + R C) = 0.7 \cdot 2R C = 1.4 R C$
+    $C = \frac{T}{1.4 R} = \frac{2}{1.4 \cdot 50 \cdot 10^3} = \frac{2}{70 \cdot 10^3}= 28.5714\text{мкФ}$\\
+    $C_1 = C_2 =28.5714\text{мкФ}$
+\end{itemize}
 
-
-\section{}
-\textbf{(рис. \ref{}).}\\
+\section{Расчёты}
+\textbf{Смеха представлена на рис. \ref{scheme}.}\\
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{}
-    \caption{}
-    \label{}
+    \includegraphics[width=1\linewidth]{img\scheme.png}
+    \caption{Мультивибратор}
+    \label{scheme}
 \end{figure}
 
+Снимем осциллограммы (рис. \ref{osc1}- \ref{osc4}).
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img\Ub1.png}
+    \caption{Осциллограмма $U_{b1}$}
+    \label{osc1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img\Ue1.png}
+    \caption{Осциллограмма $U_{e1}$}
+    \label{osc2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img\Ub2.png}
+    \caption{Осциллограмма $U_{b2}$}
+    \label{osc3}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img\Ue2.png}
+    \caption{Осциллограмма $U_{e2}$}
+    \label{osc4}
+\end{figure}
 
-\textbf{Расчёты}\\
+Полученный по осциллограммам период
+сгенерированного сигнала составляет 2.0895522 сек, что почти совпадает с периодом, заданным в исходных данных.\\
+Рассчитаем скважность: $Q=\frac{T_\text{И}}{t_\text{И}}=\frac{2.0895522}{1.0396797}=2.01$c.\\
 
 
-\textbf{Общий вывод}:
+\textbf{Выводы}:
