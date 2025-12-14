@@ -1,6 +1,751 @@
-%\newpage
-%\section{Приложение}
-%\begin{code}
-%	\inputminted[breaklines=true, xleftmargin=1em, linenos, frame=single, framesep=10pt, fontsize=\tiny, firstline=1, lastline=638]{python}{/home/ns/Desktop/ITMO-courses/Fourier_Methods/Lab6/Lab6_listing.py}
-%	\caption{Листинг}
-%\end{code}
+\section{Годограф Найквиста }
+
+В соответствии с вариантом 27 из \textit{Таблицы 1 инструкции по выполнению л/р} придумаем три объекта пятого
+порядка $p$ полюсов передаточных функций которых вещественные, а $q$ - комплексно-
+сопряженные.
+\begin{itemize}
+    \item Первая передаточная функция должна иметь $n$ неустойчивых полюсов у разомкнутой системы и $m$ неустойчивых полюсов у замкнутой.
+    \item Вторая передаточная функция должна иметь $0$ неустойчивых полюсов у разомкнутой системы и $m$ у замкнутой.
+    \item Третья передаточная функция должна иметь $n$ неустойчивых полюсов у разомкнутой системы и $0$ у замкнутой.
+\end{itemize}
+Для каждого объекта:
+\begin{enumerate}
+    \item Приведем карты (изображения размещения на комплексной координатной плоскости) нулей и полюсов разомкнутой и замкнутой систем на комплексной координатной плоскости.
+    \item Выполним моделирование и приведем переходные характеристики для разомкну-
+    той и замкнутой систем.
+    \item Построим годограф Найквиста (АФЧХ). Найдем число оборотов годографа по ча-
+    совой стрелке вокруг точки $(-1; 0)$ и через критерий Найквиста. Сравним результаты.
+    \item Построим ЛАЧХ и ЛФЧХ разомкнутой системы. Определим суммарное количество переходов ЛФЧХ через критические отрезки при положительном значении
+    ЛАЧХ, сравним с результатами (количеством оборотов), полученными в предыдущем пункте. Проанализируем связь устойчивости с видом ЛАФЧХ разомкнутых систем используя логарифмический критерий Найквиста.
+\end{enumerate}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+\textbf{Вариант} & \textbf{p} & \textbf{q} & \textbf{n} & \textbf{m} & \textbf{i} & \textbf{j} \\ \hline
+27 & 1 & 4 & 4 & 2 & 13 & 3 \\ \hline
+\end{tabular}
+\end{table}
+
+Придумаем 3 объекта:
+Разомкнутая система имеет вид: $W(s)=\frac{R(s)}{Q(s)}$,
+замкнутая - $W_3(s)=\frac{W(s)}{1+W(s)}=\frac{R(s)}{R(s)+Q(s)}=\frac{R(s)}{D(s)}$. Составим с учётом этого системы с полиномами, имеющими подходящие нам корни, найдя $R(s)$ через $Q(s)$ и $D(s)$.
+
+\begin{itemize}
+    \item 1:
+Математическая модель: $4$ неустойчивых полюса у разомкнутой системы и $2$ неустойчивых полюса у замкнутой.
+$$
+\begin{cases}
+Q(s)= (s+1)(s-1-2i)(s-1+2i)(s-2-3i)(s-2+3i),\\
+Q(s)+R(s)= (s+2)(s+1-2i)(s+1+2i)(s-1-3i)(s-1+3i)
+\end{cases}\Rightarrow
+$$$$
+\Rightarrow R(s) = 7 s^4 - 9 s^3 + 52 s^2 + 51 s + 35
+$$$$
+W(s)=\frac{7 s^4 - 9 s^3 + 52 s^2 + 51 s + 35}{s^5 - 5 s^4 + 20 s^3 - 20 s^2 + 19 s + 65}
+$$$$
+W_3(s)=\frac{7 s^4 - 9 s^3 + 52 s^2 + 51 s + 35}{s^5 + 2 s^4 + 11 s^3 + 32 s^2 + 70 s + 100}
+$$
+
+
+\item 2:
+Математическая модель:
+Математическая модель: $0$ неустойчивых полюсов у разомкнутой системы и $2$ неустойчивых полюса у замкнутой.
+$$
+\begin{cases}
+    Q(s)=(s+1)(s+1-i)(s+1+i)(s+2-i)(s+2+i) \\
+    Q(s)+R(s)=(s+2)(s+2-3i)(s+2+3i)(s-4+i)(s-4-i)
+\end{cases}
+$$$$
+\Rightarrow R(s) = -9 s^4 - 31 s^3 - 73 s^2 + 121 s + 432
+$$$$
+W(s)=\frac{-9 s^4 - 31 s^3 - 73 s^2 + 121 s + 432}{s^5 + 7 s^4 + 21 s^3 + 33 s^2 + 28 s + 10}
+$$$$
+W_3(s)=\frac{-9 s^4 - 31 s^3 - 73 s^2 + 121 s + 432}{s^5 - 2 s^4 - 10 s^3 - 40 s^2 + 149 s + 442}
+$$
+
+
+\item 3:
+Математическая модель:
+Математическая модель: $4$ неустойчивых полюса у разомкнутой системы и $0$ неустойчивых полюсов у замкнутой.
+$$
+\begin{cases}
+    Q(s)=(s+1)(s-1-i)(s-1+i)(s-2-i)(s-2+i) \\
+    Q(s)+R(s)=(s+2)(s+2-4i)(s+2+4i)(s+3-i)(s+3+i)
+\end{cases}
+$$$$
+\Rightarrow R(s) = 17 s^4 + 65 s^3 + 271 s^2 + 528 s + 390
+$$$$
+W(s)=\frac{17 s^4 + 65 s^3 + 271 s^2 + 528 s + 390}{s^5 - 5 s^4 + 9 s^3 - 3 s^2 - 8 s + 10}
+$$$$
+W_3(s)=\frac{17 s^4 + 65 s^3 + 271 s^2 + 528 s + 390}{s^5 + 12 s^4 + 74 s^3 + 268 s^2 + 520 s + 400}
+$$
+
+
+\end{itemize}
+
+
+\textbf{Построим карты для разомкнутой и замкнутой систем (см. рис. \ref{c1}-\ref{c3}).}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{lab_6/images/pz_combined1.png}
+    \caption{Карта (объект 1)}
+    \label{c1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{lab_6/images/pz_combined2.png}
+    \caption{Карта (объект 2)}
+    \label{c2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{lab_6/images/pz_combined3.png}
+    \caption{Карта (объект 3)}
+    \label{c3}
+\end{figure}
+
+Проведем моделирование.\\
+
+\textbf{Переходная характеристика для разомкнутой и замкнутой систем (см. рис. \ref{s1}-\ref{s3}).}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.62\linewidth]{lab_6/images/step_combined1.png}
+    \caption{Переходная характеристика (объект 1)}
+    \label{s1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.62\linewidth]{lab_6/images/step_combined2.png}
+    \caption{Переходная характеристика (объект 2)}
+    \label{s2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.62\linewidth]{lab_6/images/step_combined3.png}
+    \caption{Переходная характеристика (объект 3)}
+    \label{s3}
+\end{figure}
+
+\textbf{Годограф Найквиста (см. рис. \ref{n1}-\ref{n3}).}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images/nyquist1.png}
+    \caption{Годограф Найквиста (объект 1)}
+    \label{n1}
+\end{figure}
+Число оборотов вокруг точки (против ч.с.) (-1, 0): 2\\
+Критерий Найквиста:$m = n + N$,
+где\\
+1. $m$ –число неустойчивых полюсов замкнутой сисемы\\
+2. $n$ – Число неустойчивых полюсов разомкнутой системы\\
+3. $N$ –Число оборотов годографа по часовой стрелке вокруг точки (-1,0)\\
+Сравнение с результатами по критерию Найквиста: $2=4-2$ - сходится.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images/nyquist2.png}
+    \caption{Годограф Найквиста (объект 2)}
+    \label{n2}
+\end{figure}
+Число оборотов вокруг точки (против ч.с.) (-1, 0): -2\\
+Сравнение с результатами по критерию Найквиста: $2=0+2$ - сходится.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images/nyquist3.png}
+    \caption{Годограф Найквиста (объект 3)}
+    \label{n3}
+\end{figure}
+Число оборотов вокруг точки (против ч.с.)
+(-1, 0): 4\\
+Сравнение с результатами по критерию Найквиста: $0=4-4$ - сходится.
+
+
+\textbf{ЛАЧХ и ЛФЧХ разомкнутой системы (см. рис. \ref{l1}-\ref{l3}).}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{lab_6/images/bode1.png}
+    \caption{ЛАЧХ и ЛФЧХ (объект 1)}
+    \label{l1}
+\end{figure}
+Суммарное количество переходов ЛФЧХ через критические отрезки при положительном значении ЛАЧХ: 1\\
+\textbf{Анализ связи устойчивости с видом ЛАФЧХ разомкнутых систем используя логарифмический критерий Найквиста:}
+Для разомкнутой системы число правых корней характеристического уравнения
+$r = 4$, следовательно, согласно логарифмическому критерию Найквиста должно
+выполняться условие $N_+ - N_- = r/2 = 2$. По графику ЛФЧХ данное условие не выполняется, что подтверждает неустойчивость замкнутой системы.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{lab_6/images/bode2.png}
+    \caption{ЛАЧХ и ЛФЧХ (объект 2)}
+    \label{l2}
+\end{figure}
+Суммарное количество переходов ЛФЧХ через критические отрезки при положительном значении ЛАЧХ: -1\\
+\textbf{Анализ связи устойчивости с видом ЛАФЧХ разомкнутых систем используя логарифмический критерий Найквиста:}
+Для разомкнутой системы число правых корней
+характеристического уравнения равно $r = 0$, следовательно, согласно логарифмическому критерию Найквиста должно
+выполняться условие $N_+ - N_- = 0$. По ЛФЧХ при положительном значении ЛАЧХ наблюдается $-1/2$ переходов через критические отрезки, что подтверждает наличие двух неустойчивых полюсов у замкнутой системы.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{lab_6/images/bode3.png}
+    \caption{ЛАЧХ и ЛФЧХ (объект 3)}
+    \label{l3}
+\end{figure}
+Суммарное количество переходов ЛФЧХ через критические отрезки при положительном значении ЛАЧХ: 2\\
+\textbf{Анализ связи устойчивости с видом ЛАФЧХ разомкнутых систем используя логарифмический критерий Найквиста:}
+Для разомкнутой системы число правых корней равно $r = 4$, следовательно, должно выполняться равенство $N_+ - N_- = r/2 = 2$. Это ранво числу переходов ЛФЧХ через критические отрезки и подтверждает устойчивость замкнутой системы.
+
+\textbf{Сравнение с предыдущим пунктом:} для устойчивости замкнутой системы число оборотов годографа Найквиста против часовой стрелки должно совпадать с числом правых корней разомкнутой системы.
+
+\section{Коэффициент усиления}
+
+В соответствии с вариантом 27 из \textit{Таблицы 1 инструкции по выполнению л/р} возьмем значение $i$ и соответствующие ему передаточные функции $W_1(s)$ и $W_2(s)$ (Таблица 2). Добавим к каждой
+функции коэффициент усиления $k$. Считаем $k$ положительным. Для полученных систем:
+\begin{enumerate}
+    \item Построим годограф Найквиста для значения коэффициента усиления $k = 1$.
+    \item Рассмотрим, как влияет коэффициент усиления $k$ на кривую годографа, взяв не
+    менее трех значений $k$.
+    \item Найдем зависимость количества неустойчивых полюсов замкнутой системы относительно значений коэффициента усиления $k$. Найдем пределы значений коэффициента усиления $k$ относительно которых замкнутая система устойчива.
+    \item Определим значение запаса устойчивости по амплитуде (если применимо).
+    \item Выполним моделирование и приведем переходные характеристики замкнутой системы при значениях коэффициента $k$ для каждой из определенных областей значений, соответствующих как устойчивой системе, так и неустойчивой.
+\end{enumerate}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{i} & $\mathbf{W_1(s)}$ & $\mathbf{W_2(s)}$ \\ \hline
+13 & $\displaystyle \frac{s-1}{s^2+3s+1}$ & $\displaystyle \frac{10s^3-3s^2+13s-2}{10s^3+8s^2-5s+4}$ \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+\section{Запаздывание}
+
+В соответствии с вариантом 27 из \textit{Таблицы 1 инструкции по выполнению л/р} возьмем значение $j$ и соответствующие ему передаточные функции $W_3(s)$ и $W_4(s)$ (таблица 3). Добавим к каждой
+функции звено чистого запаздывания $e^{-\tau s}$. Для полученных систем:
+\begin{enumerate}
+    \item Построим годограф Найквиста для значений коэффициента запаздывания $\tau = 0$
+    и $\tau = 0.5$.
+    \item Рассмотрим, как влияет коэффициент запаздывания $\tau$ на кривую годографа, взяв
+    не менее трех значений $\tau$.
+    \item Найдем границы значений коэффициента запаздывания $\tau$ относительно которых
+    замкнутая система устойчива.
+    \item Определим значение запаса устойчивости по фазе (если применимо).
+    \item Выполним моделирование и приведем переходные характеристики замкнутой си-
+    стемы при значениях коэффициента $\tau$ для каждой из определенных областей значений, соответствующих как устойчивой системе, так и неустойчивой.
+\end{enumerate}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{j} & $\mathbf{W_3(s)}$ & $\mathbf{W_4(s)}$ \\ \hline
+3 & $\displaystyle \frac{2s+9}{s^2+s+9}$ & $\displaystyle \frac{10s^2-10s+13}{10s^3+37s+25}$ \\ \hline
+\end{tabular}
+\end{table}
+
+
+\newpage
+\section{Приложение}
+
+\matlabtitle{Задание 1}
+\begin{matlabcode}
+% Система 1
+R1 = [7 -9 52 51 35];
+Q1 = [1 -5 20 -20 19 65];
+D1 = [1 2 11 32 70 100];   
+open_sys1 = tf(R1, Q1);
+closed_sys1 = tf(R1, D1);
+p1 = pole(open_sys1);
+z1 = zero(open_sys1);
+p_closed1 = pole(closed_sys1);
+z_closed1 = zero(closed_sys1);
+
+figure('Position', [100 100 1200 500]);
+set(gcf, 'Color', 'w');
+
+subplot(1,2,1);
+hold on;
+grid on;
+xlabel('Re');
+ylabel('Im');
+title('Разомкнутая система 1', 'FontWeight', 'normal');
+
+for i = 1:length(p1)
+    if real(p1(i)) < 0
+        plot(real(p1(i)), imag(p1(i)), 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+    else
+        plot(real(p1(i)), imag(p1(i)), 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+    end
+end
+for i = 1:length(z1)
+    plot(real(z1(i)), imag(z1(i)), 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+end
+xlim([-2 3]);
+ylim([-4 4]);
+box on;
+h1 = plot(NaN, NaN, 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+h2 = plot(NaN, NaN, 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+h3 = plot(NaN, NaN, 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+legend([h1, h2, h3], {'Уст. полюс', 'Неуст. полюс', 'Ноль'}, 'Location', 'best');
+
+subplot(1,2,2);
+hold on;
+grid on;
+xlabel('Re');
+ylabel('Im');
+title('Замкнутая система 1', 'FontWeight', 'normal');
+
+for i = 1:length(p_closed1)
+    if real(p_closed1(i)) < 0
+        plot(real(p_closed1(i)), imag(p_closed1(i)), 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+    else
+        plot(real(p_closed1(i)), imag(p_closed1(i)), 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+    end
+end
+for i = 1:length(z_closed1)
+    plot(real(z_closed1(i)), imag(z_closed1(i)), 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+end
+xlim([-3 2]);
+ylim([-4 4]);
+box on;
+h1 = plot(NaN, NaN, 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+h2 = plot(NaN, NaN, 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+h3 = plot(NaN, NaN, 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+legend([h1, h2, h3], {'Уст. полюс', 'Неуст. полюс', 'Ноль'}, 'Location', 'best');
+
+exportgraphics(gcf, "images/pz_combined1.png", Resolution=200);
+
+figure('Position', [100 100 800 800]);
+set(gcf, 'Color', 'w');
+
+simtime = 15;
+subplot(2,1,1);
+[y_open1, t1] = step(open_sys1, simtime);
+plot(t1, y_open1, 'b', 'LineWidth', 1.5);
+xlabel('t, s');
+ylabel('y');
+grid on;
+title('Разомкнутая система 1', 'FontWeight', 'normal');
+xlim([0 simtime]);
+
+subplot(2,1,2);
+[y_closed1, t_closed1] = step(closed_sys1, simtime);
+plot(t_closed1, y_closed1, 'b', 'LineWidth', 1.5);
+xlabel('t, s');
+ylabel('y');
+grid on;
+title('Замкнутая система 1', 'FontWeight', 'normal');
+xlim([0 simtime]);
+
+exportgraphics(gcf, "images/step_combined1.png", Resolution=200);
+
+figure('Position', [100 100 800 600]);
+set(gcf, 'Color', 'w');
+
+w = logspace(-10, 10, 10000);
+[re1, im1] = nyquist(open_sys1, w);
+re1 = squeeze(re1);
+im1 = squeeze(im1);
+
+plot(re1, im1, 'b', 'LineWidth', 1.5);
+hold on;
+plot(re1, -im1, 'g', 'LineWidth', 1.5, 'LineStyle', '-');
+
+arrow_spacing = 4000;
+arrow_size = 0.1;
+
+for k = 1:arrow_spacing:length(re1)-1
+    x1 = re1(k);
+    y1 = im1(k);
+    x2 = re1(k+1);
+    y2 = im1(k+1);
+
+    theta = atan2(y2 - y1, x2 - x1);
+
+    arrow_x = [0 -0.5 -0.5 0]*arrow_size;
+    arrow_y = [0 0.2 -0.2 0]*arrow_size;
+
+    R = [cos(theta) -sin(theta); sin(theta) cos(theta)];
+    coords = R * [arrow_x; arrow_y];
+    patch(x1 + coords(1,:), y1 + coords(2,:), 'r', 'EdgeColor','none');
+end
+
+plot(-1, 0, 'xr', 'MarkerSize', 9, 'LineWidth', 2);
+xlabel('Re(W(j\omega))');
+ylabel('Im(W(j\omega))');
+grid on;
+title('Годограф Найквиста 1', 'FontWeight', 'normal');
+axis equal;
+box on;
+ax = gca;
+ax.XGrid = 'on';
+ax.YGrid = 'on';
+ax.GridLineStyle = '-';
+ax.GridAlpha = 0.3;
+ax.LineWidth = 1.5;
+
+exportgraphics(gcf, "images/nyquist1.png", Resolution=200);
+
+figure('Position', [100 100 1000 800]);
+set(gcf, 'Color', 'w');
+
+[mag1, phase1, w1] = bode(open_sys1);
+mag1 = squeeze(mag1);
+phase1 = squeeze(phase1);
+
+subplot(2,1,1);
+semilogx(w1, 20*log10(mag1), 'b', 'LineWidth', 1.5);
+grid on;
+ylabel('L, dB');
+title('ЛАЧХ разомкнутой системы 1', 'FontWeight', 'normal');
+
+subplot(2,1,2);
+semilogx(w1, phase1, 'r', 'LineWidth', 1.5);
+grid on;
+xlabel('\omega, rad/s');
+ylabel('\phi, deg');
+title('ЛФЧХ разомкнутой системы 1', 'FontWeight', 'normal');
+
+exportgraphics(gcf, "images/bode1.png", Resolution=200);
+
+% Система 2
+R2 = [-9 -31 -73 121 432];
+Q2 = [1 7 21 33 28 10];
+D2 = [1 -2 -10 -40 149 442];
+open_sys2 = tf(R2, Q2);
+closed_sys2 = tf(R2, D2);
+p2 = pole(open_sys2);
+z2 = zero(open_sys2);
+p_closed2 = pole(closed_sys2);
+z_closed2 = zero(closed_sys2);
+
+
+figure('Position', [100 100 1200 500]);
+set(gcf, 'Color', 'w');
+
+subplot(1,2,1);
+hold on;
+grid on;
+xlabel('Re');
+ylabel('Im');
+title('Разомкнутая система 2', 'FontWeight', 'normal');
+
+for i = 1:length(p2)
+    if real(p2(i)) < 0
+        plot(real(p2(i)), imag(p2(i)), 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+    else
+        plot(real(p2(i)), imag(p2(i)), 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+    end
+end
+for i = 1:length(z2)
+    plot(real(z2(i)), imag(z2(i)), 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+end
+xlim([-3 3]);
+ylim([-4 4]);
+box on;
+h1 = plot(NaN, NaN, 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+h2 = plot(NaN, NaN, 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+h3 = plot(NaN, NaN, 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+legend([h1, h2, h3], {'Уст. полюс', 'Неуст. полюс', 'Ноль'}, 'Location', 'best');
+
+subplot(1,2,2);
+hold on;
+grid on;
+xlabel('Re');
+ylabel('Im');
+title('Замкнутая система 2', 'FontWeight', 'normal');
+
+for i = 1:length(p_closed2)
+    if real(p_closed2(i)) < 0
+        plot(real(p_closed2(i)), imag(p_closed2(i)), 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+    else
+        plot(real(p_closed2(i)), imag(p_closed2(i)), 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+    end
+end
+for i = 1:length(z_closed2)
+    plot(real(z_closed2(i)), imag(z_closed2(i)), 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+end
+xlim([-3 5]);
+ylim([-4 4]);
+box on;
+h1 = plot(NaN, NaN, 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+h2 = plot(NaN, NaN, 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+h3 = plot(NaN, NaN, 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+legend([h1, h2, h3], {'Уст. полюс', 'Неуст. полюс', 'Ноль'}, 'Location', 'best');
+
+exportgraphics(gcf, "images/pz_combined2.png", Resolution=200);
+
+figure('Position', [100 100 800 800]);
+set(gcf, 'Color', 'w');
+
+simtime = 20;
+subplot(2,1,1);
+[y_open2, t2] = step(open_sys2, simtime);
+plot(t2, y_open2, 'b', 'LineWidth', 1.5);
+xlabel('t, s');
+ylabel('y');
+grid on;
+title('Разомкнутая система 2', 'FontWeight', 'normal');
+xlim([0 simtime]);
+
+subplot(2,1,2);
+[y_closed2, t_closed2] = step(closed_sys2, simtime);
+plot(t_closed2, y_closed2, 'b', 'LineWidth', 0.85);
+xlabel('t, s');
+ylabel('y');
+grid on;
+title('Замкнутая система 2', 'FontWeight', 'normal');
+xlim([0 simtime]);
+
+exportgraphics(gcf, "images/step_combined2.png", Resolution=200);
+
+figure('Position', [100 100 800 600]);
+set(gcf, 'Color', 'w');
+
+w = logspace(-10, 10, 10000);
+[re2, im2] = nyquist(open_sys2, w);
+re2 = squeeze(re2);
+im2 = squeeze(im2);
+
+plot(re2, im2, 'b', 'LineWidth', 1.5);
+hold on;
+plot(re2, -im2, 'g', 'LineWidth', 1.5, 'LineStyle', '-');
+
+arrow_spacing = 5000;
+arrow_size = 5;
+
+for k = 1:arrow_spacing:length(re2)-1
+    x1 = re2(k);
+    y1 = im2(k);
+    x2 = re2(k+1);
+    y2 = im2(k+1);
+
+    theta = atan2(y2 - y1, x2 - x1);
+
+    arrow_x = [0 -0.5 -0.5 0]*arrow_size;
+    arrow_y = [0 0.2 -0.2 0]*arrow_size;
+
+    R = [cos(theta) -sin(theta); sin(theta) cos(theta)];
+    coords = R * [arrow_x; arrow_y];
+    patch(x1 + coords(1,:), y1 + coords(2,:), 'r', 'EdgeColor','none');
+end
+
+plot(-1, 0, 'xr', 'MarkerSize', 9, 'LineWidth', 2);
+xlabel('Re(W(j\omega))');
+ylabel('Im(W(j\omega))');
+grid on;
+title('Годограф Найквиста 2', 'FontWeight', 'normal');
+axis equal;
+box on;
+ax = gca;
+ax.XGrid = 'on';
+ax.YGrid = 'on';
+ax.GridLineStyle = '-';
+ax.GridAlpha = 0.3;
+ax.LineWidth = 1.5;
+
+exportgraphics(gcf, "images/nyquist2.png", Resolution=200);
+
+figure('Position', [100 100 1000 800]);
+set(gcf, 'Color', 'w');
+
+[mag2, phase2, w2] = bode(open_sys2);
+mag2 = squeeze(mag2);
+phase2 = squeeze(phase2);
+
+subplot(2,1,1);
+semilogx(w2, 20*log10(mag2), 'b', 'LineWidth', 1.5);
+grid on;
+ylabel('L, dB');
+title('ЛАЧХ разомкнутой системы 2', 'FontWeight', 'normal');
+
+subplot(2,1,2);
+semilogx(w2, phase2, 'r', 'LineWidth', 1.5);
+grid on;
+xlabel('\omega, rad/s');
+ylabel('\phi, deg');
+title('ЛФЧХ разомкнутой системы 2', 'FontWeight', 'normal');
+
+exportgraphics(gcf, "images/bode2.png", Resolution=200);
+
+% Система 3
+R3 = [17 65 271 528 390];
+Q3 = [1 -5 9 -3 -8 10];
+D3 = [1 12 74 268 520 400];
+open_sys3 = tf(R3, Q3);
+closed_sys3 = tf(R3, D3);
+p3 = pole(open_sys3);
+z3 = zero(open_sys3);
+p_closed3 = pole(closed_sys3);
+z_closed3 = zero(closed_sys3);
+
+
+
+figure('Position', [100 100 1200 500]);
+set(gcf, 'Color', 'w');
+
+subplot(1,2,1);
+hold on;
+grid on;
+xlabel('Re');
+ylabel('Im');
+title('Разомкнутая система 3', 'FontWeight', 'normal');
+
+for i = 1:length(p3)
+    if real(p3(i)) < 0
+        plot(real(p3(i)), imag(p3(i)), 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+    else
+        plot(real(p3(i)), imag(p3(i)), 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+    end
+end
+for i = 1:length(z3)
+    plot(real(z3(i)), imag(z3(i)), 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+end
+xlim([-2 3]);
+ylim([-4 4]);
+box on;
+h1 = plot(NaN, NaN, 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+h2 = plot(NaN, NaN, 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+h3 = plot(NaN, NaN, 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+legend([h1, h2, h3], {'Уст. полюс', 'Неуст. полюс', 'Ноль'}, 'Location', 'best');
+
+subplot(1,2,2);
+hold on;
+grid on;
+xlabel('Re');
+ylabel('Im');
+title('Замкнутая система 3', 'FontWeight', 'normal');
+
+for i = 1:length(p_closed3)
+    if real(p_closed3(i)) < 0
+        plot(real(p_closed3(i)), imag(p_closed3(i)), 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+    else
+        plot(real(p_closed3(i)), imag(p_closed3(i)), 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+    end
+end
+for i = 1:length(z_closed3)
+    plot(real(z_closed3(i)), imag(z_closed3(i)), 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+end
+xlim([-4 0]);
+ylim([-5 5]);
+box on;
+h1 = plot(NaN, NaN, 'xg', 'MarkerSize', 10, 'LineWidth', 2);
+h2 = plot(NaN, NaN, 'xr', 'MarkerSize', 10, 'LineWidth', 2);
+h3 = plot(NaN, NaN, 'bo', 'MarkerSize', 8, 'LineWidth', 2);
+legend([h1, h2, h3], {'Уст. полюс', 'Неуст. полюс', 'Ноль'}, 'Location', 'best');
+
+exportgraphics(gcf, "images/pz_combined3.png", Resolution=200);
+
+figure('Position', [100 100 800 800]);
+set(gcf, 'Color', 'w');
+
+simtime = 10;
+subplot(2,1,1);
+[y_open3, t3] = step(open_sys3, simtime);
+plot(t3, y_open3, 'b', 'LineWidth', 1.5);
+xlabel('t, s');
+ylabel('y');
+grid on;
+title('Разомкнутая система 3', 'FontWeight', 'normal');
+xlim([0 simtime]);
+
+subplot(2,1,2);
+[y_closed3, t_closed3] = step(closed_sys3, simtime);
+plot(t_closed3, y_closed3, 'b', 'LineWidth', 1.5);
+xlabel('t, s');
+ylabel('y');
+grid on;
+title('Замкнутая система 3', 'FontWeight', 'normal');
+xlim([0 simtime]);
+
+exportgraphics(gcf, "images/step_combined3.png", Resolution=200);
+
+figure('Position', [100 100 800 600]);
+set(gcf, 'Color', 'w');
+
+w = logspace(-10, 10, 10000);
+[re3, im3] = nyquist(open_sys3, w);
+re3 = squeeze(re3);
+im3 = squeeze(im3);
+
+plot(re3, im3, 'b', 'LineWidth', 1.5);
+hold on;
+plot(re3, -im3, 'g', 'LineWidth', 1.5, 'LineStyle', '-');
+
+arrow_spacing = 5000;
+arrow_size = 5;
+
+for k = 1:arrow_spacing:length(re3)-1
+    x1 = re3(k);
+    y1 = im3(k);
+    x2 = re3(k+1);
+    y2 = im3(k+1);
+
+    theta = atan2(y2 - y1, x2 - x1);
+
+    arrow_x = [0 -0.5 -0.5 0]*arrow_size;
+    arrow_y = [0 0.2 -0.2 0]*arrow_size;
+
+    R = [cos(theta) -sin(theta); sin(theta) cos(theta)];
+    coords = R * [arrow_x; arrow_y];
+    patch(x1 + coords(1,:), y1 + coords(2,:), 'r', 'EdgeColor','none');
+end
+
+plot(-1, 0, 'xr', 'MarkerSize', 9, 'LineWidth', 2);
+xlabel('Re(W(j\omega))');
+ylabel('Im(W(j\omega))');
+grid on;
+title('Годограф Найквиста 3', 'FontWeight', 'normal');
+axis equal;
+box on;
+ax = gca;
+ax.XGrid = 'on';
+ax.YGrid = 'on';
+ax.GridLineStyle = '-';
+ax.GridAlpha = 0.3;
+ax.LineWidth = 1.5;
+
+exportgraphics(gcf, "images/nyquist3.png", Resolution=200);
+
+figure('Position', [100 100 1000 800]);
+set(gcf, 'Color', 'w');
+
+[mag3, phase3, w3] = bode(open_sys3);
+mag3 = squeeze(mag3);
+phase3 = squeeze(phase3);
+
+subplot(2,1,1);
+semilogx(w3, 20*log10(mag3), 'b', 'LineWidth', 1.5);
+grid on;
+ylabel('L, dB');
+title('ЛАЧХ разомкнутой системы 3', 'FontWeight', 'normal');
+
+subplot(2,1,2);
+semilogx(w3, phase3, 'r', 'LineWidth', 1.5);
+grid on;
+xlabel('\omega, rad/s');
+ylabel('\phi, deg');
+title('ЛФЧХ разомкнутой системы 3', 'FontWeight', 'normal');
+
+exportgraphics(gcf, "images/bode3.png", Resolution=200);
+\end{matlabcode}
+
+\matlabtitle{Задание 2}
+\begin{matlabcode}
+
+\end{matlabcode}
+
+\matlabtitle{Задание 3}
+\begin{matlabcode}
+
+\end{matlabcode}
