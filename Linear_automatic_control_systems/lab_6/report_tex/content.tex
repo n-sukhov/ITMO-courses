@@ -227,10 +227,10 @@ $r = 4$, следовательно, согласно логарифмическ
 С коэффициентом $k$ разомкнутая $i-$тая ПФ будет иметь вид: $W_\text{раз i}(s)=k\cdot W_i(s)=k\frac{R(s)}{Q(s)}$, замкнутая:  
 $W_\text{з i}(s)=\frac{k\cdot W_i(s)}{1+k\cdot W_i(s)}=\frac{kR(s)}{kR(s)+Q(s)}$.\\
 
-\textbf{Первая система}
-$$W_\text{раз 1}(s)=\frac{ks-k}{s^2+3s+1}=
+\subsection{Первая система}
+$$W_\text{раз}(s)=\frac{ks-k}{s^2+3s+1}=
 \frac{k(s-1)}{\left(s-\frac{\sqrt{5}-3}{2}\right)\left(s+\frac{3+\sqrt{5}}{2}\right)}$$
-$$W_\text{з 2}(s)=\frac{ks-k}{s^2+(3+k)s+1-k}=
+$$W_\text{з}(s)=\frac{ks-k}{s^2+(3+k)s+1-k}=
 \frac{k(s-1)}{\left(s+\frac{(3+k)-\sqrt{(3+k)^2-4(1-k)}}{2}\right)\left(s+\frac{(3+k)+\sqrt{(3+k)^2-4(1-k)}}{2}\right)}$$
 
 Замкнутая система будет устойчива при 
@@ -285,9 +285,9 @@ $$
 Видим, что моделирование подтверждает теоретические ожидания и при увеличении коэффициента $k$ система становится менее устойчивой. Перестает быть устойчивой она при $k=1$.
 
 
-\textbf{Вторая система}
-$$W_\text{раз 2}(s)=\frac{k(10s^3-3s^2+13s-2)}{10s^3+8s^2-5s+4}$$
-$$W_\text{з 2}(s)=\frac{k(10s^3-3s^2+13s-2)}{(10+10k)s^3+(8-3k)s^2+(-5+13k)s+(4-2k)}$$
+\subsection{Вторая система}
+$$W_\text{раз}(s)=\frac{k(10s^3-3s^2+13s-2)}{10s^3+8s^2-5s+4}$$
+$$W_\text{з}(s)=\frac{k(10s^3-3s^2+13s-2)}{(10+10k)s^3+(8-3k)s^2+(-5+13k)s+(4-2k)}$$
 
 $$D(s)=(10+10k)s^3+(8-3k)s^2+(-5+13k)s+(4-2k)$$
 
@@ -404,6 +404,161 @@ $$
 \end{tabular}
 \end{table}
 
+С учетом звена чистого запаздывания разомкнутая передаточная функция имеет вид $W_{\text{раз }i}(s)=W_i(s)e^{-\tau s}$
+а замкнутая: $W_{\text{з }i}(s)=\frac{W_i(s)e^{-\tau s}}{1+W_i(s)e^{-\tau s}}=\frac{e^{-\tau s}R(s)}{e^{-\tau s}R(s)+Q(s)}$.
+
+
+\subsection{Первая система}
+
+$$W_{\text{раз}}(s)=\frac{2s+9}{s^2+s+9}e^{-\tau s}$$
+$$W_{\text{з}}(s)=\frac{(2s+9)e^{-\tau s}}{s^2+s+9+(2s+9)e^{-\tau s}}$$
+
+$$W_{\text{раз 3}}(i\omega) = \frac{2i\omega+9}{-\omega^2+i\omega+9} = \frac{9 + i2\omega}{(9-\omega^2) + i\omega}=\frac{9 + i2\omega}{(9-\omega^2) + i\omega} \cdot \frac{(9-\omega^2) - i\omega}{(9-\omega^2) - i\omega}
+$$
+
+Числитель:
+$$(9 + i2\omega) \cdot [(9-\omega^2) - i\omega] = 9(9-\omega^2) - 9i\omega + i2\omega(9-\omega^2) - i^2 2\omega^2$$
+$$= (81 - 9\omega^2) - 9i\omega + i18\omega - i2\omega^3 + 2\omega^2$$
+$$= (81 - 7\omega^2) + i(9\omega - 2\omega^3)$$
+
+Знаменатель:
+$$[(9-\omega^2) + i\omega] \cdot [(9-\omega^2) - i\omega] = (9-\omega^2)^2 - (i\omega)^2 = (9-\omega^2)^2 + \omega^2 = \omega^4 - 17\omega^2 + 81$$
+
+$$
+W_{\text{раз 3}}(i\omega)=\frac{(81 - 7\omega^2) + i(9\omega - 2\omega^3)}{\omega^4 - 17\omega^2 + 81}$$
+
+$$U(\omega) = \frac{81 - 7\omega^2}{\omega^4 - 17\omega^2 + 81},\ V(\omega) = \frac{9\omega - 2\omega^3}{\omega^4 - 17\omega^2 + 81}$$
+
+Амплитудная характеристика:
+$$A_3(\omega) = \sqrt{U^2(\omega) + V^2(\omega)} = \sqrt{\frac{(81-7\omega^2)^2 + (9\omega-2\omega^3)^2}{(\omega^4 - 17\omega^2 + 81)^2}}$$
+
+Найдём частоту среза $\omega_{\text{ср}}$ из условия $A_3(\omega_{\text{ср}}) = 1$:
+$$(81-7\omega^2)^2 + (9\omega-2\omega^3)^2 = (\omega^4 - 17\omega^2 + 81)^2$$
+$$\omega^8 - 34\omega^6 + 451\omega^4 - 2754\omega^2 + 6561 - 4\omega^6 - 13\omega^4 + 1053\omega^2 - 6561=0$$
+$$ \omega^2(\omega^6 - 38\omega^4 + 438\omega^2 - 1701)=0$$
+$$ (\omega^6 - 38\omega^4 + 438\omega^2 - 1701)=0$$
+
+Корни данного уравнения: $\omega_{1,2}=\pm\sqrt{21}$, нам подходит $\omega=\sqrt{21}$.
+ 
+$$\varphi_\text{з}=\pi + \varphi(\sqrt{21})=\pi +\operatorname{atan2}\left(\frac{9\sqrt{21} - 42\sqrt{21}}{21^2 - 17\cdot 21 + 81},  \frac{81 - 7\cdot 21}{21^2 - 17\cdot 21 + 81}\right)\approx\pi-1.98\approx1.162$$
+$$\tau=\frac{\varphi_\text{з}}{\omega_\text{ср}}=\frac{1.162}{\sqrt{21}}\approx0.25357$$
+
+При значении $\tau\approx0.25357$ замкнутая система теряет устойчивость.\\
+Запас устойчивости по фазе равен $\varphi_\text{з}\approx1.162$.
+\\
+
+Построим годограф Найквиста (см. рис. \ref{5n}-\ref{7n}).
+\\
+Как видим, увеличение $\tau$ раскручивает график годографа Найквиста, при достижении критического значения коэффициента, график переходит через точку $(-1,0)$, оставляя её внутри графика, и делает систему неустойчивой.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \caption{Годограф Найквиста $W_3(s)$}
+    \label{5n}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.25.png}
+    \caption{Годограф Найквиста $W_3(s)$}
+    \label{6n}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.50.png}
+    \caption{Годограф Найквиста $W_3(s)$}
+    \label{7n}
+\end{figure}
+
+
+Переходные характеристики для коэффициентов $\tau$, соответствующих различным областям значений коэффициента представлены на рис. \ref{t1}.
+
+Моделирование также подтверждает теоретические расчёты, видим, что при значении $\tau$, близком к граничному, (0.25) в системе уже появляются сильные колебания в течение переходного процесса, а при коэффициенте большем критического значения устойчивость теряется.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{lab_6/images3/step_W3.png}
+    \caption{Переходные характеристики $W_3(s)$}
+    \label{t1}
+\end{figure}
+
+
+\subsection{Вторая система}
+
+$$W_{\text{раз}}(s)=\frac{10s^2-10s+13}{10s^3+37s+25}e^{-\tau s}$$
+$$W_{\text{з}}(s)=\frac{(10s^2-10s+13)e^{-\tau s}}{10s^3+37s+25+(10s^2-10s+13)e^{-\tau s}}$$
+
+$$W_{\text{раз 4}}(i\omega) = \frac{10(i\omega)^2 - 10i\omega + 13}{10(i\omega)^3 + 37i\omega + 25} = \frac{-10\omega^2 + 13 - i10\omega}{25 + i(37\omega - 10\omega^3)}$$
+
+$$W_{\text{раз 4}}(i\omega)=\frac{-10\omega^2 + 13 - i10\omega}{25 + i(37\omega - 10\omega^3)} \cdot \frac{25 - i(37\omega - 10\omega^3)}{25 - i(37\omega - 10\omega^3)}=\frac{(-10\omega^2 + 13 - i10\omega)(25 - i(37\omega - 10\omega^3))}{625 + (37\omega - 10\omega^3)^2}
+$$$$
+=\frac{325 - 250 \omega^2 +i(-481 \omega+ 500\omega^3 - 100 \omega^5))}{625 + (37\omega - 10\omega^3)^2}
+$$
+
+
+Числитель:
+
+
+Знаменатель:
+
+
+Амплитудная характеристика:
+$$A_4(\omega) = \sqrt{U^2(\omega) + V^2(\omega)} =
+$$
+$$
+
+$$
+
+Найдём частоту среза $\omega_{\text{ср}}$ из условия $A_3(\omega_{\text{ср}}) = 1$:
+$$
+
+$$
+
+Корни данного уравнения, который нам подходит: $\omega\approx1.7975, \omega\approx-2.33$.
+
+$$\varphi_\text{з}=\pi + \varphi()
+\approx\pi+\approx1.0748$$
+
+$$\tau=\frac{\varphi_\text{з}}{\omega_\text{ср}}=\frac{}{}\approx$$
+При значении $\tau\approx0.598$ замкнутая система теряет устойчивость.\\
+Запас устойчивости по фазе равен $\varphi_\text{з}\approx1.0748$.
+\\
+
+Построим годограф Найквиста (см. рис. \ref{5yn}-\ref{7yn}).
+\\
+%Как видим, увеличение $\tau$ раскручивает график годографа Найквиста, при достижении критического значения коэффициента, график переходит через точку $(-1,0)$, оставляя её внутри графика, и делает систему неустойчивой.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \caption{Годограф Найквиста $W_4(s)$}
+    \label{5yn}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \caption{Годограф Найквиста $W_4(s)$}
+    \label{6yn}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \caption{Годограф Найквиста $W_4(s)$}
+    \label{7yn}
+\end{figure}
+
+
+Переходные характеристики для коэффициентов $\tau$, соответствующих различным областям значений коэффициента представлены на рис. \ref{t2}.
+
+%Моделирование
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \caption{Переходные характеристики $W_4(s)$}
+    \label{t2}
+\end{figure}
+
+
+\section{Выводы}
 
 \newpage
 \section{Приложение}
