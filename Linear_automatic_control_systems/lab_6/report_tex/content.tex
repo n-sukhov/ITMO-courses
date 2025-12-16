@@ -490,69 +490,67 @@ $$W_{\text{з}}(s)=\frac{(10s^2-10s+13)e^{-\tau s}}{10s^3+37s+25+(10s^2-10s+13)e
 $$W_{\text{раз 4}}(i\omega) = \frac{10(i\omega)^2 - 10i\omega + 13}{10(i\omega)^3 + 37i\omega + 25} = \frac{-10\omega^2 + 13 - i10\omega}{25 + i(37\omega - 10\omega^3)}$$
 
 $$W_{\text{раз 4}}(i\omega)=\frac{-10\omega^2 + 13 - i10\omega}{25 + i(37\omega - 10\omega^3)} \cdot \frac{25 - i(37\omega - 10\omega^3)}{25 - i(37\omega - 10\omega^3)}=\frac{(-10\omega^2 + 13 - i10\omega)(25 - i(37\omega - 10\omega^3))}{625 + (37\omega - 10\omega^3)^2}
-$$$$
-=\frac{325 - 250 \omega^2 +i(-481 \omega+ 500\omega^3 - 100 \omega^5))}{625 + (37\omega - 10\omega^3)^2}
 $$
-
-
 Числитель:
+$$(-10\omega^2 + 13 - i10\omega) \cdot [25 - i(37\omega - 10\omega^3)] =$$
+$$= (-10\omega^2 + 13)\cdot 25 + (-10\omega^2 + 13)\cdot[-i(37\omega - 10\omega^3)] - i10\omega\cdot 25 - i10\omega\cdot[-i(37\omega - 10\omega^3)]$$
+$$= (-250\omega^2 + 325) - i(-10\omega^2 + 13)(37\omega - 10\omega^3) - i250\omega + 10\omega(37\omega - 10\omega^3)$$
+$$= (-250\omega^2 + 325 + 370\omega^2 - 100\omega^4) + i[-\cdot(-370\omega^3 + 100\omega^5 + 481\omega - 130\omega^3) - 250\omega]$$
+$$= (325 + 120\omega^2 - 100\omega^4) + i[-370\omega^3 + 100\omega^5 + 481\omega - 130\omega^3 - 250\omega]$$
+$$= (325 + 120\omega^2 - 100\omega^4) + i(100\omega^5 - 500\omega^3 + 231\omega)$$
 
+$$
+W_{\text{раз }4}(i\omega)=\frac{(325 + 120\omega^2 - 100\omega^4) + i(100\omega^5 - 500\omega^3 + 231\omega)}{625 + (37\omega - 10\omega^3)^2}$$
 
-Знаменатель:
-
+$$U(\omega) = \frac{325 + 120\omega^2 - 100\omega^4}{625 + (37\omega - 10\omega^3)^2},\quad V(\omega) = \frac{100\omega^5 - 500\omega^3 + 231\omega}{625 + (37\omega - 10\omega^3)^2}$$
 
 Амплитудная характеристика:
-$$A_4(\omega) = \sqrt{U^2(\omega) + V^2(\omega)} =
-$$
-$$
-
-$$
+$$A_4(\omega) = \sqrt{U^2(\omega) + V^2(\omega)} = \sqrt{\frac{(325 + 120\omega^2 - 100\omega^4)^2 + (100\omega^5 - 500\omega^3 + 231\omega)^2}{[625 + (37\omega - 10\omega^3)^2]^2}}$$
 
 Найдём частоту среза $\omega_{\text{ср}}$ из условия $A_3(\omega_{\text{ср}}) = 1$:
-$$
+$$(325 + 120\omega^2 - 100\omega^4)^2 + (100\omega^5 - 500\omega^3 + 231\omega)^2 = [625 + (37\omega - 10\omega^3)^2]^2$$
 
-$$
+Корни данного уравнения, которые нам подходят: $\omega\approx1.7975, \omega\approx2.33$.
 
-Корни данного уравнения, который нам подходит: $\omega\approx1.7975, \omega\approx-2.33$.
+$$\varphi_\text{з1}=\pi + \varphi(1.7975)
+\approx\pi-2.06675\approx1.0748$$
+$$\varphi_\text{з2}=\pi + \varphi(2.33)
+\approx\pi-2.634\approx0.5076$$
 
-$$\varphi_\text{з}=\pi + \varphi()
-\approx\pi+\approx1.0748$$
-
-$$\tau=\frac{\varphi_\text{з}}{\omega_\text{ср}}=\frac{}{}\approx$$
-При значении $\tau\approx0.598$ замкнутая система теряет устойчивость.\\
-Запас устойчивости по фазе равен $\varphi_\text{з}\approx1.0748$.
+$$\tau_1=\frac{\varphi_\text{з1}}{\omega_\text{ср1}}=\frac{1.0748}{1.7975}\approx0.598$$
+$$\tau_2=\frac{\varphi_\text{з2}}{\omega_\text{ср2}}=\frac{0.5076}{2.33}\approx0.2178$$
+При значении $0.2178<\tau<0.598$ замкнутая система будет устойчивой.
 \\
 
 Построим годограф Найквиста (см. рис. \ref{5yn}-\ref{7yn}).
 \\
-%Как видим, увеличение $\tau$ раскручивает график годографа Найквиста, при достижении критического значения коэффициента, график переходит через точку $(-1,0)$, оставляя её внутри графика, и делает систему неустойчивой.
+Результаты снова подтверждают теорию, только на этот раз когда точка оказывается внутри графика годографа точки $(-1,0)$, система становится устойчивой, так как линии годографа закручиваются против часовой стрелки, если строить линию пересечения с ними от точки $(-1,0)$, при дальшейшем повороте система снова становится неустойчивой.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W4_tau_0.00.png}
     \caption{Годограф Найквиста $W_4(s)$}
     \label{5yn}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W4_tau_0.50.png}
     \caption{Годограф Найквиста $W_4(s)$}
     \label{6yn}
 \end{figure}
+
+Переходные характеристики для коэффициентов $\tau$, соответствующих различным областям значений коэффициента представлены на рис. \ref{t2}.
+\\
+Моделирование также подтверждает теорию и выводы, сделанные выше.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/nyquist_W4_tau_0.70.png}
     \caption{Годограф Найквиста $W_4(s)$}
     \label{7yn}
 \end{figure}
 
-
-Переходные характеристики для коэффициентов $\tau$, соответствующих различным областям значений коэффициента представлены на рис. \ref{t2}.
-
-%Моделирование
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{lab_6/images3/nyquist_W3_tau_0.00.png}
+    \includegraphics[width=0.6\linewidth]{lab_6/images3/step_W4.png}
     \caption{Переходные характеристики $W_4(s)$}
     \label{t2}
 \end{figure}
@@ -1206,5 +1204,158 @@ close(gcf);
 
 \matlabtitle{Задание 3}
 \begin{matlabcode}
+R3 = [2 9];
+Q3 = [1 1 9];
+tau_values = [0.0 0.25 0.5];
+
+for idx = 1:length(tau_values)
+    tau = tau_values(idx);
+    
+    open_sys = tf(R3, Q3, 'InputDelay', tau);
+    closed_sys = feedback(open_sys, 1);
+    
+    w = logspace(-10, 10, 10000);
+    [re, im] = nyquist(open_sys, w);
+    re = squeeze(re);
+    im = squeeze(im);
+    
+    x_range = max(re) - min(re);
+    arrow_size = 0.1 * x_range^0.7;
+    
+    figure('Position', [100 100 800 600], 'Visible', 'off');
+    set(gcf, 'Color', 'w');
+    
+    plot(re, im, 'b', 'LineWidth', 1.5);
+    hold on;
+    plot(re, -im, 'g', 'LineWidth', 1.5, 'LineStyle', '-');
+    
+    arrow_spacing = 5000;
+    
+    for k_arr = 1:arrow_spacing:length(re)-1
+        x1 = re(k_arr);
+        y1 = im(k_arr);
+        x2 = re(k_arr+1);
+        y2 = im(k_arr+1);
+        
+        theta = atan2(y2 - y1, x2 - x1);
+        arrow_x = [0 -0.5 -0.5 0]*arrow_size;
+        arrow_y = [0 0.2 -0.2 0]*arrow_size;
+        
+        R = [cos(theta) -sin(theta); sin(theta) cos(theta)];
+        coords = R * [arrow_x; arrow_y];
+        patch(x1 + coords(1,:), y1 + coords(2,:), 'r', 'EdgeColor','none');
+    end
+    
+    plot(-1, 0, 'xr', 'MarkerSize', 9, 'LineWidth', 2);
+    xlabel('Re(W(j\omega))');
+    ylabel('Im(W(j\omega))');
+    grid on;
+    axis equal;
+    box on;
+    title(['W3(s) годограф Найквиста, tau = ' num2str(tau)], 'FontWeight', 'normal');
+    
+    exportgraphics(gcf, sprintf("images3/nyquist_W3_tau_%.2f.png", tau), Resolution=200);
+    close(gcf);
+end
+
+figure('Position', [100 100 800 1000], 'Visible', 'off');
+set(gcf, 'Color', 'w');
+
+simtime = 150;
+for idx = 1:length(tau_values)
+    tau = tau_values(idx);
+    open_sys = tf(R3, Q3, 'InputDelay', tau);
+    closed_sys = feedback(open_sys, 1);
+    [y_closed, t_closed] = step(closed_sys, simtime);
+    
+    subplot(length(tau_values), 1, idx);
+    plot(t_closed, y_closed, 'r', 'LineWidth', 2);
+    
+    grid on;
+    xlabel('t, s');
+    ylabel('y');
+    title(['W3(s), tau = ' num2str(tau)], 'FontWeight', 'normal');
+    xlim([0 simtime]);
+end
+
+exportgraphics(gcf, "images3/step_W3.png", Resolution=200);
+close(gcf);
+
+R4 = [10 -10 13];
+Q4 = [10 0 37 25];
+tau_values = [0.0 0.5 0.7];
+
+for idx = 1:length(tau_values)
+    tau = tau_values(idx);
+    
+    open_sys = tf(R4, Q4, 'InputDelay', tau);
+    closed_sys = feedback(open_sys, 1);
+    
+    w = logspace(-10, 10, 10000);
+    [re, im] = nyquist(open_sys, w);
+    re = squeeze(re);
+    im = squeeze(im);
+    
+    x_range = max(re) - min(re);
+    arrow_size = 0.1 * x_range^0.7;
+    
+    figure('Position', [100 100 800 600], 'Visible', 'off');
+    set(gcf, 'Color', 'w');
+    
+    plot(re, im, 'b', 'LineWidth', 1.5);
+    hold on;
+    plot(re, -im, 'g', 'LineWidth', 1.5, 'LineStyle', '-');
+    
+    arrow_spacing = 5000;
+    
+    for k_arr = 1:arrow_spacing:length(re)-1
+        x1 = re(k_arr);
+        y1 = im(k_arr);
+        x2 = re(k_arr+1);
+        y2 = im(k_arr+1);
+        
+        theta = atan2(y2 - y1, x2 - x1);
+        arrow_x = [0 -0.5 -0.5 0]*arrow_size;
+        arrow_y = [0 0.2 -0.2 0]*arrow_size;
+        
+        R = [cos(theta) -sin(theta); sin(theta) cos(theta)];
+        coords = R * [arrow_x; arrow_y];
+        patch(x1 + coords(1,:), y1 + coords(2,:), 'r', 'EdgeColor','none');
+    end
+    
+    plot(-1, 0, 'xr', 'MarkerSize', 9, 'LineWidth', 2);
+    xlabel('Re(W(j\omega))');
+    ylabel('Im(W(j\omega))');
+    grid on;
+    axis equal;
+    box on;
+    title(['W4(s) годограф Найквиста, tau = ' num2str(tau)], 'FontWeight', 'normal');
+    
+    exportgraphics(gcf, sprintf("images3/nyquist_W4_tau_%.2f.png", tau), Resolution=200);
+    close(gcf);
+end
+
+figure('Position', [100 100 800 1000], 'Visible', 'off');
+set(gcf, 'Color', 'w');
+
+simtime = 150;
+for idx = 1:length(tau_values)
+    tau = tau_values(idx);
+    open_sys = tf(R4, Q4, 'InputDelay', tau);
+    closed_sys = feedback(open_sys, 1);
+    [y_closed, t_closed] = step(closed_sys, simtime);
+    
+    subplot(length(tau_values), 1, idx);
+    plot(t_closed, y_closed, 'r', 'LineWidth', 2);
+    
+    grid on;
+    xlabel('t, s');
+    ylabel('y');
+    title(['W4(s), tau = ' num2str(tau)], 'FontWeight', 'normal');
+    xlim([0 simtime]);
+end
+
+exportgraphics(gcf, "images3/step_W4.png", Resolution=200);
+close(gcf);
 
 \end{matlabcode}
