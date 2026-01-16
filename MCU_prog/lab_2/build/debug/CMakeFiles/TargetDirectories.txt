@@ -1,3 +1,0 @@
-C:/Users/nsukh/Documents/MCU/lab_2/build/debug/CMakeFiles/lab_2.dir
-C:/Users/nsukh/Documents/MCU/lab_2/build/debug/CMakeFiles/edit_cache.dir
-C:/Users/nsukh/Documents/MCU/lab_2/build/debug/CMakeFiles/rebuild_cache.dir
