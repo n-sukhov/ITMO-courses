@@ -1,0 +1,5 @@
+experiment,rmse_position_m,rmse_theta_deg,mean_landmark_error_m,initialized_landmarks,mean_visible_landmarks,mean_nis
+Базовый,0.656902,3.652940,0.677652,8,4.938571,2.044465
+Q x 4,0.637066,3.410165,0.676503,8,4.938571,2.035121
+R x 4,0.751323,3.937360,0.692695,8,4.757143,1.992289
+Радиус 4 м,1.117889,11.263879,1.278771,8,2.341429,2.055105
