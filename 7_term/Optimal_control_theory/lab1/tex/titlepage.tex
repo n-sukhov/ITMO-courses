@@ -15,7 +15,7 @@
     \vspace{0.55cm}
     {\fontsize{16}{20}\selectfont
       \worktype~№\labnumber
-      \ifstrempty{\variant}{}{~(вариант \variant)}
+      \ifdefempty{\variant}{}{~(вариант \variant)}
       \par
     }
   \end{center}
