@@ -1,0 +1,361 @@
+% Основной текст отчёта.
+% Графики из code/lab1.ipynb сохраняйте в папку tex/images
+% под именами, указанными в плейсхолдерах ниже.
+
+\newcommand{\imageplaceholder}[3]{%
+  \begin{figure}[htbp]
+    \centering
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=0.82\textwidth]{#1}%
+    }{%
+      \fbox{%
+        \parbox[c][5cm][c]{0.78\textwidth}{%
+          \centering
+          Место для рисунка\\[0.4em]
+          \texttt{images/\detokenize{#1}}
+        }%
+      }%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Исследовать положения равновесия нелинейных динамических систем, выполнить
+их линеаризацию, определить тип и устойчивость изолированных положений
+равновесия, построить фазовые портреты и синтезировать локально
+стабилизирующие регуляторы.
+
+\section{Исследование автономных нелинейных систем}
+
+\subsection{Система 1}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=-x_1+2x_1^3+x_2,\\
+    \dot x_2=-x_1-x_2.
+  \end{cases}
+  \label{eq:system-1}
+\end{equation}
+
+Точки равновесия находятся из уравнений
+\begin{equation}
+  \begin{cases}
+    -x_1+2x_1^3+x_2=0,\\
+    -x_1-x_2=0.
+  \end{cases}
+\end{equation}
+Матрица Якоби имеет вид
+\begin{equation}
+  A_1(x_1,x_2)=
+  \begin{pmatrix}
+    -1+6x_1^2 & 1\\
+    -1 & -1
+  \end{pmatrix}.
+\end{equation}
+
+\imageplaceholder{phase_system_1.png}{Фазовый портрет системы 1}{fig:phase-system-1}
+
+\subsection{Система 2}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=x_1+x_1x_2,\\
+    \dot x_2=-x_2+x_2^2+x_1x_2-x_1^3.
+  \end{cases}
+  \label{eq:system-2}
+\end{equation}
+
+Точки равновесия находятся из уравнений
+\begin{equation}
+  \begin{cases}
+    x_1+x_1x_2=0,\\
+    -x_2+x_2^2+x_1x_2-x_1^3=0.
+  \end{cases}
+\end{equation}
+Матрица Якоби:
+\begin{equation}
+  A_2(x_1,x_2)=
+  \begin{pmatrix}
+    1+x_2 & x_1\\
+    x_2-3x_1^2 & -1+2x_2+x_1
+  \end{pmatrix}.
+\end{equation}
+
+\imageplaceholder{phase_system_2.png}{Фазовый портрет системы 2}{fig:phase-system-2}
+
+\subsection{Система 3}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=x_2,\\
+    \dot x_2=-x_1+x_2\left(1-x_1^2+0{,}1x_1^4\right).
+  \end{cases}
+  \label{eq:system-3}
+\end{equation}
+
+Точки равновесия находятся из уравнений
+\begin{equation}
+  \begin{cases}
+    x_2=0,\\
+    -x_1+x_2\left(1-x_1^2+0{,}1x_1^4\right)=0.
+  \end{cases}
+\end{equation}
+Матрица Якоби:
+\begin{equation}
+  A_3(x_1,x_2)=
+  \begin{pmatrix}
+    0 & 1\\
+    -1+x_2(-2x_1+0{,}4x_1^3) & 1-x_1^2+0{,}1x_1^4
+  \end{pmatrix}.
+\end{equation}
+
+\imageplaceholder{phase_system_3.png}{Фазовый портрет системы 3}{fig:phase-system-3}
+
+\subsection{Система 4}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=(x_1-x_2)(1-x_1^2-x_2^2),\\
+    \dot x_2=(x_1+x_2)(1-x_1^2-x_2^2).
+  \end{cases}
+  \label{eq:system-4}
+\end{equation}
+
+Точки равновесия находятся из уравнений
+\begin{equation}
+  \begin{cases}
+    (x_1-x_2)(1-x_1^2-x_2^2)=0,\\
+    (x_1+x_2)(1-x_1^2-x_2^2)=0.
+  \end{cases}
+\end{equation}
+Обозначив $q=1-x_1^2-x_2^2$, получим матрицу Якоби
+\begin{equation}
+  A_4(x_1,x_2)=
+  \begin{pmatrix}
+    q-2x_1(x_1-x_2) & -q-2x_2(x_1-x_2)\\
+    q-2x_1(x_1+x_2) & q-2x_2(x_1+x_2)
+  \end{pmatrix}.
+\end{equation}
+
+Для дополнительного исследования используется переход
+\begin{equation}
+  x_1=r\cos\varphi,\qquad x_2=r\sin\varphi,
+\end{equation}
+где
+\begin{equation}
+  \dot r=\frac{x_1\dot x_1+x_2\dot x_2}{r},\qquad
+  \dot\varphi=\frac{x_1\dot x_2-x_2\dot x_1}{r^2}.
+\end{equation}
+После подстановки системы~\eqref{eq:system-4} необходимо исследовать уравнения
+\begin{equation}
+  \dot r=r(1-r^2),\qquad \dot\varphi=1-r^2.
+\end{equation}
+
+\textbf{Вывод об устойчивости при различных значениях $r$:} \ldots
+
+\imageplaceholder{phase_system_4.png}{Фазовый портрет системы 4}{fig:phase-system-4}
+
+\subsection{Система 5}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=-x_1^3+x_2,\\
+    \dot x_2=x_1-x_2^3.
+  \end{cases}
+  \label{eq:system-5}
+\end{equation}
+
+Точки равновесия находятся из уравнений
+\begin{equation}
+  \begin{cases}
+    -x_1^3+x_2=0,\\
+    x_1-x_2^3=0.
+  \end{cases}
+\end{equation}
+Матрица Якоби:
+\begin{equation}
+  A_5(x_1,x_2)=
+  \begin{pmatrix}
+    -3x_1^2 & 1\\
+    1 & -3x_2^2
+  \end{pmatrix}.
+\end{equation}
+
+\imageplaceholder{phase_system_5.png}{Фазовый портрет системы 5}{fig:phase-system-5}
+
+\subsection{Система 6}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=-x_1^3+x_2^3,\\
+    \dot x_2=x_2^3x_1-x_2^3.
+  \end{cases}
+  \label{eq:system-6}
+\end{equation}
+
+Точки равновесия находятся из уравнений
+\begin{equation}
+  \begin{cases}
+    -x_1^3+x_2^3=0,\\
+    x_2^3(x_1-1)=0.
+  \end{cases}
+\end{equation}
+Матрица Якоби:
+\begin{equation}
+  A_6(x_1,x_2)=
+  \begin{pmatrix}
+    -3x_1^2 & 3x_2^2\\
+    x_2^3 & 3x_2^2(x_1-1)
+  \end{pmatrix}.
+\end{equation}
+
+\imageplaceholder{phase_system_6.png}{Фазовый портрет системы 6}{fig:phase-system-6}
+
+\subsection{Система 7}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=-x_1^3+x_2^3,\\
+    \dot x_2=x_1+3x_3-x_2^3,\\
+    \dot x_3=x_1x_3-x_2^3-\sin x_1.
+  \end{cases}
+  \label{eq:system-7}
+\end{equation}
+
+Точки равновесия находятся из уравнений
+\begin{equation}
+  \begin{cases}
+    -x_1^3+x_2^3=0,\\
+    x_1+3x_3-x_2^3=0,\\
+    x_1x_3-x_2^3-\sin x_1=0.
+  \end{cases}
+\end{equation}
+Матрица Якоби:
+\begin{equation}
+  A_7(x_1,x_2,x_3)=
+  \begin{pmatrix}
+    -3x_1^2 & 3x_2^2 & 0\\
+    1 & -3x_2^2 & 3\\
+    x_3-\cos x_1 & -3x_2^2 & x_1
+  \end{pmatrix}.
+\end{equation}
+
+Для системы 7 построение фазового портрета заданием не требуется.
+
+\section{Синтез локально стабилизирующих регуляторов}
+
+Для управляемой системы $\dot{\bm x}=\bm f(\bm x,\bm u)$ необходимо:
+\begin{enumerate}[label=\arabic*)]
+  \item найти пары $\left(\bm x_{\mathrm{eq}},\bm u_{\mathrm{eq}}\right)$,
+  удовлетворяющие $\bm f(\bm x_{\mathrm{eq}},\bm u_{\mathrm{eq}})=0$;
+  \item построить линейную модель
+  \begin{equation}
+    \Delta\dot{\bm x}=A\Delta\bm x+B\Delta\bm u,
+    \qquad
+    A=\left.\frac{\partial\bm f}{\partial\bm x}\right|_{\mathrm{eq}},
+    \quad
+    B=\left.\frac{\partial\bm f}{\partial\bm u}\right|_{\mathrm{eq}};
+  \end{equation}
+  \item проверить управляемость пары $(A,B)$;
+  \item выбрать желаемые полюса и найти матрицу обратной связи $K$;
+  \item использовать закон управления
+  \begin{equation}
+    \bm u=\bm u_{\mathrm{eq}}-K(\bm x-\bm x_{\mathrm{eq}})
+  \end{equation}
+  и проверить устойчивость замкнутой системы численно.
+\end{enumerate}
+
+\subsection{Управляемая система 1}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=-x_1+2x_1^3+x_2+\sin u_1,\\
+    \dot x_2=-x_1-x_2+3\sin u_2.
+  \end{cases}
+  \label{eq:controlled-system-1}
+\end{equation}
+
+Условия равновесия:
+\begin{equation}
+  \begin{cases}
+    -x_1+2x_1^3+x_2+\sin u_1=0,\\
+    -x_1-x_2+3\sin u_2=0.
+  \end{cases}
+\end{equation}
+Матрицы линеаризованной системы:
+\begin{equation}
+  A=
+  \begin{pmatrix}
+    -1+6x_1^2 & 1\\
+    -1 & -1
+  \end{pmatrix},
+  \qquad
+  B=
+  \begin{pmatrix}
+    \cos u_1 & 0\\
+    0 & 3\cos u_2
+  \end{pmatrix}.
+\end{equation}
+
+\textbf{Выбранная точка равновесия:}
+$\bm x_{\mathrm{eq}}=\ldots$, $\bm u_{\mathrm{eq}}=\ldots$.
+
+\textbf{Желаемые полюса:} $\ldots$.
+
+\textbf{Матрица регулятора:} $K=\ldots$.
+
+\imageplaceholder{control_system_1.png}{Переходные процессы замкнутой управляемой системы 1}{fig:control-system-1}
+
+\subsection{Управляемая система 2}
+
+\begin{equation}
+  \begin{cases}
+    \dot x_1=x_2+x_1x_2+u^3,\\
+    \dot x_2=-x_2+x_2^2-x_1^3+\sin u.
+  \end{cases}
+  \label{eq:controlled-system-2}
+\end{equation}
+
+Условия равновесия:
+\begin{equation}
+  \begin{cases}
+    x_2+x_1x_2+u^3=0,\\
+    -x_2+x_2^2-x_1^3+\sin u=0.
+  \end{cases}
+\end{equation}
+Матрицы линеаризованной системы:
+\begin{equation}
+  A=
+  \begin{pmatrix}
+    x_2 & 1+x_1\\
+    -3x_1^2 & -1+2x_2
+  \end{pmatrix},
+  \qquad
+  B=
+  \begin{pmatrix}
+    3u^2\\
+    \cos u
+  \end{pmatrix}.
+\end{equation}
+
+\textbf{Выбранная точка равновесия:}
+$\bm x_{\mathrm{eq}}=\ldots$, $u_{\mathrm{eq}}=\ldots$.
+
+\textbf{Желаемые полюса:} $\ldots$.
+
+\textbf{Коэффициенты регулятора:} $K=\ldots$.
+
+\imageplaceholder{control_system_2.png}{Переходные процессы замкнутой управляемой системы 2}{fig:control-system-2}
+
+
+\section{Вывод}
+
+В данном разделе необходимо сопоставить аналитическую классификацию точек
+равновесия с фазовыми портретами, сформулировать вывод об устойчивости
+системы 4 и оценить качество работы синтезированных регуляторов.
