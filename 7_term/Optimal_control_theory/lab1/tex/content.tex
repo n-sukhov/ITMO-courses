@@ -38,7 +38,7 @@
 \begin{equation}
   \begin{cases}
     \dot x_1=-x_1+2x_1^3+x_2,\\
-    \dot x_2=-x_1-x_2.
+    \dot x_2=-x_1-x_2
   \end{cases}
   \label{eq:system-1}
 \end{equation}
@@ -47,17 +47,63 @@
 \begin{equation}
   \begin{cases}
     -x_1+2x_1^3+x_2=0,\\
-    -x_1-x_2=0.
+    -x_1-x_2=0
   \end{cases}
 \end{equation}
-Матрица Якоби имеет вид
+Из второго уравнения $x_2=-x_1$. После подстановки в первое уравнение
+получим
+\begin{equation}
+  2x_1^3-2x_1=2x_1(x_1-1)(x_1+1)=0
+\end{equation}
+Следовательно, система имеет три точки равновесия:
+\begin{equation}
+  \bm x^{(1)}=(0,0),\qquad
+  \bm x^{(2)}=(1,-1),\qquad
+  \bm x^{(3)}=(-1,1)
+\end{equation}
+
+Матрица Якоби системы имеет вид
 \begin{equation}
   A_1(x_1,x_2)=
   \begin{pmatrix}
     -1+6x_1^2 & 1\\
     -1 & -1
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
+
+Для малых отклонений
+$\Delta\bm x=\bm x-\bm x^{(i)}$ линеаризованная система записывается как
+\begin{equation}
+  \Delta\dot{\bm x}=A_1\bigl(\bm x^{(i)}\bigr)\Delta\bm x
+\end{equation}
+В точке $\bm x^{(1)}=(0,0)$ получаем
+\begin{equation}
+  A_1(0,0)=
+  \begin{pmatrix}
+    -1 & 1\\
+    -1 & -1
+  \end{pmatrix},
+  \qquad
+  \lambda_{1,2}=-1\pm i
+\end{equation}
+Поэтому точка $(0,0)$ является устойчивым фокусом.
+
+Для двух остальных точек матрицы линеаризации совпадают:
+\begin{equation}
+  A_1(1,-1)=A_1(-1,1)=
+  \begin{pmatrix}
+    5 & 1\\
+    -1 & -1
+  \end{pmatrix}
+\end{equation}
+Характеристическое уравнение и его корни равны
+\begin{equation}
+  \lambda^2-4\lambda-4=0,
+  \qquad
+  \lambda_{1,2}=2\pm2\sqrt{2}
+\end{equation}
+Одно собственное значение положительно, а другое отрицательно, поэтому
+точки $(1,-1)$ и $(-1,1)$ являются неустойчивыми седлами.
 
 \imageplaceholder{phase_system_1.png}{Фазовый портрет системы 1}{fig:phase-system-1}
 
@@ -66,7 +112,7 @@
 \begin{equation}
   \begin{cases}
     \dot x_1=x_1+x_1x_2,\\
-    \dot x_2=-x_2+x_2^2+x_1x_2-x_1^3.
+    \dot x_2=-x_2+x_2^2+x_1x_2-x_1^3
   \end{cases}
   \label{eq:system-2}
 \end{equation}
@@ -75,7 +121,7 @@
 \begin{equation}
   \begin{cases}
     x_1+x_1x_2=0,\\
-    -x_2+x_2^2+x_1x_2-x_1^3=0.
+    -x_2+x_2^2+x_1x_2-x_1^3=0
   \end{cases}
 \end{equation}
 Матрица Якоби:
@@ -84,8 +130,61 @@
   \begin{pmatrix}
     1+x_2 & x_1\\
     x_2-3x_1^2 & -1+2x_2+x_1
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
+
+Из первого уравнения следует, что $x_1=0$ или $x_2=-1$. В результате
+получаем три точки равновесия:
+\begin{equation}
+  \bm x^{(1)}=(0,0),\qquad
+  \bm x^{(2)}=(0,1),\qquad
+  \bm x^{(3)}=(1,-1)
+\end{equation}
+В точке $(0,0)$ имеем
+\begin{equation}
+  A_2(0,0)=
+  \begin{pmatrix}
+    1 & 0\\
+    0 & -1
+  \end{pmatrix},
+  \qquad
+  \lambda_1=1,\quad\lambda_2=-1
+\end{equation}
+Следовательно, точка $(0,0)$ является неустойчивым седлом. Для точки
+$(0,1)$ получаем
+\begin{equation}
+  A_2(0,1)=
+  \begin{pmatrix}
+    2 & 0\\
+    1 & 1
+  \end{pmatrix},
+  \qquad
+  \lambda_1=2,\quad\lambda_2=1
+\end{equation}
+Оба собственных значения положительны, поэтому $(0,1)$ является
+неустойчивым узлом. В точке $(1,-1)$
+\begin{equation}
+  \begin{aligned}
+    A_2(1,-1)&=
+    \begin{pmatrix}
+      0 & 1\\
+      -4 & -2
+    \end{pmatrix}\\
+    \det\bigl(A_2-\lambda I\bigr)
+    &=
+    \begin{vmatrix}
+      -\lambda & 1\\
+      -4 & -2-\lambda
+    \end{vmatrix}
+    =\lambda(\lambda+2)+4
+    =\lambda^2+2\lambda+4=0\\
+    D&=2^2-4\cdot 1\cdot 4=-12\\
+    \lambda_{1,2}
+    &=\frac{-2\pm\sqrt{-12}}{2}
+    =-1\pm i\sqrt{3}
+  \end{aligned}
+\end{equation}
+Таким образом, точка $(1,-1)$ является устойчивым фокусом.
 
 \imageplaceholder{phase_system_2.png}{Фазовый портрет системы 2}{fig:phase-system-2}
 
@@ -94,7 +193,7 @@
 \begin{equation}
   \begin{cases}
     \dot x_1=x_2,\\
-    \dot x_2=-x_1+x_2\left(1-x_1^2+0{,}1x_1^4\right).
+    \dot x_2=-x_1+x_2\left(1-x_1^2+0{,}1x_1^4\right)
   \end{cases}
   \label{eq:system-3}
 \end{equation}
@@ -103,7 +202,7 @@
 \begin{equation}
   \begin{cases}
     x_2=0,\\
-    -x_1+x_2\left(1-x_1^2+0{,}1x_1^4\right)=0.
+    -x_1+x_2\left(1-x_1^2+0{,}1x_1^4\right)=0
   \end{cases}
 \end{equation}
 Матрица Якоби:
@@ -112,8 +211,38 @@
   \begin{pmatrix}
     0 & 1\\
     -1+x_2(-2x_1+0{,}4x_1^3) & 1-x_1^2+0{,}1x_1^4
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
+
+Из первого уравнения $x_2=0$, после чего второе уравнение даёт $x_1=0$.
+Единственная точка равновесия равна
+\begin{equation}
+  \bm x^{(1)}=(0,0)
+\end{equation}
+Матрица линеаризации и её собственные значения:
+\begin{equation}
+  \begin{aligned}
+    A_3(0,0)&=
+    \begin{pmatrix}
+      0 & 1\\
+      -1 & 1
+    \end{pmatrix}\\
+    \det\bigl(A_3-\lambda I\bigr)
+    &=
+    \begin{vmatrix}
+      -\lambda & 1\\
+      -1 & 1-\lambda
+    \end{vmatrix}
+    =-\lambda(1-\lambda)+1
+    =\lambda^2-\lambda+1=0\\
+    D&=(-1)^2-4\cdot 1\cdot 1=-3\\
+    \lambda_{1,2}
+    &=\frac{1\pm\sqrt{-3}}{2}
+    =\frac{1\pm i\sqrt{3}}{2}
+  \end{aligned}
+\end{equation}
+Действительные части собственных значений положительны, поэтому точка
+$(0,0)$ является неустойчивым фокусом.
 
 \imageplaceholder{phase_system_3.png}{Фазовый портрет системы 3}{fig:phase-system-3}
 
@@ -122,7 +251,7 @@
 \begin{equation}
   \begin{cases}
     \dot x_1=(x_1-x_2)(1-x_1^2-x_2^2),\\
-    \dot x_2=(x_1+x_2)(1-x_1^2-x_2^2).
+    \dot x_2=(x_1+x_2)(1-x_1^2-x_2^2)
   \end{cases}
   \label{eq:system-4}
 \end{equation}
@@ -131,8 +260,14 @@
 \begin{equation}
   \begin{cases}
     (x_1-x_2)(1-x_1^2-x_2^2)=0,\\
-    (x_1+x_2)(1-x_1^2-x_2^2)=0.
+    (x_1+x_2)(1-x_1^2-x_2^2)=0
   \end{cases}
+\end{equation}
+Условия выполняются либо в начале координат, либо при
+$x_1^2+x_2^2=1$. Поэтому множество равновесий имеет вид
+\begin{equation}
+  \bm x^{(1)}=(0,0),\qquad
+  \mathcal E=\{(x_1,x_2):x_1^2+x_2^2=1\}
 \end{equation}
 Обозначив $q=1-x_1^2-x_2^2$, получим матрицу Якоби
 \begin{equation}
@@ -140,7 +275,7 @@
   \begin{pmatrix}
     q-2x_1(x_1-x_2) & -q-2x_2(x_1-x_2)\\
     q-2x_1(x_1+x_2) & q-2x_2(x_1+x_2)
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
 
 Для дополнительного исследования используется переход
@@ -150,14 +285,38 @@
 где
 \begin{equation}
   \dot r=\frac{x_1\dot x_1+x_2\dot x_2}{r},\qquad
-  \dot\varphi=\frac{x_1\dot x_2-x_2\dot x_1}{r^2}.
+  \dot\varphi=\frac{x_1\dot x_2-x_2\dot x_1}{r^2}
 \end{equation}
 После подстановки системы~\eqref{eq:system-4} необходимо исследовать уравнения
 \begin{equation}
-  \dot r=r(1-r^2),\qquad \dot\varphi=1-r^2.
+  \dot r=r(1-r^2),\qquad \dot\varphi=1-r^2
 \end{equation}
 
-\textbf{Вывод об устойчивости при различных значениях $r$:} \ldots
+В начале координат
+\begin{equation}
+  \begin{aligned}
+    A_4(0,0)&=
+    \begin{pmatrix}
+      1 & -1\\
+      1 & 1
+    \end{pmatrix}\\
+    \det\bigl(A_4-\lambda I\bigr)
+    &=
+    \begin{vmatrix}
+      1-\lambda & -1\\
+      1 & 1-\lambda
+    \end{vmatrix}
+    =(1-\lambda)^2+1=0\\
+    (1-\lambda)^2&=-1\\
+    \lambda_{1,2}&=1\pm i
+  \end{aligned}
+\end{equation}
+Следовательно, начало координат является неустойчивым фокусом. При
+$0<r<1$ выполняется $\dot r>0$, а при $r>1$ выполняется $\dot r<0$,
+поэтому окружность $r=1$ притягивает соседние траектории. Для каждой точки
+окружности собственные значения равны $-2$ и $0$. Нулевое собственное
+значение соответствует движению вдоль множества равновесий, поэтому
+отдельные точки окружности не являются асимптотически устойчивыми.
 
 \imageplaceholder{phase_system_4.png}{Фазовый портрет системы 4}{fig:phase-system-4}
 
@@ -166,7 +325,7 @@
 \begin{equation}
   \begin{cases}
     \dot x_1=-x_1^3+x_2,\\
-    \dot x_2=x_1-x_2^3.
+    \dot x_2=x_1-x_2^3
   \end{cases}
   \label{eq:system-5}
 \end{equation}
@@ -175,7 +334,7 @@
 \begin{equation}
   \begin{cases}
     -x_1^3+x_2=0,\\
-    x_1-x_2^3=0.
+    x_1-x_2^3=0
   \end{cases}
 \end{equation}
 Матрица Якоби:
@@ -184,8 +343,48 @@
   \begin{pmatrix}
     -3x_1^2 & 1\\
     1 & -3x_2^2
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
+
+Из условий равновесия следует $x_2=x_1^3$ и $x_1=x_2^3$. Отсюда
+получаем три точки:
+\begin{equation}
+  \bm x^{(1)}=(0,0),\qquad
+  \bm x^{(2)}=(1,1),\qquad
+  \bm x^{(3)}=(-1,-1)
+\end{equation}
+В начале координат
+\begin{equation}
+  A_5(0,0)=
+  \begin{pmatrix}
+    0 & 1\\
+    1 & 0
+  \end{pmatrix},
+  \qquad
+  \lambda_1=1,\quad\lambda_2=-1
+\end{equation}
+Точка $(0,0)$ является неустойчивым седлом. Для двух остальных точек
+матрицы линеаризации совпадают:
+\begin{equation}
+  \begin{aligned}
+    A_5(1,1)=A_5(-1,-1)&=
+    \begin{pmatrix}
+      -3 & 1\\
+      1 & -3
+    \end{pmatrix}\\
+    \det\bigl(A_5-\lambda I\bigr)
+    &=
+    \begin{vmatrix}
+      -3-\lambda & 1\\
+      1 & -3-\lambda
+    \end{vmatrix}
+    =(-3-\lambda)^2-1=0\\
+    (\lambda+3)^2-1
+    &=(\lambda+2)(\lambda+4)=0\\
+    \lambda_1&=-2,\qquad \lambda_2=-4
+  \end{aligned}
+\end{equation}
+Следовательно, точки $(1,1)$ и $(-1,-1)$ являются устойчивыми узлами.
 
 \imageplaceholder{phase_system_5.png}{Фазовый портрет системы 5}{fig:phase-system-5}
 
@@ -194,7 +393,7 @@
 \begin{equation}
   \begin{cases}
     \dot x_1=-x_1^3+x_2^3,\\
-    \dot x_2=x_2^3x_1-x_2^3.
+    \dot x_2=x_2^3x_1-x_2^3
   \end{cases}
   \label{eq:system-6}
 \end{equation}
@@ -203,7 +402,7 @@
 \begin{equation}
   \begin{cases}
     -x_1^3+x_2^3=0,\\
-    x_2^3(x_1-1)=0.
+    x_2^3(x_1-1)=0
   \end{cases}
 \end{equation}
 Матрица Якоби:
@@ -212,8 +411,49 @@
   \begin{pmatrix}
     -3x_1^2 & 3x_2^2\\
     x_2^3 & 3x_2^2(x_1-1)
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
+
+Из первого уравнения следует $x_2=x_1$. После подстановки во второе
+уравнение получаем две точки равновесия:
+\begin{equation}
+  \bm x^{(1)}=(0,0),\qquad
+  \bm x^{(2)}=(1,1)
+\end{equation}
+В начале координат
+\begin{equation}
+  A_6(0,0)=
+  \begin{pmatrix}
+    0 & 0\\
+    0 & 0
+  \end{pmatrix},
+  \qquad
+  \lambda_1=\lambda_2=0
+\end{equation}
+Поэтому метод линеаризации не позволяет определить устойчивость точки
+$(0,0)$. Её поведение необходимо исследовать нелинейным методом или по
+фазовому портрету. Для точки $(1,1)$
+\begin{equation}
+  \begin{aligned}
+    A_6(1,1)&=
+    \begin{pmatrix}
+      -3 & 3\\
+      1 & 0
+    \end{pmatrix}\\
+    \det\bigl(A_6-\lambda I\bigr)
+    &=
+    \begin{vmatrix}
+      -3-\lambda & 3\\
+      1 & -\lambda
+    \end{vmatrix}
+    =\lambda(\lambda+3)-3
+    =\lambda^2+3\lambda-3=0\\
+    D&=3^2-4\cdot 1\cdot(-3)=21\\
+    \lambda_{1,2}&=\frac{-3\pm\sqrt{21}}{2}
+  \end{aligned}
+\end{equation}
+Собственные значения имеют разные знаки, следовательно, точка $(1,1)$
+является неустойчивым седлом.
 
 \imageplaceholder{phase_system_6.png}{Фазовый портрет системы 6}{fig:phase-system-6}
 
@@ -223,7 +463,7 @@
   \begin{cases}
     \dot x_1=-x_1^3+x_2^3,\\
     \dot x_2=x_1+3x_3-x_2^3,\\
-    \dot x_3=x_1x_3-x_2^3-\sin x_1.
+    \dot x_3=x_1x_3-x_2^3-\sin x_1
   \end{cases}
   \label{eq:system-7}
 \end{equation}
@@ -233,7 +473,7 @@
   \begin{cases}
     -x_1^3+x_2^3=0,\\
     x_1+3x_3-x_2^3=0,\\
-    x_1x_3-x_2^3-\sin x_1=0.
+    x_1x_3-x_2^3-\sin x_1=0
   \end{cases}
 \end{equation}
 Матрица Якоби:
@@ -243,8 +483,54 @@
     -3x_1^2 & 3x_2^2 & 0\\
     1 & -3x_2^2 & 3\\
     x_3-\cos x_1 & -3x_2^2 & x_1
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
+
+Из первого уравнения $x_2=x_1$, а из второго
+$x_3=(x_1^3-x_1)/3$. Поэтому значения $x_1$ находятся из уравнения
+\begin{equation}
+  x_1^4-3x_1^3-x_1^2-3\sin x_1=0
+\end{equation}
+Оно имеет два действительных корня: $x_1=0$ и
+$x_1\approx3{,}2913$. Соответствующие точки равновесия:
+\begin{equation}
+  \bm x^{(1)}=(0,0,0),\qquad
+  \bm x^{(2)}\approx(3{,}2913;\,3{,}2913;\,10{,}7872)
+\end{equation}
+В начале координат
+\begin{equation}
+  \begin{aligned}
+    A_7(0,0,0)&=
+    \begin{pmatrix}
+      0 & 0 & 0\\
+      1 & 0 & 3\\
+      -1 & 0 & 0
+    \end{pmatrix}\\
+    \det\bigl(A_7-\lambda I\bigr)
+    &=
+    \begin{vmatrix}
+      -\lambda & 0 & 0\\
+      1 & -\lambda & 3\\
+      -1 & 0 & -\lambda
+    \end{vmatrix}\\
+    &=(-\lambda)
+    \begin{vmatrix}
+      -\lambda & 3\\
+      0 & -\lambda
+    \end{vmatrix}
+    =-\lambda^3=0\\
+    \lambda^3&=0\\
+    \lambda_1&=\lambda_2=\lambda_3=0
+  \end{aligned}
+\end{equation}
+Метод линеаризации не позволяет определить устойчивость этой точки. Для
+второй точки собственные значения численно равны
+\begin{equation}
+  \lambda_1\approx1{,}3585,\qquad
+  \lambda_{2,3}\approx-31{,}5312\pm0{,}4253i
+\end{equation}
+Поскольку $\lambda_1>0$, вторая точка неустойчива. Тип равновесия --
+седло-фокус.
 
 Для системы 7 построение фазового портрета заданием не требуется.
 
@@ -276,7 +562,7 @@
 \begin{equation}
   \begin{cases}
     \dot x_1=-x_1+2x_1^3+x_2+\sin u_1,\\
-    \dot x_2=-x_1-x_2+3\sin u_2.
+    \dot x_2=-x_1-x_2+3\sin u_2
   \end{cases}
   \label{eq:controlled-system-1}
 \end{equation}
@@ -285,7 +571,7 @@
 \begin{equation}
   \begin{cases}
     -x_1+2x_1^3+x_2+\sin u_1=0,\\
-    -x_1-x_2+3\sin u_2=0.
+    -x_1-x_2+3\sin u_2=0
   \end{cases}
 \end{equation}
 Матрицы линеаризованной системы:
@@ -300,7 +586,7 @@
   \begin{pmatrix}
     \cos u_1 & 0\\
     0 & 3\cos u_2
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
 
 \textbf{Выбранная точка равновесия:}
@@ -317,7 +603,7 @@ $\bm x_{\mathrm{eq}}=\ldots$, $\bm u_{\mathrm{eq}}=\ldots$.
 \begin{equation}
   \begin{cases}
     \dot x_1=x_2+x_1x_2+u^3,\\
-    \dot x_2=-x_2+x_2^2-x_1^3+\sin u.
+    \dot x_2=-x_2+x_2^2-x_1^3+\sin u
   \end{cases}
   \label{eq:controlled-system-2}
 \end{equation}
@@ -326,7 +612,7 @@ $\bm x_{\mathrm{eq}}=\ldots$, $\bm u_{\mathrm{eq}}=\ldots$.
 \begin{equation}
   \begin{cases}
     x_2+x_1x_2+u^3=0,\\
-    -x_2+x_2^2-x_1^3+\sin u=0.
+    -x_2+x_2^2-x_1^3+\sin u=0
   \end{cases}
 \end{equation}
 Матрицы линеаризованной системы:
@@ -341,7 +627,7 @@ $\bm x_{\mathrm{eq}}=\ldots$, $\bm u_{\mathrm{eq}}=\ldots$.
   \begin{pmatrix}
     3u^2\\
     \cos u
-  \end{pmatrix}.
+  \end{pmatrix}
 \end{equation}
 
 \textbf{Выбранная точка равновесия:}
