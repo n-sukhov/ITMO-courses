@@ -1,0 +1,91 @@
+% Компилируйте документ XeLaTeX или LuaLaTeX.
+
+% Русский и английский языки, шрифты и типографика.
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+\IfFontExistsTF{Times New Roman}{
+  \setmainfont{Times New Roman}
+  \newfontfamily\cyrillicfont{Times New Roman}[Script=Cyrillic]
+}{
+  \setmainfont{CMU Serif}
+  \newfontfamily\cyrillicfont{CMU Serif}[Script=Cyrillic]
+}
+\IfFontExistsTF{Courier New}{
+  \setmonofont{Courier New}
+  \newfontfamily\cyrillicfonttt{Courier New}[Script=Cyrillic]
+}{
+  \setmonofont{CMU Typewriter Text}
+  \newfontfamily\cyrillicfonttt{CMU Typewriter Text}[Script=Cyrillic]
+}
+\usepackage{microtype}
+\usepackage{indentfirst}
+\usepackage{etoolbox}
+
+% Поля и абзацы.
+\usepackage[
+  left=30mm,
+  right=15mm,
+  top=20mm,
+  bottom=20mm
+]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+% Математика.
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+% Таблицы.
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\renewcommand{\arraystretch}{1.15}
+
+% Изображения.
+\usepackage{graphicx}
+\graphicspath{{images/}}
+
+% Списки и исходный код.
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\definecolor{codegray}{RGB}{245,245,245}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  breaklines=true,
+  numbers=left,
+  numberstyle=\scriptsize\color{gray},
+  showstringspaces=false,
+  tabsize=2
+}
+
+% Заголовки и колонтитулы.
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.75em}{}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% Ссылки загружаются последними.
+\usepackage{hyperref}
+\hypersetup{
+  unicode=true,
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue,
+  pdfborder={0 0 0}
+}
+

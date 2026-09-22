@@ -1,0 +1,43 @@
+\begin{titlepage}
+  \thispagestyle{empty}
+  \begin{center}
+    {\fontsize{14}{17}\selectfont
+      \ministry\par
+      \vspace{0.15cm}
+      \university\par
+      \vspace{0.15cm}
+      \faculty\par
+    }
+
+    \vspace{6.0cm}
+
+    {\fontsize{22}{26}\selectfont\bfseries \subject\par}
+    \vspace{0.55cm}
+    {\fontsize{16}{20}\selectfont
+      \worktype~№\labnumber
+      \ifstrempty{\variant}{}{~(вариант \variant)}
+      \par
+    }
+  \end{center}
+
+  \vfill
+
+  \begin{flushright}
+    \begin{minipage}{0.36\textwidth}
+      \raggedright
+      \fontsize{14}{18}\selectfont
+      \textbf{\studentlabel}\par
+      \students\par
+      Поток: \group\par
+      \vspace{0.15cm}
+      \textbf{Преподаватель:}\par
+      \teacher
+    \end{minipage}
+  \end{flushright}
+
+  \vfill
+
+  \begin{center}
+    {\fontsize{14}{17}\selectfont \city\par \reportyear\par}
+  \end{center}
+\end{titlepage}
