@@ -657,10 +657,34 @@ $x_1\approx3{,}2913$. Соответствующие точки равновес
   \end{aligned}
 \end{equation}
 Метод линеаризации не позволяет определить устойчивость этой точки. Для
-второй точки собственные значения численно равны
+второй точки подставим найденные координаты в матрицу Якоби. Получим
 \begin{equation}
-  \lambda_1\approx1{,}3585,\qquad
-  \lambda_{2,3}\approx-31{,}5312\pm0{,}4253i
+  \begin{aligned}
+    A_7\bigl(\bm x^{(2)}\bigr)
+    &\approx
+    \begin{pmatrix}
+      -32{,}4977 & 32{,}4977 & 0\\
+      1 & -32{,}4977 & 3\\
+      11{,}7761 & -32{,}4977 & 3{,}2913
+    \end{pmatrix}\\
+    \det\bigl(A_7-\lambda I\bigr)
+    &\approx
+    \begin{vmatrix}
+      -32{,}4977-\lambda & 32{,}4977 & 0\\
+      1 & -32{,}4977-\lambda & 3\\
+      11{,}7761 & -32{,}4977 & 3{,}2913-\lambda
+    \end{vmatrix}\\
+    &=(-32{,}4977-\lambda)
+      \left[(-32{,}4977-\lambda)(3{,}2913-\lambda)
+      +3\cdot32{,}4977\right]\\
+    &\quad
+      -32{,}4977\left[(3{,}2913-\lambda)-3\cdot11{,}7761\right]=0\\
+    &\Longleftrightarrow
+      \lambda^3+61{,}7040\lambda^2
+      +907{,}1747\lambda-1348{,}7479=0\\
+    \lambda_1&\approx1{,}3585\\
+    \lambda_{2,3}&\approx-31{,}5312\pm0{,}5439i
+  \end{aligned}
 \end{equation}
 Поскольку $\lambda_1>0$, вторая точка неустойчива. Тип равновесия -
 седло-фокус.
