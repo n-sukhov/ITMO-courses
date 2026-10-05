@@ -693,28 +693,8 @@ $x_1\approx3.2913$. Соответствующие точки равновеси
 
 \section{Синтез локально стабилизирующих регуляторов}
 
-Для управляемой системы $\dot{\bm x}=\bm f(\bm x,\bm u)$ необходимо:
-\begin{enumerate}[label=\arabic*)]
-  \item найти пары $\left(\bm x_{\mathrm{eq}},\bm u_{\mathrm{eq}}\right)$,
-  удовлетворяющие $\bm f(\bm x_{\mathrm{eq}},\bm u_{\mathrm{eq}})=0$;
-  \item построить линейную модель
-  \begin{equation}
-    \Delta\dot{\bm x}=A\Delta\bm x+B\Delta\bm u,
-    \qquad
-    A=\left.\frac{\partial\bm f}{\partial\bm x}\right|_{\mathrm{eq}},
-    \quad
-    B=\left.\frac{\partial\bm f}{\partial\bm u}\right|_{\mathrm{eq}};
-  \end{equation}
-  \item проверить управляемость пары $(A,B)$;
-  \item выбрать желаемые полюса и найти матрицу обратной связи $K$;
-  \item использовать закон управления
-  \begin{equation}
-    \bm u=\bm u_{\mathrm{eq}}-K(\bm x-\bm x_{\mathrm{eq}})
-  \end{equation}
-  и проверить устойчивость замкнутой системы численно.
-\end{enumerate}
 
-\subsection{Управляемая система 1}
+\subsection{Система 1}
 
 \begin{equation}
   \begin{cases}
@@ -731,6 +711,17 @@ $x_1\approx3.2913$. Соответствующие точки равновеси
     -x_1-x_2+3\sin u_2=0
   \end{cases}
 \end{equation}
+При $u_1=u_2=0$ из второго уравнения получаем $x_2=-x_1$. После
+подстановки в первое уравнение имеем
+\begin{equation}
+  2x_1^3-2x_1=2x_1(x_1-1)(x_1+1)=0
+\end{equation}
+Следовательно, система имеет три точки равновесия:
+\begin{equation}
+  \bm x^{(1)}=(0,0),\qquad
+  \bm x^{(2)}=(1,-1),\qquad
+  \bm x^{(3)}=(-1,1)
+\end{equation}
 Матрицы линеаризованной системы:
 \begin{equation}
   A=
@@ -745,17 +736,99 @@ $x_1\approx3.2913$. Соответствующие точки равновеси
     0 & 3\cos u_2
   \end{pmatrix}
 \end{equation}
+При $u_1=u_2=0$ для всех найденных точек равновесия имеем
+\begin{equation}
+  B^*=
+  \begin{pmatrix}
+    1 & 0\\
+    0 & 3
+  \end{pmatrix}
+\end{equation}
+Выберем
+\begin{equation}
+  K=
+  \begin{pmatrix}
+    7 & 0\\
+    0 & 0
+  \end{pmatrix}
+\end{equation}
+В точке $\bm x^{(1)}=(0,0)$ получаем
+\begin{equation}
+  A^*=
+  \begin{pmatrix}
+    -1 & 1\\
+    -1 & -1
+  \end{pmatrix},
+  \qquad
+  A^*-B^*K=
+  \begin{pmatrix}
+    -8 & 1\\
+    -1 & -1
+  \end{pmatrix}
+\end{equation}
+Характеристическое уравнение и его корни равны
+\begin{equation}
+  \begin{aligned}
+    \det\bigl(A^*-B^*K-\lambda I\bigr)
+    &=\begin{vmatrix}
+      -8-\lambda & 1\\
+      -1 & -1-\lambda
+    \end{vmatrix}\\
+    &=(-8-\lambda)(-1-\lambda)+1
+    =\lambda^2+9\lambda+9=0\\
+    D&=9^2-4\cdot1\cdot9=45\\
+    \lambda_{1,2}&=\frac{-9\pm\sqrt{45}}{2}
+    =\frac{-9\pm3\sqrt{5}}{2}
+  \end{aligned}
+\end{equation}
+Для точек $\bm x^{(2)}=(1,-1)$ и $\bm x^{(3)}=(-1,1)$ матрицы
+линеаризации совпадают. Поэтому
+\begin{equation}
+  A^*=
+  \begin{pmatrix}
+    5 & 1\\
+    -1 & -1
+  \end{pmatrix},
+  \qquad
+  A^*-B^*K=
+  \begin{pmatrix}
+    -2 & 1\\
+    -1 & -1
+  \end{pmatrix}
+\end{equation}
+Характеристическое уравнение и его корни равны
+\begin{equation}
+  \begin{aligned}
+    \det\bigl(A^*-B^*K-\lambda I\bigr)
+    &=\begin{vmatrix}
+      -2-\lambda & 1\\
+      -1 & -1-\lambda
+    \end{vmatrix}\\
+    &=(-2-\lambda)(-1-\lambda)+1
+    =\lambda^2+3\lambda+3=0\\
+    D&=3^2-4\cdot1\cdot3=-3\\
+    \lambda_{1,2}&=\frac{-3\pm\sqrt{-3}}{2}
+    =\frac{-3\pm i\sqrt{3}}{2}
+  \end{aligned}
+\end{equation}
+Поскольку действительные части всех собственных значений отрицательны,
+локально стабилизирующие регуляторы имеют вид
+\begin{equation}
+  \begin{aligned}
+    \bm x^{(1)}=(0,0):&\qquad u_1=-7x_1,\quad u_2=0,\\
+    \bm x^{(2)}=(1,-1):&\qquad u_1=-7(x_1-1),\quad u_2=0,\\
+    \bm x^{(3)}=(-1,1):&\qquad u_1=-7(x_1+1),\quad u_2=0.
+  \end{aligned}
+\end{equation}
 
-\textbf{Выбранная точка равновесия:}
-$\bm x_{\mathrm{eq}}=\ldots$, $\bm u_{\mathrm{eq}}=\ldots$.
 
-\textbf{Желаемые полюса:} $\ldots$.
+На рис.~\ref{fig:control-system-1} показаны отклонения
+$x_1(t)-x_1^*$ и $x_2(t)-x_2^*$. Для каждой точки равновесия они
+стремятся к нулю.
 
-\textbf{Матрица регулятора:} $K=\ldots$.
+\imageplaceholder{control_system_1.png}{Отклонения от точек равновесия системы 1}{fig:control-system-1}
 
-\imageplaceholder{control_system_1.png}{Переходные процессы замкнутой управляемой системы 1}{fig:control-system-1}
-
-\subsection{Управляемая система 2}
+\subsection{Система 2}
 
 \begin{equation}
   \begin{cases}
@@ -772,6 +845,17 @@ $\bm x_{\mathrm{eq}}=\ldots$, $\bm u_{\mathrm{eq}}=\ldots$.
     -x_2+x_2^2-x_1^3+\sin u=0
   \end{cases}
 \end{equation}
+При $u=0$ из первого уравнения следует $x_2(1+x_1)=0$, то есть
+$x_2=0$ или $x_1=-1$. При $x_2=0$ второе уравнение даёт $x_1=0$.
+При $x_1=-1$ получаем
+\begin{equation}
+  x_2^2-x_2+1=0,\qquad D=(-1)^2-4\cdot1\cdot1=-3
+\end{equation}
+Действительных корней в этом случае нет. Поэтому единственная точка
+равновесия равна
+\begin{equation}
+  \bm x^{(1)}=(0,0)
+\end{equation}
 Матрицы линеаризованной системы:
 \begin{equation}
   A=
@@ -786,19 +870,54 @@ $\bm x_{\mathrm{eq}}=\ldots$, $\bm u_{\mathrm{eq}}=\ldots$.
     \cos u
   \end{pmatrix}
 \end{equation}
+В точке $\bm x^{(1)}=(0,0)$ при $u=0$ получаем
+\begin{equation}
+  A^*=
+  \begin{pmatrix}
+    0 & 1\\
+    0 & -1
+  \end{pmatrix},
+  \qquad
+  B^*=
+  \begin{pmatrix}
+    0\\
+    1
+  \end{pmatrix}
+\end{equation}
+Выберем $K=(2,\,2)$. Тогда
+\begin{equation}
+  A^*-B^*K=
+  \begin{pmatrix}
+    0 & 1\\
+    -2 & -3
+  \end{pmatrix}
+\end{equation}
+Характеристическое уравнение и его корни равны
+\begin{equation}
+  \begin{aligned}
+    \det\bigl(A^*-B^*K-\lambda I\bigr)
+    &=\begin{vmatrix}
+      -\lambda & 1\\
+      -2 & -3-\lambda
+    \end{vmatrix}\\
+    &=(-\lambda)(-3-\lambda)+2
+    =\lambda^2+3\lambda+2=0\\
+    D&=3^2-4\cdot1\cdot2=1\\
+    \lambda_{1,2}&=\frac{-3\pm\sqrt{1}}{2},\qquad
+    \lambda_1=-1,\quad\lambda_2=-2
+  \end{aligned}
+\end{equation}
+Оба собственных значения отрицательны. Следовательно, выбранная матрица
+$K$ обеспечивает локальную устойчивость точки $(0,0)$.
+Локально стабилизирующий регулятор имеет вид
+\begin{equation}
+  u=-2x_1-2x_2
+\end{equation}
 
-\textbf{Выбранная точка равновесия:}
-$\bm x_{\mathrm{eq}}=\ldots$, $u_{\mathrm{eq}}=\ldots$.
 
-\textbf{Желаемые полюса:} $\ldots$.
+На рис.~\ref{fig:control-system-2} показана сходимость состояний к $(0,0)$.
 
-\textbf{Коэффициенты регулятора:} $K=\ldots$.
-
-\imageplaceholder{control_system_2.png}{Переходные процессы замкнутой управляемой системы 2}{fig:control-system-2}
+\imageplaceholder{control_system_2.png}{Переходные процессы системы 2}{fig:control-system-2}
 
 
 \section{Вывод}
-
-В данном разделе необходимо сопоставить аналитическую классификацию точек
-равновесия с фазовыми портретами, сформулировать вывод об устойчивости
-системы 4 и оценить качество работы синтезированных регуляторов.
