@@ -1,0 +1,27 @@
+% Заполните значения ниже — остальные файлы менять не обязательно.
+
+\newcommand{\ministry}{Министерство науки и высшего образования Российской Федерации}
+\newcommand{\university}{ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ\\ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ВЫСШЕГО ОБРАЗОВАНИЯ\\«НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ УНИВЕРСИТЕТ ИТМО»\\(УНИВЕРСИТЕТ ИТМО)}
+\newcommand{\faculty}{Факультет систем управления и робототехники}
+
+\newcommand{\subject}{Дискретные системы управления}
+\newcommand{\worktype}{Отчёт по лабораторной работе}
+\newcommand{\labnumber}{1}
+\newcommand{\variant}{3}
+
+\newcommand{\studentlabel}{Работу выполнили:}
+\newcommand{\students}{Сухов Н. М.\\Иванов Н. М.}
+% Несколько студентов: \renewcommand{\students}{Иванов И. И.\\Петров П. П.}
+\newcommand{\group}{ДиСиУп (ИР) R23 бак 1.3}
+\newcommand{\teacher}{Краснов Александр Юрьевич}
+
+\newcommand{\city}{Санкт-Петербург}
+\newcommand{\reportyear}{\the\year}
+
+% Метаданные итогового PDF.
+\pdfstringdefDisableCommands{\def\\{, }}
+\hypersetup{
+  pdftitle={\subject. \worktype~№\labnumber},
+  pdfauthor={\students},
+  pdfsubject={\subject}
+}
