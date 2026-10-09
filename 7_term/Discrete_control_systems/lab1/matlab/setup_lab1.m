@@ -1,0 +1,33 @@
+matlab_dir = fileparts(mfilename('fullpath'));
+images_dir = fullfile(matlab_dir, '..', 'tex', 'images');
+results_dir = fullfile(matlab_dir, 'results');
+addpath(matlab_dir);
+if ~isfolder(images_dir), mkdir(images_dir); end
+if ~isfolder(results_dir), mkdir(results_dir); end
+T1 = 0.2;
+KCO = 4;
+T2 = 0.2;
+A2 = [1 T2; 0 1];
+B2 = [T2^2 / 2; T2];
+C2 = [1 0];
+x02 = [1; 0];
+poles2 = [0.2 0.8; 0.5 -0.8; 0.1 -0.3; 0.2i -0.2i; -0.3+0.7i -0.3-0.7i];
+s2 = real(sum(poles2, 2));
+p2 = real(prod(poles2, 2));
+K_sets = [(1 - s2 + p2) / T2^2, (3 - s2 - p2) / (2 * T2)];
+K2 = K_sets(1, :);
+T_h = 0.2;
+amplitude_h = 1;
+omega_h = 0.08;
+theta_h = omega_h * T_h;
+G_h = [cos(theta_h) sin(theta_h); -sin(theta_h) cos(theta_h)];
+B_h = zeros(2, 1);
+H_h = [1 0];
+x0_h = [0; amplitude_h];
+T_d = 0.25;
+R_d = exp(-T_d) * [cos(3 * T_d) sin(3 * T_d); -sin(3 * T_d) cos(3 * T_d)];
+P_d = [1 T_d T_d^2 / 2; 0 1 T_d; 0 0 1];
+G_d = blkdiag(R_d, P_d);
+B_d = zeros(5, 1);
+H_d = [1 0 1 0 0];
+x0_d = [0; 2; 0; 0; 0.2];

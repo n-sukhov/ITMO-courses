@@ -1,38 +1,38 @@
+run(fullfile(fileparts(mfilename('fullpath')), 'setup_lab1.m'));
 mdl = 'pic8';
-load_system('C:\Users\Nickolay\Desktop\ITMO-courses\7_term\Discrete_control_systems\lab1\matlab\pic8.slx');
-load_system('simulink');
-
+load_system(fullfile(matlab_dir, [mdl '.slx']));
+set_param(mdl, 'StartTime', '0', 'StopTime', '10', 'SolverType', 'Fixed-step', 'Solver', 'ode4', 'FixedStep', '0.01', 'ReturnWorkspaceOutputs', 'on');
 zoh = find_system(mdl, 'SearchDepth', 1, 'BlockType', 'ZeroOrderHold');
-set_param(zoh{1}, 'SampleTime', '0.2');
-
-set_param(mdl, 'StartTime', '0', 'StopTime', '10', ...
-    'SolverType', 'Fixed-step', 'Solver', 'ode4', ...
-    'FixedStep', '0.01', 'ReturnWorkspaceOutputs', 'on');
-
-logBlock = [mdl '/Task1Output'];
-if getSimulinkBlockHandle(logBlock) == -1
-    add_block('simulink/Sinks/To Workspace', logBlock, ...
-        'VariableName', 'task1_y', 'SaveFormat', 'Timeseries', ...
-        'MaxDataPoints', 'inf', 'Position', [950 400 1050 435]);
-    add_line(mdl, 'Integrator/1', 'Task1Output/1', 'autorouting', 'on');
-end
-
-open_system(mdl);
-
-K_values = [0, 2.5, 2.4, 1, 1.25];
-figure;
-tiledlayout(3, 2);
-
+set_param(zoh{1}, 'SampleTime', num2str(T1));
+set_param([mdl '/KCO'], 'Gain', num2str(KCO));
+set_param([mdl '/Step'], 'Time', '0', 'Before', '0', 'After', '1');
+set_param([mdl '/Integrator'], 'InitialCondition', '0');
+set_param([mdl '/Task1Output'], 'VariableName', 'task1_y', 'SaveFormat', 'Timeseries', 'MaxDataPoints', 'inf', 'Decimation', '1', 'SampleTime', '-1');
+K_values = [0 2.5 2.4 1 1.25];
+responses = cell(numel(K_values), 1);
+errors = zeros(numel(K_values), 1);
+fig = figure('Color', 'w', 'Position', [100 100 1000 850]);
+tiledlayout(3, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
 for i = 1:numel(K_values)
     set_param([mdl '/K_FB'], 'Gain', num2str(K_values(i)));
     out = sim(mdl);
     y = out.get('task1_y');
-
+    values = y.Data(:);
+    sampled = abs(y.Time / T1 - round(y.Time / T1)) < 1e-7;
+    k = round(y.Time(sampled) / T1);
+    q = 1 - T1 * KCO * K_values(i);
+    errors(i) = max(abs(values(sampled) - (1 - q .^ k)));
+    assert(errors(i) < 1e-6, 'pic8: выход не совпадает с дискретной моделью при K_FB=%g.', K_values(i));
+    responses{i} = y;
     nexttile;
-    plot(y.Time, y.Data, 'LineWidth', 1.5);
+    plot(y.Time, values, 'LineWidth', 1.2);
     yline(1, '--k');
     grid on;
     xlabel('t, с');
     ylabel('y(t)');
     title(sprintf('K_{FB} = %g', K_values(i)));
 end
+exportgraphics(fig, fullfile(images_dir, 'task1_responses.png'), 'Resolution', 300, 'BackgroundColor', 'white');
+save(fullfile(results_dir, 'task1_results.mat'), 'T1', 'KCO', 'K_values', 'responses', 'errors');
+save_scheme(mdl, fullfile(images_dir, 'task1_scheme.png'));
+disp(table(K_values.', (1 - T1 * KCO * K_values).', errors, 'VariableNames', {'K_FB', 'q', 'max_error'}));
