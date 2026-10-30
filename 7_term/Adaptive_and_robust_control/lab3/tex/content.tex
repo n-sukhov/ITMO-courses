@@ -1,0 +1,215 @@
+% !TeX root = main.tex
+\newcommand{\imageplaceholder}[3]{%
+  \begin{figure}[htbp]
+    \centering
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=0.9\textwidth]{#1}%
+    }{%
+      \fbox{%
+        \parbox[c][3cm][c]{0.85\textwidth}{%
+          \centering
+          Место для рисунка\\[0.4em]
+          \texttt{images/\detokenize{#1}}
+        }%
+      }%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Освоить принципы построения адаптивной системы управления линейным
+многомерным объектом по состоянию с использованием эталонной модели.
+
+\section{Исходные данные}
+
+Объект управления:
+\begin{equation}
+  \dot{\bm x}=A\bm x+\bm b u,
+  \qquad y=C\bm x
+\end{equation}
+Для варианта 1 заданы
+\begin{equation}
+  A=\begin{pmatrix}0&1\\1&1\end{pmatrix},
+  \qquad
+  \bm b=\begin{pmatrix}0\\1\end{pmatrix},
+  \qquad C=\begin{pmatrix}1&0\end{pmatrix},
+  \qquad b_0=1
+\end{equation}
+Задающее воздействие и требуемые показатели качества:
+\begin{equation}
+  g(t)=3\sign\bigl(\cos(0{,}2t)\bigr)+3,
+  \qquad t_{\text{п}}=0{,}16\,\text{с},
+  \qquad \sigma=0\%
+\end{equation}
+Цель управления:
+\begin{equation}
+  \bm e=\bm x_M-\bm x,
+  \qquad \lim_{t\to\infty}\bm e(t)=\bm 0
+\end{equation}
+Построим графики переходной функции:
+
+\section{Эталонная модель}
+
+\begin{equation}
+  \dot{\bm x}_M=A_M\bm x_M+\bm b_M g,
+  \qquad y_M=C\bm x_M
+\end{equation}
+\begin{equation}
+  A_M=\begin{pmatrix}0&1\\-a_{M0}&-a_{M1}\end{pmatrix},
+  \qquad \bm b_M=\begin{pmatrix}0\\a_{M0}\end{pmatrix}
+\end{equation}
+
+% Выбрать стандартный характеристический полином и рассчитать коэффициенты
+% по заданным времени переходного процесса и перерегулированию.
+\begin{equation}
+  a_{M0}=\ldots,
+  \qquad a_{M1}=\ldots
+\end{equation}
+
+% Переходная характеристика: единичное ступенчатое воздействие,
+% нулевые начальные условия; на графике отметить t_п и sigma.
+\imageplaceholder{reference_step.png}
+  {Переходная характеристика эталонной модели}
+  {fig:reference-step}
+
+\noindent\textbf{Вывод по пункту:} \ldots
+
+\section{Неадаптивная система управления}
+
+Условия согласования и закон управления при известных параметрах объекта:
+\begin{equation}
+  A_M=A+\bm b\bm\theta^{\mathsf T},
+  \qquad \bm b=\kappa\bm b_M,
+  \qquad u=\bm\theta^{\mathsf T}\bm x+\frac{1}{\kappa}g
+\end{equation}
+
+% Рассчитать номинальные коэффициенты регулятора и проверить устойчивость.
+\begin{equation}
+  \bm\theta_{\text{ном}}=\ldots,
+  \qquad \kappa=\ldots
+\end{equation}
+Во всех трёх опытах коэффициенты регулятора сохраняют номинальные значения.
+Для каждого опыта приводятся графики $\bm x(t)$ и $\bm x_M(t)$
+на одном поле и $\bm e(t)$ на другом.
+
+\subsection{Номинальные параметры объекта}
+
+\begin{equation}
+  A^{(1)}=A
+\end{equation}
+\imageplaceholder{nonadaptive_nominal.png}
+  {Неадаптивная система при номинальных параметрах объекта}
+  {fig:nonadaptive-nominal}
+
+\subsection{Отклонение параметров с сохранением устойчивости}
+
+\begin{equation}
+  A^{(2)}=\begin{pmatrix}0&1\\\ldots&\ldots\end{pmatrix}
+\end{equation}
+% Выбрать небольшое отклонение параметров и проверить устойчивость
+% матрицы A^(2) + b theta_ном^T.
+\imageplaceholder{nonadaptive_stable.png}
+  {Неадаптивная система при отклонении параметров с сохранением устойчивости}
+  {fig:nonadaptive-stable}
+
+\subsection{Отклонение параметров с потерей устойчивости}
+
+\begin{equation}
+  A^{(3)}=\begin{pmatrix}0&1\\\ldots&\ldots\end{pmatrix}
+\end{equation}
+% Выбрать отклонение параметров, при котором матрица
+% A^(3) + b theta_ном^T теряет устойчивость; привести проверку.
+\imageplaceholder{nonadaptive_unstable.png}
+  {Неадаптивная система при отклонении параметров с потерей устойчивости}
+  {fig:nonadaptive-unstable}
+
+\noindent\textbf{Вывод по пункту:} \ldots
+
+\section{Адаптивная система управления}
+
+Настраиваемый регулятор и алгоритм адаптации:
+\begin{equation}
+  u=\hat{\bm\theta}^{\mathsf T}\bm x+\frac{1}{\kappa}g,
+  \qquad
+  \dot{\hat{\bm\theta}}=\gamma\bm x\bm b^{\mathsf T}P\bm e,
+  \qquad \hat{\bm\theta}(0)=\bm 0,
+  \qquad \gamma>0
+\end{equation}
+Матрица $P=P^{\mathsf T}>0$ определяется из уравнения Ляпунова
+\begin{equation}
+  A_M^{\mathsf T}P+PA_M=-Q,
+  \qquad Q=Q^{\mathsf T}>0
+\end{equation}
+
+% Выбрать Q, решить уравнение Ляпунова и проверить положительную
+% определённость P. При необходимости привести обоснование закона адаптации.
+\begin{equation}
+  Q=\ldots,
+  \qquad P=\ldots
+\end{equation}
+
+Для каждого опыта приводятся три графика: $\bm x(t)$ и $\bm x_M(t)$
+на одном поле, ошибка $\bm e(t)$ и параметрическая ошибка
+$\tilde{\bm\theta}(t)=\bm\theta-\hat{\bm\theta}(t)$.
+% Для изменённого объекта идеальный вектор theta в параметрической ошибке
+% определяется из A_M = A^(j) + b theta^T именно для текущей A^(j).
+
+\subsection{Три эксперимента при фиксированном коэффициенте адаптации}
+
+Повторим опыты с матрицами $A^{(1)}$, $A^{(2)}$, $A^{(3)}$ при
+\begin{equation}
+  \gamma=\gamma_0=\ldots
+\end{equation}
+
+\imageplaceholder{adaptive_nominal.png}
+  {Адаптивная система при номинальных параметрах объекта}
+  {fig:adaptive-nominal}
+\imageplaceholder{adaptive_stable.png}
+  {Адаптивная система с матрицей объекта $A^{(2)}$}
+  {fig:adaptive-stable}
+\imageplaceholder{adaptive_unstable.png}
+  {Адаптивная система с матрицей объекта $A^{(3)}$}
+  {fig:adaptive-unstable}
+
+\subsection{Влияние коэффициента адаптации}
+
+Для номинального объекта сравним три значения коэффициента адаптации:
+\begin{equation}
+  \gamma_1=\ldots,
+  \qquad \gamma_2=\ldots,
+  \qquad \gamma_3=\ldots
+\end{equation}
+% Остальные условия одинаковы. На каждом из трёх графиков сравнить
+% результаты всех трёх опытов, подписав соответствующие значения gamma.
+\imageplaceholder{adaptive_gamma.png}
+  {Сравнение адаптивной системы при трёх значениях $\gamma$}
+  {fig:adaptive-gamma}
+
+\subsection{Постоянное задающее воздействие}
+
+% Повторить один из предыдущих адаптивных опытов, заменив только g(t).
+\begin{equation}
+  g(t)=1,
+  \qquad A=\ldots,
+  \qquad \gamma=\ldots
+\end{equation}
+\imageplaceholder{adaptive_constant.png}
+  {Адаптивная система при $g(t)=1$}
+  {fig:adaptive-constant}
+
+% Оценить ограниченность сигналов, сходимость ошибки слежения и ошибки
+% параметров; связать параметрическую сходимость с неисчезающим возбуждением.
+% Сравнить скорость настройки при разных gamma и при g(t)=1.
+\noindent\textbf{Вывод по пункту:} \ldots
+
+\section{Вывод}
+
+% Обобщить результаты синтеза и моделирования, сравнить неадаптивное
+% и адаптивное управление при изменении параметров объекта.
+\ldots
