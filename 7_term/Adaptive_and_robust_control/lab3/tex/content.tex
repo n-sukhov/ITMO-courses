@@ -170,56 +170,175 @@
   {Переходная характеристика эталонной модели}
   {fig:reference-step}
 
-\noindent\textbf{Вывод по пункту:} \ldots
+\noindent\textbf{Вывод по пункту:} Синтезирована устойчивая эталонная модель второго порядка с биномиальным характеристическим полиномом. Переходный процесс является монотонным, перерегулирование отсутствует. Расчётное время переходного процесса при полосе допуска ±2\% составляет 0,16 с, что соответствует заданным требованиям.
 
 \section{Неадаптивная система управления}
 
-Условия согласования и закон управления при известных параметрах объекта:
+Коэффициенты регулятора рассчитываются по номинальной матрице объекта
+$A_{\text{ном}}$ из условий согласования:
 \begin{equation}
-  A_M=A+\bm b\bm\theta^{\mathsf T},
+  A_M=A_{\text{ном}}+\bm b\bm\theta_{\text{ном}}^{\mathsf T},
   \qquad \bm b=\kappa\bm b_M,
-  \qquad u=\bm\theta^{\mathsf T}\bm x+\frac{1}{\kappa}g
+  \qquad u=\bm\theta_{\text{ном}}^{\mathsf T}\bm x+\frac{1}{\kappa}g
 \end{equation}
 
-% Рассчитать номинальные коэффициенты регулятора и проверить устойчивость.
-\begin{equation}
-  \bm\theta_{\text{ном}}=\ldots,
-  \qquad \kappa=\ldots
-\end{equation}
 Во всех трёх опытах коэффициенты регулятора сохраняют номинальные значения.
 Для каждого опыта приводятся графики $\bm x(t)$ и $\bm x_M(t)$
 на одном поле и $\bm e(t)$ на другом.
 
-\subsection{Номинальные параметры объекта}
+\subsection{Синтез регулятора и условия устойчивости}
 
 \begin{equation}
-  A^{(1)}=A
+  A_{\text{ном}}=\begin{pmatrix}0&1\\1&1\end{pmatrix}
 \end{equation}
+Для номинальной матрицы объекта $a_0=a_1=-1$, $b_0=1$.
+Из условия согласования $\bm b=\kappa\bm b_M$ получаем
+\begin{equation}
+  \begin{pmatrix}0\\1\end{pmatrix}
+  =\kappa\begin{pmatrix}0\\1329{,}4782\end{pmatrix},
+  \qquad
+  \kappa=\frac{1}{1329{,}4782}\approx0{,}0007521748
+\end{equation}
+Компоненты вектора коэффициентов регулятора определяются из равенства
+$A_M=A_{\text{ном}}+\bm b\bm\theta_{\text{ном}}^{\mathsf T}$:
+\begin{equation}
+  \begin{aligned}
+    \theta_1&=\frac{-a_{M0}+a_0}{b_0}
+    =\frac{-1329{,}4782-1}{1}=-1330{,}4782,\\
+    \theta_2&=\frac{-a_{M1}+a_1}{b_0}
+    =\frac{-72{,}9240-1}{1}=-73{,}9240
+  \end{aligned}
+\end{equation}
+Следовательно,
+\begin{equation}
+  \bm\theta_{\text{ном}}=
+  \begin{pmatrix}
+    -1330{,}4782\\
+    -73{,}9240
+  \end{pmatrix}
+\end{equation}
+Закон управления имеет вид
+\begin{equation}
+  u=\bm\theta_{\text{ном}}^{\mathsf T}\bm x+\frac{1}{\kappa}g
+  =-1330{,}4782x_1-73{,}9240x_2+1329{,}4782g
+\end{equation}
+Замкнутая система описывается уравнениями
+\begin{equation}
+  \begin{cases}
+    \dot{\bm x}=A\bm x+
+    \bm b\left(\bm\theta_{\text{ном}}^{\mathsf T}\bm x
+    +\dfrac{1}{\kappa}g\right),\\
+    y=C\bm x
+  \end{cases}
+  \label{eq:nonadaptive-general}
+\end{equation}
+
+При произвольных параметрах объекта
+\begin{equation}
+  A=\begin{pmatrix}0&1\\-a_0&-a_1\end{pmatrix},
+  \qquad \bm b=\begin{pmatrix}0\\1\end{pmatrix}
+\end{equation}
+матрица замкнутой системы равна
+\begin{equation}
+  A_{\text{замк}}=A+\bm b\bm\theta_{\text{ном}}^{\mathsf T}
+  =\begin{pmatrix}
+    0&1\\
+    -a_0-1330{,}4782&-a_1-73{,}9240
+  \end{pmatrix}
+\end{equation}
+Характеристический полином:
+\begin{equation}
+  \begin{aligned}
+    p(\lambda)&=\det\bigl(\lambda I-A_{\text{замк}}\bigr)\\
+    &=\begin{vmatrix}
+      \lambda&-1\\
+      a_0+1330{,}4782&\lambda+a_1+73{,}9240
+    \end{vmatrix}\\
+    &=\lambda^2+(a_1+73{,}9240)\lambda+a_0+1330{,}4782
+  \end{aligned}
+\end{equation}
+По критерию Гурвица замкнутая система асимптотически устойчива при
+\begin{equation}
+  \boxed{
+  \begin{cases}
+    a_1>-73{,}9240,\\
+    a_0>-1330{,}4782
+  \end{cases}}
+\end{equation}
+
+\subsection{Номинальные параметры объекта}
+
+В первом эксперименте используются номинальные значения:
+\begin{equation}
+  a_0^{(1)}=a_1^{(1)}=-1,
+  \qquad A^{(1)}=\begin{pmatrix}0&1\\1&1\end{pmatrix}
+\end{equation}
+Характеристический полином замкнутой системы имеет вид
+\begin{equation}
+  p_1(\lambda)=\lambda^2+72{,}9240\lambda+1329{,}4782
+\end{equation}
+Оба коэффициента после старшего положительны, поэтому система устойчива.
+
+Выполним моделирование системы при номинальных параметрах объекта.
+
 \imageplaceholder{nonadaptive_nominal.png}
-  {Неадаптивная система при номинальных параметрах объекта}
+  {Траектории объекта и эталонной модели при номинальных параметрах}
   {fig:nonadaptive-nominal}
+\imageplaceholder{nonadaptive_nominal_error.png}
+  {Ошибка слежения при номинальных параметрах объекта}
+  {fig:nonadaptive-nominal-error}
 
 \subsection{Отклонение параметров с сохранением устойчивости}
 
 \begin{equation}
-  A^{(2)}=\begin{pmatrix}0&1\\\ldots&\ldots\end{pmatrix}
+  a_0^{(2)}=-1{,}2,
+  \qquad a_1^{(2)}=-0{,}8,
+  \qquad A^{(2)}=\begin{pmatrix}0&1\\1{,}2&0{,}8\end{pmatrix}
 \end{equation}
-% Выбрать небольшое отклонение параметров и проверить устойчивость
-% матрицы A^(2) + b theta_ном^T.
+Отклонения от номинальных значений составляют $\Delta a_0=-0{,}2$,
+$\Delta a_1=0{,}2$. Коэффициенты регулятора сохраняются прежними.
+Характеристический полином замкнутой системы:
+\begin{equation}
+  p_2(\lambda)=\lambda^2+73{,}1240\lambda+1329{,}2782
+\end{equation}
+Условия Гурвица выполняются, поэтому устойчивость сохраняется.
+
+Выполним моделирование системы при выбранном отклонении параметров.
+
 \imageplaceholder{nonadaptive_stable.png}
-  {Неадаптивная система при отклонении параметров с сохранением устойчивости}
+  {Траектории при отклонении параметров с сохранением устойчивости}
   {fig:nonadaptive-stable}
+\imageplaceholder{nonadaptive_stable_error.png}
+  {Ошибка слежения при отклонении параметров с сохранением устойчивости}
+  {fig:nonadaptive-stable-error}
 
 \subsection{Отклонение параметров с потерей устойчивости}
 
 \begin{equation}
-  A^{(3)}=\begin{pmatrix}0&1\\\ldots&\ldots\end{pmatrix}
+  a_0^{(3)}=-1,
+  \qquad a_1^{(3)}=-75,
+  \qquad A^{(3)}=\begin{pmatrix}0&1\\1&75\end{pmatrix}
 \end{equation}
-% Выбрать отклонение параметров, при котором матрица
-% A^(3) + b theta_ном^T теряет устойчивость; привести проверку.
+Параметр $a_1^{(3)}=-75$ нарушает условие $a_1>-73{,}9240$.
+При неизменном регуляторе характеристический полином равен
+\begin{equation}
+  p_3(\lambda)=\lambda^2-1{,}0760\lambda+1329{,}4782
+\end{equation}
+Его корни имеют положительные действительные части:
+\begin{equation}
+  \lambda_{1,2}\approx0{,}5380\pm36{,}4580i
+\end{equation}
+Следовательно, замкнутая система неустойчива.
+
+Выполним моделирование системы при параметрах, приводящих к потере
+устойчивости.
+
 \imageplaceholder{nonadaptive_unstable.png}
-  {Неадаптивная система при отклонении параметров с потерей устойчивости}
+  {Траектории при отклонении параметров с потерей устойчивости}
   {fig:nonadaptive-unstable}
+\imageplaceholder{nonadaptive_unstable_error.png}
+  {Ошибка слежения при отклонении параметров с потерей устойчивости}
+  {fig:nonadaptive-unstable-error}
 
 \noindent\textbf{Вывод по пункту:} \ldots
 
