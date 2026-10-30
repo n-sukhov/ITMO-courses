@@ -756,7 +756,41 @@ $x_1^2+x_2^2=1$, что соответствует результату иссл
     0 & 3
   \end{pmatrix}
 \end{equation}
-Выберем
+Будем искать матрицу обратной связи в виде
+\begin{equation}
+  K=
+  \begin{pmatrix}
+    k & 0\\
+    0 & 0
+  \end{pmatrix}
+\end{equation}
+Обозначим через $a$ первый диагональный элемент $A^*$: в точке
+$\bm x^{(1)}=(0,0)$ имеем $a=-1$, а в точках
+$\bm x^{(2)}=(1,-1)$ и $\bm x^{(3)}=(-1,1)$ имеем $a=5$.
+Тогда характеристический многочлен замкнутой системы равен
+\begin{equation}
+  \begin{aligned}
+    \det\bigl(A^*-B^*K-\lambda I\bigr)
+    &=\begin{vmatrix}
+      a-k-\lambda & 1\\
+      -1 & -1-\lambda
+    \end{vmatrix}\\
+    &=(a-k-\lambda)(-1-\lambda)+1\\
+    &=\lambda^2+(k+1-a)\lambda+k+1-a
+  \end{aligned}
+\end{equation}
+По критерию Гурвица для полинома второго порядка оба коэффициента
+после старшего должны быть положительными. Здесь они совпадают,
+поэтому условие гурвицевости имеет вид $k+1-a>0$. Следовательно,
+\begin{equation}
+  \begin{cases}
+    k>-2, & \bm x^{(1)}=(0,0),\\
+    k>4, & \bm x^{(2)}=(1,-1),\quad \bm x^{(3)}=(-1,1)
+  \end{cases}
+\end{equation}
+Таким образом, в выбранном семействе матриц $K$ общая область,
+обеспечивающая гурвицевость во всех трёх точках, задаётся условием $k>4$.
+Выберем из этой области $k=7$, то есть
 \begin{equation}
   K=
   \begin{pmatrix}
@@ -901,7 +935,30 @@ $x_2=0$ или $x_1=-1$. При $x_2=0$ второе уравнение даёт
     1
   \end{pmatrix}
 \end{equation}
-Выберем $K=(2,\,2)$. Тогда
+Положим $K=(k_1,\,k_2)$ и найдём область допустимых коэффициентов
+из характеристического многочлена:
+\begin{equation}
+  \begin{aligned}
+    \det\bigl(A^*-B^*K-\lambda I\bigr)
+    &=\begin{vmatrix}
+      -\lambda & 1\\
+      -k_1 & -1-k_2-\lambda
+    \end{vmatrix}\\
+    &=(-\lambda)(-1-k_2-\lambda)+k_1\\
+    &=\lambda^2+(1+k_2)\lambda+k_1
+  \end{aligned}
+\end{equation}
+По критерию Гурвица получаем
+\begin{equation}
+  \begin{cases}
+    1+k_2>0,\\
+    k_1>0
+  \end{cases}
+  \qquad\Longleftrightarrow\qquad
+  k_1>0,\quad k_2>-1
+\end{equation}
+Из найденной области выберем $k_1=2$, $k_2=2$, то есть
+$K=(2,\,2)$. Тогда
 \begin{equation}
   A^*-B^*K=
   \begin{pmatrix}
