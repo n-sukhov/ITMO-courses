@@ -65,15 +65,107 @@
   \qquad \bm b_M=\begin{pmatrix}0\\a_{M0}\end{pmatrix}
 \end{equation}
 
-% Выбрать стандартный характеристический полином и рассчитать коэффициенты
-% по заданным времени переходного процесса и перерегулированию.
+Эталонная модель второго порядка задаётся уравнениями
 \begin{equation}
-  a_{M0}=\ldots,
-  \qquad a_{M1}=\ldots
+  \begin{cases}
+    \dot x_{M1}=x_{M2},\\
+    \dot x_{M2}=-a_{M0}x_{M1}-a_{M1}x_{M2}+a_{M0}g,
+  \end{cases}
+  \qquad y_M=x_{M1}
+\end{equation}
+Перейдем к скалярному уравнению для выходного сигнала:
+\begin{equation}
+  \ddot y_M+a_{M1}\dot y_M+a_{M0}y_M=a_{M0}g
+\end{equation}
+При нулевых начальных условиях преобразование Лапласа даёт
+\begin{equation}
+  \bigl(s^2+a_{M1}s+a_{M0}\bigr)Y_M(s)=a_{M0}G(s)
 \end{equation}
 
-% Переходная характеристика: единичное ступенчатое воздействие,
-% нулевые начальные условия; на графике отметить t_п и sigma.
+\begin{equation}
+  W_M(s)=\frac{Y_M(s)}{G(s)}
+  =\frac{a_{M0}}{s^2+a_{M1}s+a_{M0}}
+\end{equation}
+
+Для получения апериодического переходного процесса без перерегулирования
+принимается биномиальный характеристический полином с двумя одинаковыми
+отрицательными корнями:
+\begin{equation}
+  D_M(s)=(s+\omega)^2=s^2+2\omega s+\omega^2,
+  \qquad \omega>0
+\end{equation}
+
+\begin{equation}
+  a_{M1}=2\omega,
+  \qquad a_{M0}=\omega^2
+\end{equation}
+Передаточная функция принимает вид
+\begin{equation}
+  W_M(s)=\frac{\omega^2}{(s+\omega)^2}
+\end{equation}
+
+Для единичного ступенчатого воздействия $G(s)=1/s$ изображение выходного
+сигнала определяется выражением
+\begin{equation}
+  Y_M(s)=\frac{\omega^2}{s(s+\omega)^2}
+\end{equation}
+
+\begin{equation}
+  Y_M(s)=\frac{1}{s}-\frac{1}{s+\omega}
+  -\frac{\omega}{(s+\omega)^2}
+\end{equation}
+Обратное преобразование Лапласа даёт переходную функцию
+\begin{equation}
+  h(t)=1-e^{-\omega t}-\omega t e^{-\omega t}
+  =1-(1+\omega t)e^{-\omega t},
+  \qquad t\ge0
+\end{equation}
+Её производная равна
+\begin{equation}
+  \dot h(t)=\omega^2t e^{-\omega t}\ge0
+\end{equation}
+Поскольку $h(0)=0$ и $\lim_{t\to\infty}h(t)=1$, переходная функция
+монотонно возрастает до установившегося значения. Перерегулирование
+составляет $\sigma=0\%$.
+
+Время переходного процесса определяется по полосе допуска $\pm2\%$
+относительно установившегося значения:
+\begin{equation}
+  |h(t)-1|\le0{,}02
+  \qquad \text{при всех }t\ge t_{\text{п}}
+\end{equation}
+Для рассматриваемой монотонной переходной функции граница полосы
+достигается при $h(t_{\text{п}})=0{,}98$. Поэтому
+\begin{equation}
+  1-h(t_{\text{п}})
+  =(1+\omega t_{\text{п}})e^{-\omega t_{\text{п}}}
+  =0{,}02
+\end{equation}
+При заданном времени $t_{\text{п}}=0{,}16\,\text{с}$ получаем уравнение
+\begin{equation}
+  (1+0{,}16\omega)e^{-0{,}16\omega}=0{,}02
+\end{equation}
+Его положительное решение и соответствующие коэффициенты равны
+\begin{equation}
+  \omega\approx36{,}4620\,\text{с}^{-1},
+  \qquad a_{M0}=\omega^2\approx1329{,}4782,
+  \qquad a_{M1}=2\omega\approx72{,}9240
+\end{equation}
+Матрицы синтезированной эталонной модели имеют вид
+\begin{equation}
+  A_M=\begin{pmatrix}
+    0&1\\
+    -1329{,}4782&-72{,}9240
+  \end{pmatrix},
+  \qquad
+  \bm b_M=\begin{pmatrix}
+    0\\
+    1329{,}4782
+  \end{pmatrix},
+  \qquad C_M=\begin{pmatrix}1&0\end{pmatrix}
+\end{equation}
+
+
 \imageplaceholder{reference_step.png}
   {Переходная характеристика эталонной модели}
   {fig:reference-step}
