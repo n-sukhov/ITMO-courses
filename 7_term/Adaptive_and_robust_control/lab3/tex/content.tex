@@ -356,71 +356,301 @@ $a_1^{(3)}=-75<-73{,}9240$.
   \qquad \hat{\bm\theta}(0)=\bm 0,
   \qquad \gamma>0
 \end{equation}
+Во всех опытах сохраняются ранее выбранные матрицы $A_M$, $\bm b_M$
+и значение $\kappa=1/1329{,}4782$. Начальные состояния объекта
+и эталонной модели принимаются нулевыми:
+\begin{equation}
+  \bm x(0)=\bm x_M(0)=\bm 0
+\end{equation}
+
+\subsection{Расчёт матрицы Ляпунова и алгоритма адаптации}
+
 Матрица $P=P^{\mathsf T}>0$ определяется из уравнения Ляпунова
 \begin{equation}
   A_M^{\mathsf T}P+PA_M=-Q,
   \qquad Q=Q^{\mathsf T}>0
 \end{equation}
-
-% Выбрать Q, решить уравнение Ляпунова и проверить положительную
-% определённость P. При необходимости привести обоснование закона адаптации.
+Выберем $Q=I$ и представим искомую матрицу в виде
 \begin{equation}
-  Q=\ldots,
-  \qquad P=\ldots
+  Q=\begin{pmatrix}1&0\\0&1\end{pmatrix},
+  \qquad P=\begin{pmatrix}p_{11}&p_{12}\\p_{12}&p_{22}\end{pmatrix}
 \end{equation}
+После подстановки $A_M$ получаем
+\begin{equation}
+  \begin{pmatrix}
+    -2a_{M0}p_{12}&p_{11}-a_{M1}p_{12}-a_{M0}p_{22}\\
+    p_{11}-a_{M1}p_{12}-a_{M0}p_{22}&2p_{12}-2a_{M1}p_{22}
+  \end{pmatrix}
+  =\begin{pmatrix}-1&0\\0&-1\end{pmatrix}
+\end{equation}
+Отсюда
+\begin{equation}
+  \begin{aligned}
+    p_{12}&=\frac{1}{2a_{M0}},\\
+    p_{22}&=\frac{1+2p_{12}}{2a_{M1}}
+    =\frac{a_{M0}+1}{2a_{M0}a_{M1}},\\
+    p_{11}&=a_{M1}p_{12}+a_{M0}p_{22}
+    =\frac{a_{M1}}{2a_{M0}}+\frac{a_{M0}+1}{2a_{M1}}
+  \end{aligned}
+\end{equation}
+При $a_{M0}=1329{,}4782$, $a_{M1}=72{,}9240$ имеем
+\begin{equation}
+  P\approx\begin{pmatrix}
+    9{,}1497874344&0{,}0003760874\\
+    0{,}0003760874&0{,}0068616105
+  \end{pmatrix}
+\end{equation}
+Проверим положительную определённость по критерию Сильвестра:
+\begin{equation}
+  p_{11}\approx9{,}1497874344>0,
+  \qquad \det P\approx0{,}0627821365>0
+\end{equation}
+Следовательно, $P=P^{\mathsf T}>0$.
 
-Для каждого опыта приводятся три графика: $\bm x(t)$ и $\bm x_M(t)$
-на одном поле, ошибка $\bm e(t)$ и параметрическая ошибка
-$\tilde{\bm\theta}(t)=\bm\theta-\hat{\bm\theta}(t)$.
-% Для изменённого объекта идеальный вектор theta в параметрической ошибке
-% определяется из A_M = A^(j) + b theta^T именно для текущей A^(j).
+Поскольку $\bm b=(0\;\;1)^{\mathsf T}$,
+\begin{equation}
+  \bm b^{\mathsf T}P\bm e=p_{12}e_1+p_{22}e_2
+  \approx0{,}0003760874e_1+0{,}0068616105e_2
+\end{equation}
+Закон управления и алгоритм адаптации по компонентам имеют вид
+\begin{equation}
+  \begin{cases}
+    u=\hat\theta_1x_1+\hat\theta_2x_2+1329{,}4782g,\\
+    \dot{\hat\theta}_1=\gamma x_1(p_{12}e_1+p_{22}e_2),\\
+    \dot{\hat\theta}_2=\gamma x_2(p_{12}e_1+p_{22}e_2)
+  \end{cases}
+\end{equation}
+В моделировании используются неокруглённые значения элементов $P$,
+рассчитанные по приведённым формулам.
+
+\subsection{Свойства адаптивной системы}
+
+Для текущей матрицы объекта идеальные коэффициенты определяются
+из условия согласования:
+\begin{equation}
+  \bm\theta=\begin{pmatrix}a_0-a_{M0}\\a_1-a_{M1}\end{pmatrix},
+  \qquad \tilde{\bm\theta}=\bm\theta-\hat{\bm\theta}
+\end{equation}
+После подстановки настраиваемого управления модель ошибки принимает вид
+\begin{equation}
+  \dot{\bm e}=A_M\bm e+\bm b\tilde{\bm\theta}^{\mathsf T}\bm x,
+  \qquad
+  \dot{\tilde{\bm\theta}}=-\gamma\bm x\bm b^{\mathsf T}P\bm e
+\end{equation}
+Выберем функцию Ляпунова
+\begin{equation}
+  V=\frac{1}{2}\bm e^{\mathsf T}P\bm e+
+  \frac{1}{2\gamma}\tilde{\bm\theta}^{\mathsf T}\tilde{\bm\theta}
+\end{equation}
+Её производная равна
+\begin{equation}
+  \begin{aligned}
+    \dot V&=-\frac{1}{2}\bm e^{\mathsf T}Q\bm e+
+    \tilde{\bm\theta}^{\mathsf T}\bm x\bm b^{\mathsf T}P\bm e
+    -\tilde{\bm\theta}^{\mathsf T}\bm x\bm b^{\mathsf T}P\bm e\\
+    &=-\frac{1}{2}(e_1^2+e_2^2)\le0
+  \end{aligned}
+\end{equation}
+Отсюда следуют ограниченность ошибок $\bm e$, $\tilde{\bm\theta}$
+и оценок $\hat{\bm\theta}$. При ограниченном задании устойчивая
+эталонная модель формирует ограниченное состояние $\bm x_M$,
+поэтому $\bm x=\bm x_M-\bm e$ и управление $u$ также ограничены.
+Производная $\bm e$ ограничена, а из $\dot V$ следует
+$\bm e\in L_2$. Следовательно,
+\begin{equation}
+  \lim_{t\to\infty}\bm e(t)=\bm 0
+\end{equation}
+Эти свойства выполняются при любом $\gamma>0$ для всех трёх
+рассматриваемых постоянных матриц объекта.
+
+Для сходимости параметрической ошибки к нулю дополнительно требуется
+неисчезающее возбуждение:
+\begin{equation}
+  \int_t^{t+T}\bm x(\tau)\bm x^{\mathsf T}(\tau)\,d\tau
+  \ge\alpha I,
+  \qquad T>0,\quad\alpha>0
+\end{equation}
+Заданное периодическое воздействие имеет период
+\begin{equation}
+  T_g=\frac{2\pi}{0{,}2}=10\pi\approx31{,}4159\,\text{с}
+\end{equation}
+Оно содержит ненулевую гармонику с частотой $0{,}2\,\text{с}^{-1}$.
+В установившемся периодическом режиме $x_{M1}$ содержит эту гармонику,
+а $x_{M2}=\dot x_{M1}$ содержит её производную. Поэтому две компоненты
+состояния линейно независимы на периоде, и матрица интеграла для
+эталонного состояния положительно определена. При $\bm e\to\bm 0$
+неисчезающее возбуждение обеспечивается и для состояния объекта
+после переходного процесса. При выполнении этого условия
+$\tilde{\bm\theta}\to\bm 0$.
+
+Для каждого опыта приведём три графика: $\bm x(t)$ и $\bm x_M(t)$
+на одном поле, ошибку слежения $\bm e(t)$ на втором
+и параметрическую ошибку $\tilde{\bm\theta}(t)$ на третьем.
+Продолжительность моделирования принимается равной $160\,\text{с}$,
+что позволяет рассмотреть несколько периодов задающего воздействия.
 
 \subsection{Три эксперимента при фиксированном коэффициенте адаптации}
 
 Повторим опыты с матрицами $A^{(1)}$, $A^{(2)}$, $A^{(3)}$ при
 \begin{equation}
-  \gamma=\gamma_0=\ldots
+  \gamma=\gamma_0=1000
 \end{equation}
+Значение $\gamma_0$ выбирается для проведения экспериментов.
+Во всех трёх опытах оценки начинают настраиваться с нуля;
+идеальные коэффициенты используются только для расчёта
+параметрической ошибки.
+
+Для номинального объекта
+\begin{equation}
+  A^{(1)}=\begin{pmatrix}0&1\\1&1\end{pmatrix},
+  \qquad
+  \bm\theta^{(1)}=\begin{pmatrix}-1330{,}4782\\-73{,}9240\end{pmatrix}
+\end{equation}
+Выполним моделирование адаптивной системы при номинальных параметрах.
 
 \imageplaceholder{adaptive_nominal.png}
-  {Адаптивная система при номинальных параметрах объекта}
+  {Траектории адаптивной системы при номинальных параметрах объекта}
   {fig:adaptive-nominal}
+\imageplaceholder{adaptive_nominal_error.png}
+  {Ошибка слежения адаптивной системы при номинальных параметрах}
+  {fig:adaptive-nominal-error}
+\imageplaceholder{adaptive_nominal_theta.png}
+  {Параметрическая ошибка при номинальных параметрах объекта}
+  {fig:adaptive-nominal-theta}
+
+Для второго объекта
+\begin{equation}
+  A^{(2)}=\begin{pmatrix}0&1\\1000&60\end{pmatrix},
+  \qquad
+  \bm\theta^{(2)}=\begin{pmatrix}-2329{,}4782\\-132{,}9240\end{pmatrix}
+\end{equation}
+Выполним моделирование адаптивной системы при отклонении параметров,
+сохранявшем устойчивость системы с фиксированным регулятором.
+
 \imageplaceholder{adaptive_stable.png}
-  {Адаптивная система с матрицей объекта $A^{(2)}$}
+  {Траектории адаптивной системы с матрицей объекта $A^{(2)}$}
   {fig:adaptive-stable}
+\imageplaceholder{adaptive_stable_error.png}
+  {Ошибка слежения адаптивной системы с матрицей объекта $A^{(2)}$}
+  {fig:adaptive-stable-error}
+\imageplaceholder{adaptive_stable_theta.png}
+  {Параметрическая ошибка при матрице объекта $A^{(2)}$}
+  {fig:adaptive-stable-theta}
+
+Для третьего объекта
+\begin{equation}
+  A^{(3)}=\begin{pmatrix}0&1\\1400&75\end{pmatrix},
+  \qquad
+  \bm\theta^{(3)}=\begin{pmatrix}-2729{,}4782\\-147{,}9240\end{pmatrix}
+\end{equation}
+Выполним моделирование адаптивной системы при параметрах,
+приводивших к потере устойчивости системы с фиксированным регулятором.
+
 \imageplaceholder{adaptive_unstable.png}
-  {Адаптивная система с матрицей объекта $A^{(3)}$}
+  {Траектории адаптивной системы с матрицей объекта $A^{(3)}$}
   {fig:adaptive-unstable}
+\imageplaceholder{adaptive_unstable_error.png}
+  {Ошибка слежения адаптивной системы с матрицей объекта $A^{(3)}$}
+  {fig:adaptive-unstable-error}
+\imageplaceholder{adaptive_unstable_theta.png}
+  {Параметрическая ошибка при матрице объекта $A^{(3)}$}
+  {fig:adaptive-unstable-theta}
 
 \subsection{Влияние коэффициента адаптации}
 
 Для номинального объекта сравним три значения коэффициента адаптации:
 \begin{equation}
-  \gamma_1=\ldots,
-  \qquad \gamma_2=\ldots,
-  \qquad \gamma_3=\ldots
+  \gamma_1=100,
+  \qquad \gamma_2=1000,
+  \qquad \gamma_3=10000
 \end{equation}
-% Остальные условия одинаковы. На каждом из трёх графиков сравнить
-% результаты всех трёх опытов, подписав соответствующие значения gamma.
-\imageplaceholder{adaptive_gamma.png}
-  {Сравнение адаптивной системы при трёх значениях $\gamma$}
-  {fig:adaptive-gamma}
+Матрицы объекта и эталонной модели, задающее воздействие, матрица $P$,
+нулевые начальные условия и время моделирования сохраняются одинаковыми.
+Коэффициент $\gamma$ масштабирует скорость изменения оценок,
+однако наибольшая скорость сходимости параметрической ошибки
+не обязательно достигается при наибольшем $\gamma$.
+Сравнение выполним по графикам ошибок слежения и параметрических ошибок;
+оптимальное значение заранее не назначается.
+
+Выполним моделирование системы при $\gamma_1=100$.
+
+\imageplaceholder{adaptive_gamma_100.png}
+  {Траектории адаптивной системы при $\gamma=100$}
+  {fig:adaptive-gamma-100}
+\imageplaceholder{adaptive_gamma_100_error.png}
+  {Ошибка слежения при $\gamma=100$}
+  {fig:adaptive-gamma-100-error}
+\imageplaceholder{adaptive_gamma_100_theta.png}
+  {Параметрическая ошибка при $\gamma=100$}
+  {fig:adaptive-gamma-100-theta}
+
+Выполним моделирование системы при $\gamma_2=1000$.
+
+\imageplaceholder{adaptive_gamma_1000.png}
+  {Траектории адаптивной системы при $\gamma=1000$}
+  {fig:adaptive-gamma-1000}
+\imageplaceholder{adaptive_gamma_1000_error.png}
+  {Ошибка слежения при $\gamma=1000$}
+  {fig:adaptive-gamma-1000-error}
+\imageplaceholder{adaptive_gamma_1000_theta.png}
+  {Параметрическая ошибка при $\gamma=1000$}
+  {fig:adaptive-gamma-1000-theta}
+
+Выполним моделирование системы при $\gamma_3=10000$.
+
+\imageplaceholder{adaptive_gamma_10000.png}
+  {Траектории адаптивной системы при $\gamma=10000$}
+  {fig:adaptive-gamma-10000}
+\imageplaceholder{adaptive_gamma_10000_error.png}
+  {Ошибка слежения при $\gamma=10000$}
+  {fig:adaptive-gamma-10000-error}
+\imageplaceholder{adaptive_gamma_10000_theta.png}
+  {Параметрическая ошибка при $\gamma=10000$}
+  {fig:adaptive-gamma-10000-theta}
 
 \subsection{Постоянное задающее воздействие}
 
-% Повторить один из предыдущих адаптивных опытов, заменив только g(t).
+Повторим опыт для номинального объекта с коэффициентом адаптации
+$\gamma_0$, заменив только задающее воздействие:
 \begin{equation}
   g(t)=1,
-  \qquad A=\ldots,
-  \qquad \gamma=\ldots
+  \qquad A=A^{(1)}=\begin{pmatrix}0&1\\1&1\end{pmatrix},
+  \qquad \gamma=1000
 \end{equation}
-\imageplaceholder{adaptive_constant.png}
-  {Адаптивная система при $g(t)=1$}
-  {fig:adaptive-constant}
+При постоянном задании установившееся состояние эталонной модели равно
+\begin{equation}
+  \bm x_M^*=\begin{pmatrix}1\\0\end{pmatrix}
+\end{equation}
+Для такого состояния матрица возбуждения вырождается:
+\begin{equation}
+  \int_t^{t+T}\bm x^*(\bm x^*)^{\mathsf T}\,d\tau
+  =\begin{pmatrix}T&0\\0&0\end{pmatrix},
+  \qquad \det\begin{pmatrix}T&0\\0&0\end{pmatrix}=0
+\end{equation}
+Поэтому неисчезающее возбуждение в установившемся режиме отсутствует.
+Из условия равновесия номинального объекта получаем
+\begin{equation}
+  0=1+\hat\theta_1^*+1329{,}4782,
+  \qquad \hat\theta_1^*=-1330{,}4782
+\end{equation}
+Коэффициент $\hat\theta_2$ в это равенство не входит, поскольку $x_2^*=0$.
+Следовательно, нулевая ошибка слежения совместима с ненулевой
+ошибкой оценки второго параметра. Ограниченность сигналов и
+$\bm e\to\bm 0$ сохраняются, но сходимость всего вектора
+$\tilde{\bm\theta}$ к нулю не гарантируется.
 
-% Оценить ограниченность сигналов, сходимость ошибки слежения и ошибки
-% параметров; связать параметрическую сходимость с неисчезающим возбуждением.
-% Сравнить скорость настройки при разных gamma и при g(t)=1.
+Выполним моделирование системы при постоянном задающем воздействии.
+
+\imageplaceholder{adaptive_constant.png}
+  {Траектории адаптивной системы при $g(t)=1$}
+  {fig:adaptive-constant}
+\imageplaceholder{adaptive_constant_error.png}
+  {Ошибка слежения адаптивной системы при $g(t)=1$}
+  {fig:adaptive-constant-error}
+\imageplaceholder{adaptive_constant_theta.png}
+  {Параметрическая ошибка адаптивной системы при $g(t)=1$}
+  {fig:adaptive-constant-theta}
+
 \noindent\textbf{Вывод по пункту:} \ldots
 
 \section{Вывод}
