@@ -1,1 +1,411 @@
 % !TeX root = main.tex
+
+% Два размера рисунков, как в лабораторной работе № 3.
+% Аргументы: имя файла в images, подпись, метка для ссылки.
+% Если файл ещё не добавлен, вместо него выводится рамка высотой 3 см.
+\newcommand{\imageplaceholder}[3]{%
+  \begin{figure}[H]
+    \centering
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=0.85\textwidth]{#1}%
+    }{%
+      \fbox{%
+        \parbox[c][3cm][c]{0.85\textwidth}{%
+          \centering
+          Место для рисунка\\[0.4em]
+          \texttt{images/\detokenize{#1}}
+        }%
+      }%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+\newcommand{\imageplaceholderMAX}[3]{%
+  \begin{figure}[H]
+    \centering
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=0.95\textwidth]{#1}%
+    }{%
+      \fbox{%
+        \parbox[c][3cm][c]{0.95\textwidth}{%
+          \centering
+          Место для рисунка\\[0.4em]
+          \texttt{images/\detokenize{#1}}
+        }%
+      }%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Освоить принципы построения робастной системы управления линейным
+многомерным объектом по состоянию на основе метода функций Ляпунова.
+
+\section{Постановка задачи и исходные данные}
+
+Рассматривается возмущённый объект управления
+\begin{equation}
+  \dot{\bm x}=A\bm x+\bm b u+\bm\delta(t),
+  \qquad y=C\bm x,
+  \qquad \bm x\in\mathbb R^2.
+  \label{eq:plant}
+\end{equation}
+В работе № 4 используются матрицы объекта и сигнал задания из работы
+№ 3. Для варианта 1 согласно таблице 3.1 методических указаний (с.~34)
+заданы
+\begin{equation}
+  A=\begin{pmatrix}0&1\\1&1\end{pmatrix},
+  \qquad
+  \bm b=\begin{pmatrix}0\\1\end{pmatrix},
+  \qquad C=\begin{pmatrix}1&0\end{pmatrix},
+  \qquad b_0=1.
+\end{equation}
+Задающее воздействие имеет вид
+\begin{equation}
+  g(t)=3\sgn\bigl(\cos(0{,}2t)\bigr)+3.
+\end{equation}
+Требования к переходной характеристике эталонной модели:
+\begin{equation}
+  t_{\text{п}}=0{,}16\,\text{с},
+  \qquad \sigma_{\max}=0\%.
+\end{equation}
+Здесь $\sigma_{\max}$ обозначает перерегулирование; ниже $\sigma>0$
+обозначает коэффициент параметрической обратной связи регулятора.
+
+По пункту 1 порядка выполнения работы № 4 (с.~41) в опытах с возмущением
+используется вектор-функция
+\begin{equation}
+  \bm\delta(t)=
+  \begin{pmatrix}
+    0{,}6\sin(10t)+0{,}1\sin(50t)\\
+    0{,}5\cos(12t)+0{,}2\sin(30t)
+  \end{pmatrix}.
+  \label{eq:disturbance}
+\end{equation}
+В опытах без возмущения принимается $\bm\delta(t)\equiv\bm 0$.
+
+Ошибка слежения и цель управления определяются соотношениями
+\begin{equation}
+  \bm e(t)=\bm x_M(t)-\bm x(t),
+  \qquad \norm{\bm e(t)}\le\Delta
+  \quad\text{при всех }t\ge T,
+  \label{eq:control-goal}
+\end{equation}
+где $\Delta>0$ \textemdash{} допустимая установившаяся ошибка,
+$T$ \textemdash{} время настройки, $\bm x_M$ \textemdash{} состояние
+эталонной модели.
+
+\section{Построение моделей систем управления}
+
+\subsection{Эталонная модель и общие параметры}
+
+Эталонная модель сохраняет структуру, использованную в лабораторной
+работе № 3:
+\begin{equation}
+  \dot{\bm x}_M=A_M\bm x_M+\bm b_M g,
+  \qquad y_M=C\bm x_M,
+\end{equation}
+\begin{equation}
+  A_M=\begin{pmatrix}0&1\\-a_{M0}&-a_{M1}\end{pmatrix},
+  \qquad \bm b_M=\begin{pmatrix}0\\a_{M0}\end{pmatrix}.
+\end{equation}
+Условия согласования и общий закон управления:
+\begin{equation}
+  A_M=A+\bm b\bm\theta^{\mathsf T},
+  \qquad \bm b=\kappa\bm b_M,
+  \qquad u=\hat{\bm\theta}^{\mathsf T}\bm x+\frac{1}{\kappa}g.
+  \label{eq:control}
+\end{equation}
+Матрица $P=P^{\mathsf T}>0$ определяется из уравнения Ляпунова
+\begin{equation}
+  A_M^{\mathsf T}P+PA_M=-Q,
+  \qquad Q=Q^{\mathsf T}>0.
+\end{equation}
+Для построения графиков параметрических ошибок используется
+\begin{equation}
+  \tilde{\bm\theta}=\bm\theta-\hat{\bm\theta}.
+\end{equation}
+
+% TODO: перенести численные A_M, b_M, kappa, Q, P и theta из работы № 3.
+\noindent\textit{Место для численных параметров эталонной модели
+и матрицы $P$ из лабораторной работы № 3.}
+
+\subsection{Нелинейный робастный регулятор}
+
+В первом решении используется закон управления \eqref{eq:control}
+со статической настройкой параметров по формуле (4.4) методических указаний:
+\begin{equation}
+  \hat{\bm\theta}=\gamma\bm x\bm b^{\mathsf T}P\bm e,
+  \qquad \gamma>0.
+  \label{eq:static-law}
+\end{equation}
+Коэффициент $\gamma$ определяет интенсивность нелинейной обратной связи.
+На рисунке~\ref{fig:robust-scheme} предусмотрено место для модели
+замкнутой системы в Simulink.
+
+\imageplaceholderMAX{robust_scheme.png}
+  {Модель системы с нелинейным робастным регулятором}
+  {fig:robust-scheme}
+
+\subsection{Адаптивный регулятор с параметрической обратной связью}
+
+Во втором решении закон управления \eqref{eq:control} дополняется
+алгоритмом (4.6) методических указаний:
+\begin{equation}
+  \dot{\hat{\bm\theta}}
+  =-\sigma\hat{\bm\theta}+\gamma\bm x\bm b^{\mathsf T}P\bm e,
+  \qquad \gamma>0,
+  \qquad \sigma>0.
+  \label{eq:adaptive-law}
+\end{equation}
+Здесь $\gamma$ \textemdash{} коэффициент адаптации,
+$\sigma$ \textemdash{} коэффициент параметрической обратной связи.
+На рисунке~\ref{fig:adaptive-scheme} предусмотрено место для модели
+соответствующей замкнутой системы в Simulink.
+
+\imageplaceholderMAX{adaptive_scheme.png}
+  {Модель системы с адаптивным регулятором и параметрической обратной связью}
+  {fig:adaptive-scheme}
+
+\subsection{Условия моделирования}
+
+Численные значения коэффициентов, начальные условия и параметры решателя
+фиксируются перед проведением экспериментов.
+В таблице~\ref{tab:simulation-settings} оставлены поля для их заполнения.
+
+\begin{table}[H]
+  \centering
+  \caption{Параметры моделирования}
+  \label{tab:simulation-settings}
+  \begin{tabularx}{\textwidth}{@{}X l@{}}
+    \toprule
+    Параметр & Значение\\
+    \midrule
+    Начальное состояние объекта $\bm x(0)$ & \textit{Указать}\\
+    Начальное состояние модели $\bm x_M(0)$ & \textit{Указать}\\
+    Начальная оценка $\hat{\bm\theta}(0)$ для \eqref{eq:adaptive-law}
+      & \textit{Указать}\\
+    Три различных значения $\gamma_1,\gamma_2,\gamma_3>0$
+      & \textit{Указать}\\
+    Два значения $\sigma_1>\sigma_2>0$ & \textit{Указать}\\
+    Выбранный коэффициент $\gamma_*\in\{\gamma_1,\gamma_2\}$
+      & \textit{Указать}\\
+    Продолжительность моделирования & \textit{Указать}\\
+    Решатель, шаг и допуски & \textit{Указать}\\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\noindent\textbf{Вывод по пункту:}
+\textit{Заполнить после построения и проверки моделей.}
+
+\section{Исследование нелинейного робастного управления}
+
+По пункту 2 порядка выполнения работы исследуется система
+\eqref{eq:control}, \eqref{eq:static-law} при трёх различных значениях
+$\gamma$. Для каждого значения выполняются два опыта: без возмущения
+и с возмущением \eqref{eq:disturbance}. В каждом опыте траектории
+$\bm x(t)$ и $\bm x_M(t)$ приводятся на одном графике, а компоненты
+ошибки $\bm e(t)$ \textemdash{} на другом.
+
+\subsection{Первое значение коэффициента обратной связи}
+
+% TODO: указать численное значение gamma_1.
+При $\gamma=\gamma_1$ результаты опыта без возмущения предусмотрены
+на рисунках~\ref{fig:robust-g1-free-x}, \ref{fig:robust-g1-free-e}.
+
+\imageplaceholder{robust_g1_free_x.png}
+  {Траектории объекта и модели при $\gamma_1$, без возмущения}
+  {fig:robust-g1-free-x}
+\imageplaceholder{robust_g1_free_e.png}
+  {Ошибка слежения при $\gamma_1$, без возмущения}
+  {fig:robust-g1-free-e}
+
+Результаты опыта с возмущением предусмотрены
+на рисунках~\ref{fig:robust-g1-dist-x}, \ref{fig:robust-g1-dist-e}.
+
+\imageplaceholder{robust_g1_dist_x.png}
+  {Траектории объекта и модели при $\gamma_1$, с возмущением}
+  {fig:robust-g1-dist-x}
+\imageplaceholder{robust_g1_dist_e.png}
+  {Ошибка слежения при $\gamma_1$, с возмущением}
+  {fig:robust-g1-dist-e}
+
+\subsection{Второе значение коэффициента обратной связи}
+
+% TODO: указать численное значение gamma_2.
+При $\gamma=\gamma_2$ результаты опыта без возмущения предусмотрены
+на рисунках~\ref{fig:robust-g2-free-x}, \ref{fig:robust-g2-free-e}.
+
+\imageplaceholder{robust_g2_free_x.png}
+  {Траектории объекта и модели при $\gamma_2$, без возмущения}
+  {fig:robust-g2-free-x}
+\imageplaceholder{robust_g2_free_e.png}
+  {Ошибка слежения при $\gamma_2$, без возмущения}
+  {fig:robust-g2-free-e}
+
+Результаты опыта с возмущением предусмотрены
+на рисунках~\ref{fig:robust-g2-dist-x}, \ref{fig:robust-g2-dist-e}.
+
+\imageplaceholder{robust_g2_dist_x.png}
+  {Траектории объекта и модели при $\gamma_2$, с возмущением}
+  {fig:robust-g2-dist-x}
+\imageplaceholder{robust_g2_dist_e.png}
+  {Ошибка слежения при $\gamma_2$, с возмущением}
+  {fig:robust-g2-dist-e}
+
+\subsection{Третье значение коэффициента обратной связи}
+
+% TODO: указать численное значение gamma_3.
+При $\gamma=\gamma_3$ результаты опыта без возмущения предусмотрены
+на рисунках~\ref{fig:robust-g3-free-x}, \ref{fig:robust-g3-free-e}.
+
+\imageplaceholder{robust_g3_free_x.png}
+  {Траектории объекта и модели при $\gamma_3$, без возмущения}
+  {fig:robust-g3-free-x}
+\imageplaceholder{robust_g3_free_e.png}
+  {Ошибка слежения при $\gamma_3$, без возмущения}
+  {fig:robust-g3-free-e}
+
+Результаты опыта с возмущением предусмотрены
+на рисунках~\ref{fig:robust-g3-dist-x}, \ref{fig:robust-g3-dist-e}.
+
+\imageplaceholder{robust_g3_dist_x.png}
+  {Траектории объекта и модели при $\gamma_3$, с возмущением}
+  {fig:robust-g3-dist-x}
+\imageplaceholder{robust_g3_dist_e.png}
+  {Ошибка слежения при $\gamma_3$, с возмущением}
+  {fig:robust-g3-dist-e}
+
+\subsection{Анализ результатов}
+
+\textit{После моделирования сравнить ограниченность сигналов,
+характер переходных процессов и остаточную ошибку для трёх значений
+$\gamma$. Оценить влияние возмущения и коэффициента обратной связи.}
+
+\noindent\textbf{Вывод по пункту:} \textit{Заполнить по результатам опытов.}
+
+\section{Исследование адаптивного и робастного управления}
+
+По пункту 3 порядка выполнения работы исследуется система
+\eqref{eq:control}, \eqref{eq:adaptive-law}. При $\sigma=\sigma_1$
+сравниваются два значения $\gamma$ из предыдущего раздела.
+Затем для одного из них, обозначенного $\gamma_*$, опыт повторяется
+при уменьшенном коэффициенте $\sigma_2<\sigma_1$.
+Каждая комбинация проверяется без возмущения и с возмущением.
+Для каждого опыта предусмотрены три графика: $\bm x(t)$ и $\bm x_M(t)$
+на одном поле, ошибка слежения $\bm e(t)$ и параметрическая ошибка
+$\tilde{\bm\theta}(t)$ на отдельных полях.
+
+\subsection{Первое значение коэффициента адаптации}
+
+% TODO: указать численные значения sigma_1 и gamma_1.
+При $\sigma=\sigma_1$, $\gamma=\gamma_1$ результаты опыта без возмущения
+предусмотрены на рисунках~\mbox{\ref{fig:adaptive-s1-g1-free-x}\textendash\ref{fig:adaptive-s1-g1-free-theta}}.
+
+\imageplaceholder{adaptive_s1_g1_free_x.png}
+  {Траектории при $\sigma_1$, $\gamma_1$, без возмущения}
+  {fig:adaptive-s1-g1-free-x}
+\imageplaceholder{adaptive_s1_g1_free_e.png}
+  {Ошибка слежения при $\sigma_1$, $\gamma_1$, без возмущения}
+  {fig:adaptive-s1-g1-free-e}
+\imageplaceholder{adaptive_s1_g1_free_theta.png}
+  {Параметрическая ошибка при $\sigma_1$, $\gamma_1$, без возмущения}
+  {fig:adaptive-s1-g1-free-theta}
+
+Результаты опыта с возмущением предусмотрены
+на рисунках~\mbox{\ref{fig:adaptive-s1-g1-dist-x}\textendash\ref{fig:adaptive-s1-g1-dist-theta}}.
+
+\imageplaceholder{adaptive_s1_g1_dist_x.png}
+  {Траектории при $\sigma_1$, $\gamma_1$, с возмущением}
+  {fig:adaptive-s1-g1-dist-x}
+\imageplaceholder{adaptive_s1_g1_dist_e.png}
+  {Ошибка слежения при $\sigma_1$, $\gamma_1$, с возмущением}
+  {fig:adaptive-s1-g1-dist-e}
+\imageplaceholder{adaptive_s1_g1_dist_theta.png}
+  {Параметрическая ошибка при $\sigma_1$, $\gamma_1$, с возмущением}
+  {fig:adaptive-s1-g1-dist-theta}
+
+\subsection{Второе значение коэффициента адаптации}
+
+% TODO: указать численное значение gamma_2; sigma_1 сохранить.
+При $\sigma=\sigma_1$, $\gamma=\gamma_2$ результаты опыта без возмущения
+предусмотрены на рисунках~\mbox{\ref{fig:adaptive-s1-g2-free-x}\textendash\ref{fig:adaptive-s1-g2-free-theta}}.
+
+\imageplaceholder{adaptive_s1_g2_free_x.png}
+  {Траектории при $\sigma_1$, $\gamma_2$, без возмущения}
+  {fig:adaptive-s1-g2-free-x}
+\imageplaceholder{adaptive_s1_g2_free_e.png}
+  {Ошибка слежения при $\sigma_1$, $\gamma_2$, без возмущения}
+  {fig:adaptive-s1-g2-free-e}
+\imageplaceholder{adaptive_s1_g2_free_theta.png}
+  {Параметрическая ошибка при $\sigma_1$, $\gamma_2$, без возмущения}
+  {fig:adaptive-s1-g2-free-theta}
+
+Результаты опыта с возмущением предусмотрены
+на рисунках~\mbox{\ref{fig:adaptive-s1-g2-dist-x}\textendash\ref{fig:adaptive-s1-g2-dist-theta}}.
+
+\imageplaceholder{adaptive_s1_g2_dist_x.png}
+  {Траектории при $\sigma_1$, $\gamma_2$, с возмущением}
+  {fig:adaptive-s1-g2-dist-x}
+\imageplaceholder{adaptive_s1_g2_dist_e.png}
+  {Ошибка слежения при $\sigma_1$, $\gamma_2$, с возмущением}
+  {fig:adaptive-s1-g2-dist-e}
+\imageplaceholder{adaptive_s1_g2_dist_theta.png}
+  {Параметрическая ошибка при $\sigma_1$, $\gamma_2$, с возмущением}
+  {fig:adaptive-s1-g2-dist-theta}
+
+\subsection{Уменьшение коэффициента параметрической обратной связи}
+
+% TODO: указать sigma_2 < sigma_1 и выбранное gamma_* из gamma_1, gamma_2.
+При $\sigma=\sigma_2<\sigma_1$, $\gamma=\gamma_*$ результаты опыта
+без возмущения предусмотрены
+на рисунках~\mbox{\ref{fig:adaptive-s2-free-x}\textendash\ref{fig:adaptive-s2-free-theta}}.
+Остальные условия сохраняются такими же, как в соответствующем опыте
+при $\sigma_1$.
+
+\imageplaceholder{adaptive_s2_free_x.png}
+  {Траектории при $\sigma_2$, $\gamma_*$, без возмущения}
+  {fig:adaptive-s2-free-x}
+\imageplaceholder{adaptive_s2_free_e.png}
+  {Ошибка слежения при $\sigma_2$, $\gamma_*$, без возмущения}
+  {fig:adaptive-s2-free-e}
+\imageplaceholder{adaptive_s2_free_theta.png}
+  {Параметрическая ошибка при $\sigma_2$, $\gamma_*$, без возмущения}
+  {fig:adaptive-s2-free-theta}
+
+Результаты опыта с возмущением предусмотрены
+на рисунках~\mbox{\ref{fig:adaptive-s2-dist-x}\textendash\ref{fig:adaptive-s2-dist-theta}}.
+
+\imageplaceholder{adaptive_s2_dist_x.png}
+  {Траектории при $\sigma_2$, $\gamma_*$, с возмущением}
+  {fig:adaptive-s2-dist-x}
+\imageplaceholder{adaptive_s2_dist_e.png}
+  {Ошибка слежения при $\sigma_2$, $\gamma_*$, с возмущением}
+  {fig:adaptive-s2-dist-e}
+\imageplaceholder{adaptive_s2_dist_theta.png}
+  {Параметрическая ошибка при $\sigma_2$, $\gamma_*$, с возмущением}
+  {fig:adaptive-s2-dist-theta}
+
+\subsection{Анализ результатов}
+
+\textit{После моделирования сравнить ошибки слежения и параметрические
+ошибки при изменении $\gamma$ и $\sigma$. Оценить влияние возмущения,
+остаточную ошибку и ограниченность сигналов. Сопоставить результаты
+со статическим робастным регулятором.}
+
+\noindent\textbf{Вывод по пункту:} \textit{Заполнить по результатам опытов.}
+
+\section{Выводы}
+
+\textit{Сформулировать выводы по результатам исследования двух алгоритмов:
+влияние коэффициентов $\gamma$ и $\sigma$, влияние возмущения,
+достигаемая точность слежения и различия между регуляторами.}
