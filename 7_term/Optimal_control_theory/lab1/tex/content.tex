@@ -55,6 +55,16 @@ J_{xx} = 4, \quad J_{uu} = 6, \quad J_{xu} = 4
 \end{cases}
 \Rightarrow \text{точка } (x, u) = \left(-\frac{11}{2}, \frac{7}{2}\right) - \text{глобальный минимум}
 \]
+Вычислим минимальное значение критерия:
+\[
+\begin{aligned}
+J_{\min}=2\left(-\frac{11}{2}\right)^2
++3\left(\frac{7}{2}\right)^2
++4\left(-\frac{11}{2}\right)\left(\frac{7}{2}\right)
+&\quad+8\left(-\frac{11}{2}\right)+\frac{7}{2}-4
+&=-\frac{97}{4}=-24.25
+\end{aligned}
+\]
 
 \subsection*{1.2 С ограничением в виде равенства $c(x,u)=0$}
 \[
@@ -200,10 +210,650 @@ J_{\min}
 \approx19.691141633
 \]
 
+\subsection*{1.3 С ограничением в виде неравенства \(c(x,u)\leq0\)}
+
+Ограничение:
+\[
+c(x,u)=2x^2+3u+9\leq0
+\]
+
+Воспользуемся теоремой Каруша-Куна-Таккера.
+Функция Лагранжа:
+\[
+L(x,u,\lambda)=J(x,u)+\lambda c(x,u)
+\]
+\[
+L(x,u,\lambda)
+=2x^2+3u^2+4xu+8x+u-4
++\lambda(2x^2+3u+9)
+\]
+
+Условия Каруша-Куна-Таккера:
+\[
+\begin{cases}
+\nabla_{(x,u)}L=0 \\[1ex]
+c(x,u)\leq0 \\[1ex]
+\lambda\geq0 \\[1ex]
+\lambda c(x,u)=0
+\end{cases}
+\]
+
+В развёрнутом виде:
+\[
+\begin{cases}
+\displaystyle
+\frac{\partial L}{\partial x}
+=4x+4u+8+4\lambda x=0 \\[2ex]
+\displaystyle
+\frac{\partial L}{\partial u}
+=6u+4x+1+3\lambda=0 \\[2ex]
+2x^2+3u+9\leq0 \\[1ex]
+\lambda\geq0 \\[1ex]
+\lambda(2x^2+3u+9)=0
+\end{cases}
+\]
+
+Рассмотрим случай \(\lambda=0\). Тогда:
+\[
+\begin{cases}
+4x+4u+8=0\\
+6u+4x+1=0
+\end{cases}
+\Rightarrow
+\begin{cases}
+x=-\frac{11}{2}\\[1ex]
+u=\frac{7}{2}
+\end{cases}
+\]
+
+Проверим выполнение ограничения:
+\[
+c\left(-\frac{11}{2},\frac{7}{2}\right)
+=2\left(-\frac{11}{2}\right)^2
++3\cdot\frac{7}{2}+9
+=80>0
+\]
+
+Ограничение нарушено, поэтому случай \(\lambda=0\)
+не даёт допустимого решения.
+
+Следовательно, \(\lambda>0\), получаем:
+\[
+2x^2+3u+9=0
+\]
+
+Выразим \(u\) через \(x\):
+\[
+u=-\frac{2x^2+9}{3}
+\]
+
+Из второго уравнения стационарности
+\[
+6u+4x+1+3\lambda=0
+\]
+выразим множитель Лагранжа:
+\[
+\lambda=-\frac{6u+4x+1}{3}
+\]
+
+Подставляя выражение для \(u\), получаем:
+\[
+\lambda
+=-\frac{-2(2x^2+9)+4x+1}{3}
+=\frac{4x^2-4x+17}{3}
+\]
+
+
+Подставим найденные выражения в первое уравнение:
+\[
+4x-\frac{4(2x^2+9)}{3}+8
++\frac{4x(4x^2-4x+17)}{3}=0
+\]
+
+После упрощения получаем:
+\[
+4x^3-6x^2+20x-3=0
+\]
+
+Это уравнение уже исследовано в пункте 1.2
+и имеет единственный действительный корень:
+\[
+x^*\approx0.156588043
+\]
+
+Соответствующие значения \(u\) и \(\lambda\):
+\[
+u^*=-\frac{2(x^*)^2+9}{3}
+\approx-3.016346543,
+\]
+\[
+\lambda^*=\frac{4(x^*)^2-4x^*+17}{3}
+\approx5.490575697>0
+\]
+
+Таким образом, условие неотрицательности множителя
+Лагранжа выполняется. Ограничение активно:
+\[
+c(x^*,u^*)=0,
+\]
+поэтому выполняются условия:
+\[
+c(x^*,u^*)\leq0,
+\qquad
+\lambda^*c(x^*,u^*)=0
+\]
+
+Поскольку \(J\) строго выпукла, а \(c\) выпукла, выполнение условий ККТ гарантирует, что найденная точка является единственным глобальным минимумом.
+
+Минимальное значение критерия:
+\[
+J_{\min}
+=2(x^*)^2+3(u^*)^2+4x^*u^*+8x^*+u^*-4
+\approx19.691141633
+\]
+
+\section*{2. Градиентный поиск минимума критерия качества}
+
+\subsection*{2.1 Метод Ньютона-Рафсона}
+
+Рассмотрим функцию:
+\[
+J(x,u)=2x^2+3u^2+4xu+8x+u-4.
+\]
+
+Введём вектор переменных:
+\[
+z=
+\begin{pmatrix}
+x\\
+u
+\end{pmatrix}
+\]
+
+Итерационная формула метода Ньютона-Рафсона:
+\[
+z_{k+1}=z_k-H^{-1}(z_k)\nabla J(z_k),
+\]
+
+Вычислим градиент:
+\[
+\nabla J(x,u)=
+\begin{pmatrix}
+\displaystyle\frac{\partial J}{\partial x}\\[2ex]
+\displaystyle\frac{\partial J}{\partial u}
+\end{pmatrix}
+=
+\begin{pmatrix}
+4x+4u+8\\
+4x+6u+1
+\end{pmatrix}
+\]
+
+Гессиан функции:
+\[
+H=
+\begin{pmatrix}
+J_{xx} & J_{xu}\\
+J_{ux} & J_{uu}
+\end{pmatrix}
+=
+\begin{pmatrix}
+4 & 4\\
+4 & 6
+\end{pmatrix}
+\]
+
+Найдём обратную матрицу:
+\[
+\det H=4\cdot6-4\cdot4=8,
+\]
+\[
+H^{-1}=
+\frac18
+\begin{pmatrix}
+6 & -4\\
+-4 & 4
+\end{pmatrix}
+\]
+
+Выберем начальное приближение:
+\[
+z_0=
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix}
+\]
+
+Значение функции и градиент в начальной точке:
+\[
+J(0,0)=-4,
+\qquad
+\nabla J(z_0)=
+\begin{pmatrix}
+8\\
+1
+\end{pmatrix}
+\]
+
+Выполним первую итерацию:
+\[
+\begin{aligned}
+z_1
+&=z_0-H^{-1}\nabla J(z_0)\\[1ex]
+&=
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix}
+-\frac18
+\begin{pmatrix}
+6 & -4\\
+-4 & 4
+\end{pmatrix}
+\begin{pmatrix}
+8\\
+1
+\end{pmatrix}\\[1ex]
+&=
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix}
+-\frac18
+\begin{pmatrix}
+6\cdot8-4\cdot1\\
+-4\cdot8+4\cdot1
+\end{pmatrix}\\[1ex]
+&=
+-\frac18
+\begin{pmatrix}
+44\\
+-28
+\end{pmatrix}
+=
+\begin{pmatrix}
+-\frac{11}{2}\\[1ex]
+\frac72
+\end{pmatrix}
+\end{aligned}
+\]
+
+Проверим градиент в полученной точке:
+\[
+\nabla J(z_1)=
+\begin{pmatrix}
+4\left(-\frac{11}{2}\right)+4\cdot\frac72+8\\[1ex]
+4\left(-\frac{11}{2}\right)+6\cdot\frac72+1
+\end{pmatrix}
+=
+\begin{pmatrix}
+-22+14+8\\
+-22+21+1
+\end{pmatrix}
+=
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix}
+\]
+
+Условие остановки \(\|\nabla J(z_1)\|=0\) выполнено.
+Следовательно, дальнейшие итерации не требуются.
+
+Вычислим значение критерия:
+\[
+\begin{aligned}
+J(z_1)
+&=
+2\left(-\frac{11}{2}\right)^2
++3\left(\frac72\right)^2
++4\left(-\frac{11}{2}\right)\frac72
++8\left(-\frac{11}{2}\right)+\frac72-4
+=-\frac{97}{4}=-24.25
+\end{aligned}
+\]
+
+Таким образом, метод Ньютона-Рафсона сошёлся
+за одну итерацию. Полученный результат совпадает
+с аналитическим решением пункта 1.1:
 \[
 \boxed{
-x^*\approx0.156588043,\qquad
-u^*\approx-3.016346543,\qquad
-J_{\min}\approx19.691141633
+x^*=-\frac{11}{2},\qquad
+u^*=\frac72,\qquad
+J_{\min}=-\frac{97}{4}=-24.25
 }
+\]
+
+
+\subsection*{2.2 Метод наискорейшего спуска}
+
+Итерационная формула метода:
+\[
+z_{k+1}=z_k-\gamma\nabla J(z_k),
+\qquad
+z_k=
+\begin{pmatrix}
+x_k\\
+u_k
+\end{pmatrix},
+\qquad \gamma>0
+\]
+
+Выберем значения \(\gamma\), соответствующие
+апериодической и колебательной сходимости.
+
+Обозначим ошибку относительно точки минимума:
+\[
+e_k=z_k-z^*
+\]
+
+Для рассматриваемой функции:
+\[
+\nabla J(z)=Hz+
+\begin{pmatrix}
+8\\
+1
+\end{pmatrix},
+\qquad
+H=
+\begin{pmatrix}
+4&4\\
+4&6
+\end{pmatrix}
+\]
+
+В точке минимума:
+\[
+\nabla J(z^*)=Hz^*+
+\begin{pmatrix}
+8\\
+1
+\end{pmatrix}=0
+\]
+
+Вычитая выражения для градиентов, получаем:
+\[
+\nabla J(z_k)-\nabla J(z^*)
+=H(z_k-z^*)
+\]
+
+Следовательно,
+\[
+\nabla J(z_k)=He_k
+\]
+
+Вычтем \(z^*\) из обеих частей итерационной формулы:
+\[
+\begin{aligned}
+e_{k+1}=z_{k+1}-z^*=z_k-\gamma\nabla J(z_k)-z^*=e_k-\gamma He_k=(I-\gamma H)e_k
+\end{aligned}
+\]
+
+Таким образом, поведение ошибки определяется
+матрицей \(I-\gamma H\).
+
+Поскольку \(H\) симметрична, её собственные векторы
+образуют ортонормированный базис.
+Если \(v_i\) - собственный вектор, соответствующий
+собственному значению \(\lambda_i\), то:
+\[
+Hv_i=\lambda_i v_i,
+\]
+\[
+(I-\gamma H)v_i=(1-\gamma\lambda_i)v_i
+\]
+
+Следовательно, каждая собственная составляющая ошибки
+на очередном шаге умножается на число
+\[
+q_i=1-\gamma\lambda_i
+\]
+
+Для сходимости из любого начального приближения необходимо:
+\[
+|q_i|<1
+\quad\forall i
+\]
+
+Так как собственные значения \(H\) положительны,
+получаем:
+\[
+-1<1-\gamma\lambda_i<1
+\quad\Rightarrow\quad
+0<\gamma<\frac{2}{\lambda_i}
+\]
+
+Общее условие сходимости:
+\[
+\boxed{
+0<\gamma<\frac{2}{\lambda_{\max}}
+}
+\]
+
+Найдём собственные значения гессиана:
+\[
+\det(H-\lambda I)
+=
+\begin{vmatrix}
+4-\lambda&4\\
+4&6-\lambda
+\end{vmatrix}
+=0,
+\]
+\[
+(4-\lambda)(6-\lambda)-16=0,
+\]
+\[
+\lambda^2-10\lambda+8=0
+\]
+
+Отсюда:
+\[
+\lambda_1=5-\sqrt{17}\approx0.876894375,
+\]
+\[
+\lambda_2=5+\sqrt{17}\approx9.123105626
+\]
+
+Следовательно,
+\[
+\lambda_{\max}=5+\sqrt{17},
+\]
+а условие сходимости принимает вид:
+\[
+0<\gamma<
+\frac{2}{5+\sqrt{17}}
+\approx0.219223594
+\]
+
+\subsubsection*{Апериодическая сходимость}
+
+Для затухания собственных составляющих ошибки
+без смены знака необходимо:
+\[
+0\leq q_i<1
+\quad\forall i
+\]
+
+Следовательно,
+\[
+0\leq1-\gamma\lambda_i<1,
+\]
+откуда:
+\[
+0<\gamma\leq\frac{1}{\lambda_{\max}}
+\]
+
+Для рассматриваемой функции:
+\[
+0<\gamma\leq
+\frac{1}{5+\sqrt{17}}
+\approx0.109611797
+\]
+
+Выберем:
+\[
+\boxed{\gamma_{\mathrm{ап}}=0.1}
+\]
+
+Тогда:
+\[
+q_1=1-0.1(5-\sqrt{17})
+\approx0.912310563,
+\]
+\[
+q_2=1-0.1(5+\sqrt{17})
+\approx0.087689437
+\]
+
+Оба множителя положительны и меньше единицы.
+Следовательно, собственные составляющие ошибки
+затухают без смены знака.
+
+\subsubsection*{Колебательная сходимость}
+
+Для колебательной сходимости хотя бы один множитель
+\(q_i\) должен быть отрицательным,
+но все множители должны удовлетворять условию
+\(|q_i|<1\).
+
+Поэтому выберем:
+\[
+\frac{1}{\lambda_{\max}}
+<\gamma<
+\frac{2}{\lambda_{\max}}
+\]
+
+Для рассматриваемой функции:
+\[
+0.109611797<\gamma<0.219223594
+\]
+
+Выберем:
+\[
+\boxed{\gamma_{\mathrm{кол}}=0.21}
+\]
+
+Тогда:
+\[
+q_1=1-0.21(5-\sqrt{17})
+\approx0.815852181,
+\]
+\[
+q_2=1-0.21(5+\sqrt{17})
+\approx-0.915852181
+\]
+
+Выполняются условия:
+\[
+|q_1|<1,\qquad |q_2|<1,
+\]
+поэтому ошибка затухает.
+
+При этом \(q_2<0\), следовательно,
+ненулевая составляющая ошибки вдоль второго
+собственного вектора меняет знак на каждом шаге.
+Это соответствует колебательному режиму сходимости.
+
+Таким образом, для дальнейшего расчёта принимаем:
+\[
+\boxed{
+\gamma_{\mathrm{ап}}=0.1,\qquad
+\gamma_{\mathrm{кол}}=0.21
+}
+\]
+
+\subsubsection*{Программная реализация}
+
+Для расчёта использовано начальное приближение
+\(z_0=(0,0)^T\). Условие остановки:
+\[
+\|\nabla J(z_k)\|<10^{-9}.
+\]
+Максимальное число итераций принято равным \(1000\).
+
+\begingroup
+\small
+\begin{verbatim}
+import numpy as np
+from typing import Callable
+
+
+def grad_descent(
+    z_0: np.ndarray,  # Начальное приближение
+    grad_f: Callable[[np.ndarray], np.ndarray],  # Градиент
+    max_iter: int,  # Максимальное число итераций
+    gamma: float,  # Шаг
+    tol: float = 1e-9,  # Точность по норме градиента
+) -> np.ndarray:
+    z = np.asarray(z_0, dtype=float).copy()
+    result = [z.copy()]
+
+    for _ in range(max_iter):
+        grad = np.asarray(grad_f(z), dtype=float)
+
+        if np.linalg.norm(grad) < tol:
+            break
+
+        z = z - gamma * grad
+        result.append(z.copy())
+
+    return np.array(result)
+
+
+def J(x: float, u: float):
+    return 2*x**2 + 3*u**2 + 4*x*u + 8*x + u - 4
+
+
+def grad_J(z: np.ndarray) -> np.ndarray:
+    x, u = z
+
+    return np.array([
+        4*x + 4*u + 8,
+        4*x + 6*u + 1,
+    ], dtype=float)
+
+
+z_0 = np.array([0.0, 0.0])
+
+for gamma in (0.1, 0.21):
+    result = grad_descent(
+        z_0=z_0,
+        grad_f=grad_J,
+        max_iter=1000,
+        gamma=gamma,
+    )
+
+    x_min, u_min = result[-1]
+
+    print(f"gamma = {gamma}")
+    print(f"Число итераций: {len(result) - 1}")
+    print(f"x = {x_min:.9f}, u = {u_min:.9f}")
+    print(f"J = {J(x_min, u_min):.9f}")
+\end{verbatim}
+\endgroup
+
+\subsubsection*{Результаты расчёта}
+
+Результаты выполнения программы представлены в таблице,
+где \(N\) - число выполненных итераций.
+
+\begin{center}
+\begin{tabular}{c|c|c|c|c}
+\(\gamma\) & \(N\) & \(x_N\) & \(u_N\) & \(J(x_N,u_N)\)\\
+\hline
+\(0.1\) & \(245\) &
+\(-5.499999999\) & \(3.499999999\) & \(-24.250000000\)\\
+\(0.21\) & \(256\) &
+\(-5.500000000\) & \(3.500000000\) & \(-24.250000000\)
+\end{tabular}
+\end{center}
+
+Для обоих значений шага получено совпадение
+с аналитическим решением с заданной точностью:
+\[
+x^*=-\frac{11}{2},\qquad
+u^*=\frac72,\qquad
+J_{\min}=-\frac{97}{4}.
 \]
