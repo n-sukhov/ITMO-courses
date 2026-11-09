@@ -131,13 +131,64 @@ x_1^*(t)=C\bigl(\cosh(\alpha t)-\cosh(\beta t)\bigr)
 +D\left(\frac{\sinh(\alpha t)}{\alpha}
 -\frac{\sinh(\beta t)}{\beta}\right)
 \]
-Из конечных условий находим постоянные
+Для определения постоянных $C,D$ используем конечные условия.
+Так как $\dot x_1=2x_2$, условие $x_2(4)=0$ равносильно
+$\dot x_1(4)=0$. Подставляя $t=4$ в выражения для
+$x_1^*(t)$ и его производной, получаем систему
+\[
+\begin{cases}
+C\bigl(\cosh(4\alpha)-\cosh(4\beta)\bigr)
++D\left(\dfrac{\sinh(4\alpha)}{\alpha}
+-\dfrac{\sinh(4\beta)}{\beta}\right)=5,\\[6pt]
+C\bigl(\alpha\sinh(4\alpha)-\beta\sinh(4\beta)\bigr)
++D\bigl(\cosh(4\alpha)-\cosh(4\beta)\bigr)=0
+\end{cases}
+\]
+Обозначим коэффициенты этой системы:
+\[
+\begin{aligned}
+h&=\cosh(4\alpha)-\cosh(4\beta),\\
+p&=\frac{\sinh(4\alpha)}{\alpha}
+-\frac{\sinh(4\beta)}{\beta},\\
+q&=\alpha\sinh(4\alpha)-\beta\sinh(4\beta)
+\end{aligned}
+\]
+Тогда система принимает вид
+\[
+\begin{cases}
+hC+pD=5,\\
+qC+hD=0
+\end{cases}
+\]
+Её определитель равен
+\[
+\Delta=\begin{vmatrix}h&p\\q&h\end{vmatrix}=h^2-pq
+\]
+При $\Delta\ne0$ по правилу Крамера находим
+\[
+C=\frac{\begin{vmatrix}5&p\\0&h\end{vmatrix}}{\Delta}
+=\frac{5h}{\Delta},
+\qquad
+D=\frac{\begin{vmatrix}h&5\\q&0\end{vmatrix}}{\Delta}
+=-\frac{5q}{\Delta}
+\]
+Возвращаясь к исходным обозначениям, получаем
 \[
 C=\frac{5\bigl(\cosh(4\alpha)-\cosh(4\beta)\bigr)}{\Delta},
 \qquad
 D=-\frac{5\bigl(\alpha\sinh(4\alpha)-\beta\sinh(4\beta)\bigr)}{\Delta},
 \]
-где
+где после раскрытия произведений в $h^2-pq$ имеем
+\[
+\begin{aligned}
+\Delta={}&\cosh^2(4\alpha)+\cosh^2(4\beta)
+-2\cosh(4\alpha)\cosh(4\beta)\\
+&-\sinh^2(4\alpha)-\sinh^2(4\beta)
++\left(\frac\alpha\beta+\frac\beta\alpha\right)
+\sinh(4\alpha)\sinh(4\beta)
+\end{aligned}
+\]
+Используя тождество $\cosh^2z-\sinh^2z=1$, окончательно получаем
 \[
 \Delta=\frac{\alpha^2+\beta^2}{\alpha\beta}
 \sinh(4\alpha)\sinh(4\beta)
