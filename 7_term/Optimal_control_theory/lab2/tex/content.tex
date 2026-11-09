@@ -1,1 +1,174 @@
 % !TeX root = main.tex
+
+\section{Постановка задачи}
+
+Задан объект
+\[
+\begin{cases}
+\dot x_1=2x_2,\\
+\dot x_2=8x_1+u
+\end{cases}
+\]
+и критерий качества
+\[
+J=\int_0^4\left(x_1^2(\tau)+5x_1(\tau)x_2(\tau)
++7x_2^2(\tau)+3u^2(\tau)\right)\,d\tau
+\]
+Начальные и конечные условия:
+\[
+x_1(0)=x_2(0)=0,
+\qquad x_1(4)=5,
+\qquad x_2(4)=0
+\]
+
+Представим объект в матричной форме:
+\[
+\dot{\bm x}=A\bm x+\bm b u,
+\qquad
+A=\begin{pmatrix}0&2\\8&0\end{pmatrix},
+\qquad
+\bm b=\begin{pmatrix}0\\1\end{pmatrix}
+\]
+Подынтегральную функцию запишем в виде
+\[
+L(\bm x,u)=\bm x^{\mathsf T}Q\bm x+ru^2
+\]
+Для симметричной матрицы $Q$ имеем
+\[
+\bm x^{\mathsf T}Q\bm x
+=q_{11}x_1^2+2q_{12}x_1x_2+q_{22}x_2^2
+\]
+Сопоставляя коэффициенты, получаем
+\[
+q_{11}=1,\qquad q_{12}=q_{21}=\frac52,\qquad q_{22}=7,
+\]
+\[
+Q=\begin{pmatrix}1&\frac52\\[0.4ex]\frac52&7\end{pmatrix},
+\qquad r=3
+\]
+
+\section{Необходимые условия оптимальности}
+
+Введём сопряжённый вектор
+$\bm\lambda=(\lambda_1,\lambda_2)^{\mathsf T}$
+и составим гамильтониан в форме для задачи минимизации:
+\[
+H=\bm x^{\mathsf T}Q\bm x+ru^2
++\bm\lambda^{\mathsf T}(A\bm x+\bm b u)
+\]
+
+\[
+H=x_1^2+5x_1x_2+7x_2^2+3u^2
++2\lambda_1x_2+\lambda_2(8x_1+u)
+\]
+
+Условие минимума по управлению:
+\[
+\frac{\partial H}{\partial u}=6u+\lambda_2=0,
+\qquad
+\frac{\partial^2 H}{\partial u^2}=6>0
+\]
+Отсюда
+\[
+\boxed{u^*=-\frac{\lambda_2}{6}}
+\]
+
+Сопряжённые уравнения определяются соотношением
+\[
+\dot{\bm\lambda}
+=-\nabla_{\bm x}H
+=-2Q\bm x-A^{\mathsf T}\bm\lambda
+\]
+В координатной форме:
+\[
+\begin{cases}
+\dot\lambda_1=-2x_1-5x_2-8\lambda_2,\\
+\dot\lambda_2=-5x_1-14x_2-2\lambda_1
+\end{cases}
+\]
+
+\section{Краевая задача}
+
+Подставляя найденное выражение для управления в уравнения объекта,
+получаем совместную систему для состояний и сопряжённых переменных:
+\[
+\begin{cases}
+    \dot x_1&=2x_2,\\
+\dot x_2&=8x_1-\frac{\lambda_2}{6},\\
+\dot\lambda_1&=-2x_1-5x_2-8\lambda_2,\\
+\dot\lambda_2&=-5x_1-14x_2-2\lambda_1
+\end{cases}
+\]
+
+\section{Аналитическое решение}
+
+Получаем соотношения
+\[
+\lambda_2=48x_1-3\ddot x_1,
+\qquad
+\lambda_1=\frac{3x_1^{(3)}-55\dot x_1-5x_1}{2},
+\]
+исключим сопряжённые переменные. Получим краевую задачу
+\[
+3x_1^{(4)}-103\ddot x_1+772x_1=0,
+\]
+\[
+x_1(0)=\dot x_1(0)=0,
+\qquad x_1(4)=5,\qquad \dot x_1(4)=0
+\]
+
+Корни характеристического уравнения $3s^4-103s^2+772=0$:
+\[
+s=\pm\alpha,\ \pm\beta,
+\qquad
+\alpha=\sqrt{\frac{103+\sqrt{1345}}6},
+\qquad
+\beta=\sqrt{\frac{103-\sqrt{1345}}6}
+\]
+Решение с учётом начальных условий:
+\[
+x_1^*(t)=C\bigl(\cosh(\alpha t)-\cosh(\beta t)\bigr)
++D\left(\frac{\sinh(\alpha t)}{\alpha}
+-\frac{\sinh(\beta t)}{\beta}\right)
+\]
+Из конечных условий находим постоянные
+\[
+C=\frac{5\bigl(\cosh(4\alpha)-\cosh(4\beta)\bigr)}{\Delta},
+\qquad
+D=-\frac{5\bigl(\alpha\sinh(4\alpha)-\beta\sinh(4\beta)\bigr)}{\Delta},
+\]
+где
+\[
+\Delta=\frac{\alpha^2+\beta^2}{\alpha\beta}
+\sinh(4\alpha)\sinh(4\beta)
+-2\cosh(4\alpha)\cosh(4\beta)+2
+\]
+
+Вторая координата:
+\[
+\begin{aligned}
+x_2^*(t)={}&\frac C2\bigl(\alpha\sinh(\alpha t)
+-\beta\sinh(\beta t)\bigr)\\
+&+\frac D2\bigl(\cosh(\alpha t)-\cosh(\beta t)\bigr)
+\end{aligned}
+\]
+Оптимальное управление $u^*=\ddot x_1^*/2-8x_1^*$ имеет вид
+\[
+\boxed{
+\begin{aligned}
+u^*(t)={}&C\left[\left(\frac{\alpha^2}{2}-8\right)\cosh(\alpha t)
+-\left(\frac{\beta^2}{2}-8\right)\cosh(\beta t)\right]\\
+&+D\left[\left(\frac\alpha2-\frac8\alpha\right)\sinh(\alpha t)
+-\left(\frac\beta2-\frac8\beta\right)\sinh(\beta t)\right]
+\end{aligned}}
+\]
+После подстановки численных значений:
+\[
+\boxed{
+\begin{aligned}
+u^*(t)\approx{}&-1{,}675250277027\cdot10^{-7}e^{4{,}824835776856t}
++4{,}339204303317\cdot10^{-4}e^{-4{,}824835776856t}\\
+&-6{,}664699353563\cdot10^{-5}e^{3{,}324799702193t}
++3{,}613582018123\cdot10^{-4}e^{-3{,}324799702193t}
+\end{aligned}}
+\]
