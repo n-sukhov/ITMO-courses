@@ -1,1 +1,375 @@
 % !TeX root = main.tex
+
+% Изображения добавляются в images; до этого вместо них выводятся рамки.
+\newcommand{\reportimage}[3]{%
+  \begin{figure}[htbp]
+    \centering
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=0.95\textwidth]{#1}%
+    }{%
+      \fbox{%
+        \parbox[c][3cm][c]{0.90\textwidth}{%
+          \centering
+          Место для рисунка\\[0.4em]
+          \texttt{images/\detokenize{#1}}
+        }%
+      }%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Освоить процедуру синтеза адаптивного наблюдателя состояния линейного
+объекта. Исследовать влияние спектрального состава входного сигнала
+и коэффициента адаптации на восстановление состояния и оценивание
+неизвестных параметров.
+
+\section{Постановка задачи и исходные данные}
+
+Рассматривается асимптотически устойчивый объект второго порядка
+\begin{equation}
+  \dot{\bm x}=A\bm x+\bm b u,
+  \qquad y=C\bm x,
+  \qquad \bm x\in\mathbb R^2,
+  \label{eq:plant}
+\end{equation}
+где
+\begin{equation}
+  A=\begin{pmatrix}-a_1&1\\-a_0&0\end{pmatrix},
+  \qquad
+  \bm b=\begin{pmatrix}b_1\\b_0\end{pmatrix},
+  \qquad C=\begin{pmatrix}1&0\end{pmatrix}.
+  \label{eq:plant-structure}
+\end{equation}
+Измерению доступны вход $u(t)$ и выход $y(t)=x_1(t)$.
+Коэффициенты $a_0,a_1,b_0,b_1$ считаются неизвестными наблюдателю.
+Необходимо построить оценки параметров и вектора состояния
+$\hat{\bm x}(t)$, обеспечивающие при выполнении условий сходимости
+\begin{equation}
+  \lim_{t\to\infty}\norm{\bm x(t)-\hat{\bm x}(t)}_2=0.
+  \label{eq:goal}
+\end{equation}
+
+
+Исходные данные:
+\begin{equation}
+  a_1=1,\qquad a_0=1,\qquad b_1=1,\qquad b_0=2,
+  \qquad k_1=0{,}2,\qquad k_0=0{,}01.
+  \label{eq:variant}
+\end{equation}
+Следовательно,
+\begin{equation}
+  A=\begin{pmatrix}-1&1\\-1&0\end{pmatrix},
+  \qquad
+  \bm b=\begin{pmatrix}1\\2\end{pmatrix},
+  \qquad C=\begin{pmatrix}1&0\end{pmatrix}.
+\end{equation}
+Передаточная функция объекта при нулевых начальных условиях имеет вид
+\begin{equation}
+  W(s)=C(sI_2-A)^{-1}\bm b
+  =\frac{b_1s+b_0}{s^2+a_1s+a_0}
+  =\frac{s+2}{s^2+s+1}.
+\end{equation}
+Собственные значения матрицы $A$ равны
+$-1/2\pm \mathrm{i}\sqrt{3}/2$, поэтому объект асимптотически устойчив.
+
+Для построения наблюдателя используется известная вспомогательная матрица
+\begin{equation}
+  A_0=\begin{pmatrix}-k_1&1\\-k_0&0\end{pmatrix}
+  =\begin{pmatrix}-0{,}2&1\\-0{,}01&0\end{pmatrix}.
+  \label{eq:filter-matrix}
+\end{equation}
+Её характеристический полином
+\begin{equation}
+  K(s)=s^2+k_1s+k_0=s^2+0{,}2s+0{,}01=(s+0{,}1)^2
+  \label{eq:filter-polynomial}
+\end{equation}
+гурвицев: оба корня равны $-0{,}1$.
+
+Истинные коэффициенты объекта используются для его моделирования
+и вычисления ошибок оценивания. В алгоритм наблюдателя передаются
+только измеряемые сигналы $u,y$, известные коэффициенты $k_0,k_1$,
+коэффициент адаптации и начальные оценки.
+
+\section{Синтез адаптивного наблюдателя}
+
+\subsection{Параметризованное представление объекта}
+
+Благодаря канонической форме матриц выполняется
+\begin{equation}
+  A-A_0=\bm d C,
+  \qquad
+  \bm d=\begin{pmatrix}k_1-a_1\\k_0-a_0\end{pmatrix},
+  \qquad
+  \dot{\bm x}=A_0\bm x+\bm d y+\bm b u.
+  \label{eq:matching}
+\end{equation}
+Вектор оцениваемых параметров в соответствии с (5.4) и (5.7)
+методических указаний:
+\begin{equation}
+  \bm\theta=
+  \begin{pmatrix}
+    k_0-a_0\\k_1-a_1\\b_0\\b_1
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    -0{,}99\\-0{,}8\\2\\1
+  \end{pmatrix}.
+  \label{eq:true-parameters}
+\end{equation}
+
+Введём фильтрованные сигналы
+\begin{equation}
+  \xi_0=\frac{1}{K(s)}[y],\qquad
+  \xi_1=\frac{s}{K(s)}[y],\qquad
+  v_0=\frac{1}{K(s)}[u],\qquad
+  v_1=\frac{s}{K(s)}[u].
+  \label{eq:filtered-signals}
+\end{equation}
+Реализация фильтров:
+\begin{equation}
+  \begin{aligned}
+    \dot\xi_0&=\xi_1,
+    &\dot\xi_1&=-k_0\xi_0-k_1\xi_1+y,\\
+    \dot v_0&=v_1,
+    &\dot v_1&=-k_0v_0-k_1v_1+u.
+  \end{aligned}
+  \label{eq:filter-equations}
+\end{equation}
+Начальные состояния фильтров принимаются нулевыми.
+
+При нулевом начальном состоянии объекта его выход представляется
+линейной регрессией
+\begin{equation}
+  y=\bm\theta^{\mathsf T}\bm\omega,
+  \qquad
+  \bm\omega=
+  \begin{pmatrix}\xi_0&\xi_1&v_0&v_1\end{pmatrix}^{\mathsf T}.
+  \label{eq:output-regression}
+\end{equation}
+\subsection{Настраиваемая модель и алгоритм адаптации}
+
+Настраиваемая модель и ошибки оценивания:
+\begin{equation}
+  \hat y=\hat{\bm\theta}^{\mathsf T}\bm\omega,
+  \qquad
+  \varepsilon=y-\hat y,
+  \qquad
+  \tilde{\bm\theta}=\bm\theta-\hat{\bm\theta}.
+  \label{eq:adjustable-model}
+\end{equation}
+Градиентный алгоритм адаптации:
+\begin{equation}
+  \dot{\hat{\bm\theta}}=\gamma\bm\omega\varepsilon,
+  \qquad \gamma>0.
+  \label{eq:adaptation}
+\end{equation}
+Коэффициент $\gamma$ выбирается экспериментально.
+Оценки коэффициентов объекта:
+\begin{equation}
+  \hat a_0=k_0-\hat\theta_1,\qquad
+  \hat a_1=k_1-\hat\theta_2,\qquad
+  \hat b_0=\hat\theta_3,\qquad
+  \hat b_1=\hat\theta_4.
+\end{equation}
+
+В модели без начального переходного слагаемого
+$\varepsilon=\tilde{\bm\theta}^{\mathsf T}\bm\omega$.
+Для функции Ляпунова
+\begin{equation}
+  V=\frac{1}{2\gamma}
+  \tilde{\bm\theta}^{\mathsf T}\tilde{\bm\theta}
+\end{equation}
+с учётом постоянства истинных параметров получаем
+\begin{equation}
+  \dot V
+  =-\frac{1}{\gamma}
+    \tilde{\bm\theta}^{\mathsf T}\dot{\hat{\bm\theta}}
+  =-\tilde{\bm\theta}^{\mathsf T}\bm\omega\varepsilon
+  =-\varepsilon^2\le0.
+  \label{eq:lyapunov-derivative}
+\end{equation}
+При ограниченности $\bm\omega$ и $\dot{\bm\omega}$ отсюда следует
+асимптотическое затухание $\varepsilon$ в рассматриваемой модели.
+Неположительность $\dot V$ сама по себе не гарантирует
+сходимости всех оценок параметров к истинным значениям.
+
+Достаточным условием сходимости параметрических ошибок является
+неисчезающее возбуждение регрессора: существуют $T>0$ и $\alpha>0$,
+для которых
+\begin{equation}
+  \int_t^{t+T}\bm\omega(\tau)\bm\omega^{\mathsf T}(\tau)\,d\tau
+  \succeq\alpha I_4
+  \qquad\text{для всех }t\ge t_0.
+  \label{eq:pe}
+\end{equation}
+\begin{samepage}
+\subsection{Восстановление вектора состояния}
+
+Для $n=2$, $m=1$ и порядка параметров~\eqref{eq:true-parameters}
+формула (6.6) методических указаний принимает вид
+\begin{equation}
+  \begin{aligned}
+    \hat{\bm x}={}&
+    \hat\theta_1\Phi(s)\bm e_2[y]
+    +\hat\theta_2\Phi(s)\bm e_1[y]\\
+    &+\hat\theta_3\Phi(s)\bm e_2[u]
+    +\hat\theta_4\Phi(s)\bm e_1[u],
+  \end{aligned}
+  \label{eq:state-estimate-expanded}
+\end{equation}
+\end{samepage}
+где $\bm e_1=(1,0)^{\mathsf T}$, $\bm e_2=(0,1)^{\mathsf T}$.
+Для матрицы~\eqref{eq:filter-matrix} получаем
+\begin{equation}
+  \Phi(s)=(sI_2-A_0)^{-1}
+  =
+  \begin{pmatrix}s+k_1&-1\\k_0&s\end{pmatrix}^{-1}
+  =
+  \frac{1}{K(s)}
+  \begin{pmatrix}s&1\\-k_0&s+k_1\end{pmatrix}.
+  \label{eq:filter-resolvent}
+\end{equation}
+С учётом определений~\eqref{eq:filtered-signals} векторные сигналы
+в~\eqref{eq:state-estimate-expanded} имеют вид
+\begin{equation}
+  \begin{aligned}
+    \Phi(s)\bm e_2[y]
+      &=\begin{pmatrix}\xi_0\\\xi_1+k_1\xi_0\end{pmatrix},
+    &\Phi(s)\bm e_1[y]
+      &=\begin{pmatrix}\xi_1\\-k_0\xi_0\end{pmatrix},\\[0.6em]
+    \Phi(s)\bm e_2[u]
+      &=\begin{pmatrix}v_0\\v_1+k_1v_0\end{pmatrix},
+    &\Phi(s)\bm e_1[u]
+      &=\begin{pmatrix}v_1\\-k_0v_0\end{pmatrix}.
+  \end{aligned}
+  \label{eq:vector-filter-signals}
+\end{equation}
+Объединяя векторные сигналы~\eqref{eq:vector-filter-signals}
+в столбцы матрицы $R(t)$ в порядке множителей
+$\hat\theta_1,\ldots,\hat\theta_4$, получаем
+\begin{equation}
+  \begin{gathered}
+    \hat{\bm x}=R(t)\hat{\bm\theta},
+    \qquad \hat x_1=\hat y,\\[0.4em]
+    R(t)=
+    \begin{pmatrix}
+      \xi_0&\xi_1&v_0&v_1\\
+      \xi_1+k_1\xi_0&-k_0\xi_0&
+      v_1+k_1v_0&-k_0v_0
+    \end{pmatrix}.
+  \end{gathered}
+  \label{eq:state-estimate}
+\end{equation}
+
+
+\section{Порядок моделирования}
+
+Структура модели в Simulink (рисунок~\ref{fig:observer-scheme})
+включает объект~\eqref{eq:plant}, фильтры~\eqref{eq:filter-equations},
+настраиваемую модель~\eqref{eq:adjustable-model}, алгоритм адаптации
+\eqref{eq:adaptation} и оценку состояния~\eqref{eq:state-estimate}.
+
+\reportimage{adaptive_observer_scheme.png}
+  {Схема моделирования объекта и адаптивного наблюдателя}
+  {fig:observer-scheme}
+
+Настройки расчёта приведены в таблице~\ref{tab:simulation-settings}.
+% Заполнить таблицу после выбора начальных условий и настроек решателя.
+\begin{table}[htbp]
+  \centering
+  \caption{Настройки моделирования}
+  \label{tab:simulation-settings}
+  \begin{tabularx}{\textwidth}{@{}X l@{}}
+    \toprule
+    Параметр & Значение\\
+    \midrule
+    Начальное состояние объекта $\bm x(0)$
+      & \underline{\hspace{3cm}}\\
+    Начальная оценка параметров $\hat{\bm\theta}(0)$
+      & \underline{\hspace{3cm}}\\
+    Начальные состояния фильтров & Нулевые\\
+    Время моделирования $t_{\mathrm{mod}}$
+      & \underline{\hspace{3cm}}\\
+    Решатель & \underline{\hspace{3cm}}\\
+    Шаг или ограничения шага интегрирования
+      & \underline{\hspace{3cm}}\\
+    Допуски решателя & \underline{\hspace{3cm}}\\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+В соответствии с заданием выполняются два эксперимента.
+В каждом регистрируются норма ошибки состояния
+$\norm{\bm x-\hat{\bm x}}_2$ и четыре компоненты
+параметрической ошибки $\tilde{\bm\theta}$.
+Для сравнения влияния входных сигналов начальные условия
+и настройки решателя сохраняются одинаковыми.
+
+\clearpage
+\section{Эксперимент с одногармоническим входным сигналом}
+
+В первом эксперименте задаётся вход
+\begin{equation}
+  u_1(t)=10\sin t.
+\end{equation}
+Коэффициент адаптации выбирается экспериментально:
+$\gamma_1=\underline{\hspace{2cm}}$.
+Норма ошибки состояния: рисунок~\ref{fig:single-state-error};
+параметрические ошибки: рисунок~\ref{fig:single-parameter-errors}.
+
+\reportimage{single_state_error.png}
+  {Норма ошибки состояния $\norm{\bm x-\hat{\bm x}}_2$ при $u_1(t)=10\sin t$}
+  {fig:single-state-error}
+\reportimage{single_parameter_errors.png}
+  {Параметрические ошибки $\tilde\theta_1,\ldots,\tilde\theta_4$
+   при одногармоническом входном сигнале}
+  {fig:single-parameter-errors}
+
+\subsection{Анализ результатов}
+
+\textit{Раздел заполняется после проведения моделирования.}
+% Описать поведение нормы ошибки состояния и каждой параметрической ошибки.
+% Указать выбранное gamma и длительность переходного процесса.
+% Отдельно оценить восстановление состояния и идентификацию параметров.
+
+\clearpage
+\section{Эксперимент с многогармоническим входным сигналом}
+
+Во втором эксперименте используется вход
+\begin{equation}
+  u_2(t)=10\sin t+5\cos 2t+4\cos 4t+3\cos 8t.
+\end{equation}
+Коэффициент адаптации:
+$\gamma_2=\underline{\hspace{2cm}}$.
+Норма ошибки состояния: рисунок~\ref{fig:multi-state-error};
+параметрические ошибки: рисунок~\ref{fig:multi-parameter-errors}.
+
+\reportimage{multi_state_error.png}
+  {Норма ошибки состояния $\norm{\bm x-\hat{\bm x}}_2$
+   при многогармоническом входном сигнале}
+  {fig:multi-state-error}
+\reportimage{multi_parameter_errors.png}
+  {Параметрические ошибки $\tilde\theta_1,\ldots,\tilde\theta_4$
+   при многогармоническом входном сигнале}
+  {fig:multi-parameter-errors}
+
+\subsection{Анализ результатов}
+
+\textit{Раздел заполняется после проведения моделирования.}
+% Сопоставить ошибки состояния и параметров с первым экспериментом.
+% Если gamma различаются, учитывать это при сравнении переходных процессов.
+% Связать наблюдаемые результаты с возбуждением регрессора,
+% не подменяя проверку сходимости только малостью ошибки выхода.
+
+\section{Выводы}
+
+\textit{Выводы формулируются после анализа результатов двух экспериментов.}
+% Указать, выполнена ли цель наблюдения и как ведут себя оценки параметров.
+% Описать влияние состава входного сигнала и выбранного gamma.
