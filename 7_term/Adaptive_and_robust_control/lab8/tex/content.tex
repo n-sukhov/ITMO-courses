@@ -71,7 +71,7 @@ $b_0\ge b_{\min}>0$.
 \end{equation}
 Задающее воздействие в опытах слежения:
 \begin{equation}
-  g(t)=2\sgn(\cos t).
+  g(t)=2\operatorname{sign}(\cos t).
   \label{eq:reference-input}
 \end{equation}
 При исследовании стабилизации принимается $g(t)\equiv0$.
@@ -88,7 +88,7 @@ $b_0\ge b_{\min}>0$.
 
 \subsection{Эталонная модель и вспомогательные фильтры}
 
-Эталонная модель согласно (7.5) методических указаний:
+Эталонная модель:
 \begin{equation}
   y_M=\frac{k_0}{K_M(s)}[g]
   =\frac{1}{(s+1)^2}[g],
@@ -100,47 +100,87 @@ $b_0\ge b_{\min}>0$.
   \dot v_1=-v_1+u,
   \qquad \dot v_2=-v_2+y,
   \qquad
-  \bm\omega=\begin{pmatrix}v_1&v_2&y\end{pmatrix}^{\mathsf T}.
+  \omega=\begin{pmatrix}v_1&v_2&y\end{pmatrix}^{T}.
   \label{eq:filters}
 \end{equation}
 
-\reportplaceholder{Привести параметризованное представление объекта
-по формуле (7.4) и определить компоненты вектора $\bm\psi$.}
+Параметризованная модель:
+\begin{equation}
+y(t)=\frac{1}{K_M(s)}[\psi^{T}\omega(t)+b_mu(t)]
+\end{equation}
 
 \subsection{Настраиваемый регулятор}
 
 Закон управления (7.8) имеет вид
 \begin{equation}
-  u=\frac{-\hat{\bm\psi}^{\mathsf T}\bm\omega+g}{\hat b_0},
+  u=\frac{-\hat{\psi}^{T}\omega+g}{\hat b_0},
   \qquad
-  \hat{\bm\psi}_p=
+  \hat{\psi}_p=
   \begin{pmatrix}
     \hat\psi_1&\hat\psi_2&\hat\psi_3&\hat b_0
-  \end{pmatrix}^{\mathsf T}.
+  \end{pmatrix}^{T}.
   \label{eq:control}
 \end{equation}
 Для предотвращения деления на ноль используется ограничение
-$\hat b_0(t)\ge b_{\min}$.
-
-\reportplaceholder{Описать используемую проекцию оценки $\hat b_0$
-и указать выбранное значение $b_{\min}$.}
+$\hat b_0(t)\ge b_{\min}$. Оно учитывается в алгоритме настройки
+оценки $\hat b_0$.
 
 \subsection{Расширенная ошибка и алгоритм адаптации}
 
-\reportplaceholder{Ввести регрессор $\bm\omega_p$, фильтрованные сигналы
-и расширенную ошибку $\hat\varepsilon$ по формуле (8.2).
-Привести реализацию дополнительных фильтров.}
+\begin{equation}
+  \omega_p=
+  \begin{pmatrix}-\omega^{T}&-u\end{pmatrix}^{T},
+  \qquad
+  \bar\omega=\frac{1}{K_M(s)}[\omega],
+  \qquad
+  \bar u=\frac{1}{K_M(s)}[u].
+  \label{eq:filtered-regressor}
+\end{equation}
+Следовательно,
+\begin{equation}
+  \bar\omega_p=\frac{1}{K_M(s)}[\omega_p]
+  =\begin{pmatrix}-\bar\omega^{T}&-\bar u\end{pmatrix}^{T},
+  \qquad K_M(s)=(s+1)^2.
+\end{equation}
+Расширенная ошибка определяется формулой (8.2)
+\begin{equation}
+  \hat\varepsilon
+  =\varepsilon-\hat\psi_p^{T}\bar\omega_p
+  +\frac{1}{K_M(s)}
+    \left[\hat\psi_p^{T}\omega_p\right].
+  \label{eq:augmented-error}
+\end{equation}
 
-\reportplaceholder{Записать принятый алгоритм адаптации для
-$\hat{\bm\psi}$ и $\hat b_0$ с коэффициентами $\gamma_1$, $\gamma_2$.
-Указать используемый нормирующий множитель.}
-
-% При заполнении сверить нормировку: в (8.4) используется
-% 1 + bar(omega_p)^T bar(omega_p), а в (8.5), (8.6) записано
-% 1 + bar(omega)^T bar(omega). Это разные выражения.
-
-\reportplaceholder{Пояснить назначение расширенной ошибки
-и условия сходимости ошибки слежения.}
+Для настройки вектора $\hat\psi$ используется алгоритм (8.5)
+\begin{equation}
+  \dot{\hat\psi}
+  =-\gamma_1\frac{\bar\omega}
+    {1+\bar\omega^{T}\bar\omega}\hat\varepsilon,
+  \qquad \gamma_1>0.
+  \label{eq:adaptation-psi}
+\end{equation}
+Алгоритм (8.6) для оценки $\hat b_0$ реализуется с нижним ограничением
+интегратора. При достижении $b_{\min}$ блокируется дальнейшее уменьшение
+оценки, а её увеличение допускается. С явной обработкой границы
+получаем
+\begin{equation}
+  \dot{\hat b}_0=
+  \begin{cases}
+    -\gamma_2\dfrac{\bar u}
+      {1+\bar\omega^{T}\bar\omega}\hat\varepsilon,
+      & \hat b_0>b_{\min},\\[1em]
+    \max\!\left\{0,
+      -\gamma_2\dfrac{\bar u}
+        {1+\bar\omega^{T}\bar\omega}\hat\varepsilon
+    \right\},
+      & \hat b_0=b_{\min},
+  \end{cases}
+  \qquad \gamma_2>0.
+  \label{eq:adaptation-b0}
+\end{equation}
+Начальная оценка выбирается из условия $\hat b_0(0)\ge b_{\min}$.
+В обоих алгоритмах используется нормирующий множитель
+$1/(1+\bar\omega^{T}\bar\omega)$ из формул (8.5), (8.6).
 
 \subsection{Условия моделирования}
 
@@ -158,7 +198,7 @@ $\hat{\bm\psi}$ и $\hat b_0$ с коэффициентами $\gamma_1$, $\gamm
     Начальные $y(0)$, $\dot y(0)$ & \fillvalue \\
     Начальные $y_M(0)$, $\dot y_M(0)$ & \fillvalue \\
     Начальные $v_1(0)$, $v_2(0)$ & \fillvalue \\
-    Начальная оценка $\hat{\bm\psi}(0)$ & \fillvalue \\
+    Начальная оценка $\hat{\psi}(0)$ & \fillvalue \\
     Начальная оценка $\hat b_0(0)$ & \fillvalue \\
     Начальные состояния дополнительных фильтров & \fillvalue \\
     \bottomrule
@@ -167,7 +207,7 @@ $\hat{\bm\psi}$ и $\hat b_0$ с коэффициентами $\gamma_1$, $\gamm
 
 По заданию в опыте стабилизации выбираются ненулевые начальные
 условия фильтров~\eqref{eq:filters} и алгоритма настройки
-$\hat{\bm\psi}$, а начальная оценка коэффициента управления
+$\hat{\psi}$, а начальная оценка коэффициента управления
 удовлетворяет $\hat b_0(0)>b_0=1$.
 В каждом из первых двух опытов рассматриваются три различные пары
 коэффициентов; $\gamma_1$ выбирается на несколько порядков больше
@@ -202,7 +242,7 @@ $\gamma_2$.
 
 Для сравнения трёх пар коэффициентов предусмотрены графики
 выхода $y$, управления $u$ и четырёх оценок
-$\hat{\bm\psi}_p$ на
+$\hat{\psi}_p$ на
 рисунках~\ref{fig:stabilization-y}--\ref{fig:stabilization-parameters}.
 
 \imageplaceholder{stabilization_y.png}
@@ -251,7 +291,7 @@ $\hat{\bm\psi}_p$ на
 \subsection{Результаты моделирования}
 
 Для сравнения трёх пар коэффициентов предусмотрены графики
-$y$ и $y_M$, управления $u$ и оценок $\hat{\bm\psi}_p$
+$y$ и $y_M$, управления $u$ и оценок $\hat{\psi}_p$
 на рисунках~\ref{fig:tracking-y}--\ref{fig:tracking-parameters}.
 
 \imageplaceholder{tracking_y.png}
@@ -299,7 +339,7 @@ $y$ и $y_M$, управления $u$ и оценок $\hat{\bm\psi}_p$
 \subsection{Результаты моделирования}
 
 Для изменённого объекта предусмотрены графики $y$ и $y_M$,
-управления $u$ и оценок $\hat{\bm\psi}_p$
+управления $u$ и оценок $\hat{\psi}_p$
 на рисунках~\ref{fig:modified-y}--\ref{fig:modified-parameters}.
 
 \imageplaceholder{modified_plant_y.png}
