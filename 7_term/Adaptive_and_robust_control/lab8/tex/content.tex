@@ -1,1 +1,333 @@
 % !TeX root = main.tex
+
+% Аргументы: имя файла в images, подпись, метка для ссылки.
+% После добавления файла рамка автоматически заменяется изображением.
+\newcommand{\imageplaceholder}[3]{%
+  \begin{figure}[!htbp]
+    \centering
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=0.95\textwidth,keepaspectratio]{#1}%
+    }{%
+      \fbox{%
+        \parbox[c][3cm][c]{\dimexpr0.95\textwidth-2\fboxsep-2\fboxrule\relax}{%
+          \centering
+          Место для рисунка\\[0.4em]
+          \texttt{images/\detokenize{#1}}
+        }%
+      }%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+% Видимые места для текста, который будет добавлен после выполнения работы.
+\newcommand{\reportplaceholder}[1]{%
+  \par\noindent\textit{[#1]}\par
+}
+\newcommand{\fillvalue}{\textit{указать}}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Освоить метод расширенной ошибки в задаче адаптивного управления
+линейным объектом по выходу. Исследовать стабилизацию и слежение
+при различных коэффициентах адаптации, а также работу регулятора
+после изменения знаков коэффициентов объекта.
+
+\section{Постановка задачи и исходные данные}
+
+Рассматривается линейный объект второго порядка
+\begin{equation}
+  \ddot y+a_1\dot y+a_0y=b_0u,
+  \qquad n=2,\qquad m=0.
+  \label{eq:plant}
+\end{equation}
+Регулятору доступны выход $y(t)$ и формируемое управление $u(t)$.
+Коэффициенты $a_0,a_1,b_0$ считаются неизвестными регулятору;
+их истинные значения используются при моделировании объекта.
+Предполагается, что известна нижняя граница
+$b_0\ge b_{\min}>0$.
+
+Исходные данные:
+\begin{equation}
+  a_0=1,\qquad a_1=0,\qquad b_0=1,
+  \qquad k_{M1}=2,\qquad k_{M0}=1,\qquad k_0=1.
+  \label{eq:variant}
+\end{equation}
+Следовательно, уравнение и передаточная функция объекта имеют вид
+\begin{equation}
+  \ddot y+y=u,
+  \qquad W(s)=\frac{1}{s^2+1}.
+  \label{eq:variant-plant}
+\end{equation}
+Полиномы эталонной модели и вспомогательных фильтров:
+\begin{equation}
+  K_M(s)=s^2+2s+1=(s+1)^2,
+  \qquad K(s)=s+1.
+  \label{eq:polynomials}
+\end{equation}
+Задающее воздействие в опытах слежения:
+\begin{equation}
+  g(t)=2\sgn(\cos t).
+  \label{eq:reference-input}
+\end{equation}
+При исследовании стабилизации принимается $g(t)\equiv0$.
+
+Ошибка слежения и цель управления определяются соотношениями
+\begin{equation}
+  \varepsilon(t)=y_M(t)-y(t),
+  \qquad \lim_{t\to\infty}\varepsilon(t)=0,
+  \label{eq:goal}
+\end{equation}
+при ограниченности всех сигналов замкнутой системы.
+
+\section{Построение адаптивной системы управления}
+
+\subsection{Эталонная модель и вспомогательные фильтры}
+
+Эталонная модель согласно (7.5) методических указаний:
+\begin{equation}
+  y_M=\frac{k_0}{K_M(s)}[g]
+  =\frac{1}{(s+1)^2}[g],
+  \qquad \ddot y_M+2\dot y_M+y_M=g.
+  \label{eq:reference-model}
+\end{equation}
+Фильтры (7.2), (7.3) для выбранного полинома $K(s)=s+1$:
+\begin{equation}
+  \dot v_1=-v_1+u,
+  \qquad \dot v_2=-v_2+y,
+  \qquad
+  \bm\omega=\begin{pmatrix}v_1&v_2&y\end{pmatrix}^{\mathsf T}.
+  \label{eq:filters}
+\end{equation}
+
+\reportplaceholder{Привести параметризованное представление объекта
+по формуле (7.4) и определить компоненты вектора $\bm\psi$.}
+
+\subsection{Настраиваемый регулятор}
+
+Закон управления (7.8) имеет вид
+\begin{equation}
+  u=\frac{-\hat{\bm\psi}^{\mathsf T}\bm\omega+g}{\hat b_0},
+  \qquad
+  \hat{\bm\psi}_p=
+  \begin{pmatrix}
+    \hat\psi_1&\hat\psi_2&\hat\psi_3&\hat b_0
+  \end{pmatrix}^{\mathsf T}.
+  \label{eq:control}
+\end{equation}
+Для предотвращения деления на ноль используется ограничение
+$\hat b_0(t)\ge b_{\min}$.
+
+\reportplaceholder{Описать используемую проекцию оценки $\hat b_0$
+и указать выбранное значение $b_{\min}$.}
+
+\subsection{Расширенная ошибка и алгоритм адаптации}
+
+\reportplaceholder{Ввести регрессор $\bm\omega_p$, фильтрованные сигналы
+и расширенную ошибку $\hat\varepsilon$ по формуле (8.2).
+Привести реализацию дополнительных фильтров.}
+
+\reportplaceholder{Записать принятый алгоритм адаптации для
+$\hat{\bm\psi}$ и $\hat b_0$ с коэффициентами $\gamma_1$, $\gamma_2$.
+Указать используемый нормирующий множитель.}
+
+% При заполнении сверить нормировку: в (8.4) используется
+% 1 + bar(omega_p)^T bar(omega_p), а в (8.5), (8.6) записано
+% 1 + bar(omega)^T bar(omega). Это разные выражения.
+
+\reportplaceholder{Пояснить назначение расширенной ошибки
+и условия сходимости ошибки слежения.}
+
+\subsection{Условия моделирования}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Общие параметры моделирования}
+  \label{tab:simulation-settings}
+  \begin{tabularx}{\textwidth}{@{}Xl@{}}
+    \toprule
+    Параметр & Значение \\
+    \midrule
+    Продолжительность моделирования $T$, с & \fillvalue \\
+    Решатель и настройки точности & \fillvalue \\
+    Нижняя граница $b_{\min}$, $0<b_{\min}\le1$ & \fillvalue \\
+    Начальные $y(0)$, $\dot y(0)$ & \fillvalue \\
+    Начальные $y_M(0)$, $\dot y_M(0)$ & \fillvalue \\
+    Начальные $v_1(0)$, $v_2(0)$ & \fillvalue \\
+    Начальная оценка $\hat{\bm\psi}(0)$ & \fillvalue \\
+    Начальная оценка $\hat b_0(0)$ & \fillvalue \\
+    Начальные состояния дополнительных фильтров & \fillvalue \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+По заданию в опыте стабилизации выбираются ненулевые начальные
+условия фильтров~\eqref{eq:filters} и алгоритма настройки
+$\hat{\bm\psi}$, а начальная оценка коэффициента управления
+удовлетворяет $\hat b_0(0)>b_0=1$.
+В каждом из первых двух опытов рассматриваются три различные пары
+коэффициентов; $\gamma_1$ выбирается на несколько порядков больше
+$\gamma_2$.
+
+\reportplaceholder{Уточнить начальные условия для каждого опыта,
+если они отличаются от приведённых в таблице~\ref{tab:simulation-settings}.}
+
+\newpage
+\section{Исследование стабилизирующего адаптивного управления}
+
+В первом опыте принимается $g(t)\equiv0$.
+Исследуется стремление выхода объекта к нулю при трёх парах
+коэффициентов адаптации.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Коэффициенты адаптации в опыте стабилизации}
+  \label{tab:stabilization-gains}
+  \begin{tabular}{@{}ccc@{}}
+    \toprule
+    Номер пары & $\gamma_1$ & $\gamma_2$ \\
+    \midrule
+    1 & \fillvalue & \fillvalue \\
+    2 & \fillvalue & \fillvalue \\
+    3 & \fillvalue & \fillvalue \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Результаты моделирования}
+
+Для сравнения трёх пар коэффициентов предусмотрены графики
+выхода $y$, управления $u$ и четырёх оценок
+$\hat{\bm\psi}_p$ на
+рисунках~\ref{fig:stabilization-y}--\ref{fig:stabilization-parameters}.
+
+\imageplaceholder{stabilization_y.png}
+  {Выход объекта при стабилизации для трёх пар коэффициентов адаптации}
+  {fig:stabilization-y}
+
+\imageplaceholder{stabilization_u.png}
+  {Управляющее воздействие при стабилизации для трёх пар коэффициентов адаптации}
+  {fig:stabilization-u}
+
+\imageplaceholder{stabilization_parameters.png}
+  {Оценки параметров при стабилизации для трёх пар коэффициентов адаптации}
+  {fig:stabilization-parameters}
+
+\newpage
+\subsection{Анализ результатов}
+
+\reportplaceholder{Сравнить переходные процессы при трёх парах
+коэффициентов: затухание выхода, величину и характер управления,
+поведение оценок параметров. Выводы сформулировать по полученным графикам.}
+
+\noindent\textbf{Вывод по пункту:}
+\reportplaceholder{Сформулировать результат опыта стабилизации.}
+
+\section{Исследование следящего адаптивного управления}
+
+Во втором опыте используется задание~\eqref{eq:reference-input}.
+Выход объекта сравнивается с выходом эталонной
+модели~\eqref{eq:reference-model} при трёх парах коэффициентов адаптации.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Коэффициенты адаптации в опыте слежения}
+  \label{tab:tracking-gains}
+  \begin{tabular}{@{}ccc@{}}
+    \toprule
+    Номер пары & $\gamma_1$ & $\gamma_2$ \\
+    \midrule
+    1 & \fillvalue & \fillvalue \\
+    2 & \fillvalue & \fillvalue \\
+    3 & \fillvalue & \fillvalue \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Результаты моделирования}
+
+Для сравнения трёх пар коэффициентов предусмотрены графики
+$y$ и $y_M$, управления $u$ и оценок $\hat{\bm\psi}_p$
+на рисунках~\ref{fig:tracking-y}--\ref{fig:tracking-parameters}.
+
+\imageplaceholder{tracking_y.png}
+  {Выходы объекта и эталонной модели при трёх парах коэффициентов адаптации}
+  {fig:tracking-y}
+
+\imageplaceholder{tracking_u.png}
+  {Управляющее воздействие при слежении для трёх пар коэффициентов адаптации}
+  {fig:tracking-u}
+
+\imageplaceholder{tracking_parameters.png}
+  {Оценки параметров при слежении для трёх пар коэффициентов адаптации}
+  {fig:tracking-parameters}
+
+\newpage
+\subsection{Анализ результатов}
+
+\reportplaceholder{Сравнить качество слежения и переходные процессы
+при трёх парах коэффициентов. Проанализировать управление и оценки
+параметров, различая сходимость ошибки слежения и ошибок параметров.}
+
+\noindent\textbf{Вывод по пункту:}
+\reportplaceholder{Сформулировать результат опыта слежения.}
+
+\section{Слежение после изменения знаков коэффициентов объекта}
+
+В третьем опыте знаки $a_0$ и $a_1$ меняются на противоположные.
+Для варианта 1 коэффициент $a_1=0$ сохраняется, поэтому
+\begin{equation}
+  a_0=-1,\qquad a_1=0,\qquad b_0=1,
+  \qquad \ddot y-y=u.
+  \label{eq:modified-plant}
+\end{equation}
+Передаточная функция изменённого объекта имеет вид
+\begin{equation}
+  W_{\text{изм}}(s)=\frac{1}{s^2-1}.
+\end{equation}
+Сохраняются задание~\eqref{eq:reference-input} и
+эталонная модель~\eqref{eq:reference-model}.
+Моделирование проводится для одной пары коэффициентов адаптации.
+
+\reportplaceholder{Указать выбранные $\gamma_1$, $\gamma_2$
+и начальные условия.}
+
+\subsection{Результаты моделирования}
+
+Для изменённого объекта предусмотрены графики $y$ и $y_M$,
+управления $u$ и оценок $\hat{\bm\psi}_p$
+на рисунках~\ref{fig:modified-y}--\ref{fig:modified-parameters}.
+
+\imageplaceholder{modified_plant_y.png}
+  {Выходы изменённого объекта и эталонной модели}
+  {fig:modified-y}
+
+\imageplaceholder{modified_plant_u.png}
+  {Управляющее воздействие после изменения знаков коэффициентов объекта}
+  {fig:modified-u}
+
+\imageplaceholder{modified_plant_parameters.png}
+  {Оценки параметров после изменения знаков коэффициентов объекта}
+  {fig:modified-parameters}
+
+\newpage
+\subsection{Анализ результатов}
+
+\reportplaceholder{Сопоставить результаты с опытом слежения
+для исходного объекта. Оценить влияние изменения знаков коэффициентов
+на выход, управление и настройку параметров.}
+
+\noindent\textbf{Вывод по пункту:}
+\reportplaceholder{Сформулировать результат опыта с изменённым объектом.}
+
+\section{Выводы}
+
+\reportplaceholder{По фактическим результатам обобщить работу метода
+расширенной ошибки, влияние коэффициентов адаптации на стабилизацию
+и слежение, а также поведение системы при изменении параметров объекта.
+Указать наблюдаемые ограничения и различие между достижением цели
+управления и точностью оценивания параметров.}
