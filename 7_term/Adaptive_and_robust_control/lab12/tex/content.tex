@@ -1,1 +1,292 @@
 % !TeX root = main.tex
+
+% Аргументы: имя файла в images, подпись, метка для ссылки.
+% После добавления файла рамка автоматически заменяется рисунком.
+\newcommand{\imageplaceholder}[3]{%
+  \begin{figure}[!htbp]
+    \centering
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=0.95\textwidth,keepaspectratio]{#1}%
+    }{%
+      \fbox{%
+        \parbox[c][3cm][c]{0.9\textwidth}{%
+          \centering
+          Место для рисунка\\[0.4em]
+          \texttt{images/\detokenize{#1}}
+        }%
+      }%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+% Заменять вызовы команды готовым текстом по мере выполнения работы.
+\newcommand{\reporttodo}[1]{%
+  \par\noindent\textit{[Заполнить: #1.]}\par
+}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Освоить принцип адаптивного слежения за эталонным сигналом
+для неустойчивого многомерного линейного объекта. Исследовать влияние
+коэффициента адаптации на ошибку слежения и управляющее воздействие.
+
+\section{Постановка задачи и исходные данные}
+
+Рассматривается объект управления
+\begin{equation}
+  \dot{\bm x}=A\bm x+\bm b u,
+  \qquad y=C\bm x,
+  \qquad \bm x\in\mathbb R^2.
+  \label{eq:plant}
+\end{equation}
+Вектор состояния $\bm x(t)$ и выход $y(t)$ доступны измерению,
+матрицы объекта известны.
+
+Заданы
+\begin{equation}
+  A=\begin{pmatrix}3&1\\1&1\end{pmatrix},
+  \qquad
+  \bm b=\begin{pmatrix}1\\2\end{pmatrix},
+  \qquad t_{\text{п}}=0{,}16\,\text{с},
+  \qquad \sigma=0\%.
+  \label{eq:variant}
+\end{equation}
+\reporttodo{указать матрицу выхода $C$ и соответствующее выражение для $y$}
+
+Используются задающее воздействие и коэффициенты полинома фильтра:
+\begin{equation}
+  g(t)=\sin t,
+  \qquad k_{g1}=0{,}8,
+  \qquad k_{g0}=0{,}16.
+  \label{eq:reference-data}
+\end{equation}
+Сигнал $g(t)$ доступен измерению, однако амплитуда, частота
+и фаза его гармоник априори неизвестны регулятору.
+
+Требуется построить управление, обеспечивающее ограниченность
+всех сигналов замкнутой системы и выполнение условия
+\begin{equation}
+  \varepsilon(t)=g(t)-y(t),
+  \qquad \lim_{t\to\infty}\varepsilon(t)=0.
+  \label{eq:goal}
+\end{equation}
+
+\section{Синтез стабилизирующей обратной связи}
+
+\subsection{Проверка управляемости объекта}
+
+Матрица управляемости имеет вид
+\begin{equation}
+  \mathcal C=\begin{pmatrix}\bm b&A\bm b\end{pmatrix}.
+  \label{eq:controllability}
+\end{equation}
+\reporttodo{подставить матрицы объекта, вычислить определитель
+и ранг $\mathcal C$, сделать вывод об управляемости}
+
+\subsection{Выбор желаемой динамики}
+
+Для апериодического процесса рассматривается стандартный полином
+\begin{equation}
+  D_{\text{ж}}(s)=(s+\omega_0)^2,
+  \qquad
+  A_{\text{ж}}=
+  \begin{pmatrix}0&1\\-\omega_0^2&-2\omega_0\end{pmatrix},
+  \qquad \omega_0=\frac{t_{\text{п}}^*}{t_{\text{п}}}.
+  \label{eq:desired-dynamics}
+\end{equation}
+\reporttodo{указать полосу допуска для определения времени переходного
+процесса, найти $t_{\text{п}}^*$, рассчитать $\omega_0$
+и численные элементы $A_{\text{ж}}$}
+
+\subsection{Расчёт матрицы обратной связи}
+
+Матрица $K$ определяется методом модального управления:
+\begin{equation}
+  AM-MA_{\text{ж}}=\bm b H,
+  \qquad K=HM^{-1},
+  \qquad A_M=A-\bm b K.
+  \label{eq:modal-control}
+\end{equation}
+Матрица $H$ выбирается так, чтобы пара $(A_{\text{ж}},H)$
+была полностью наблюдаемой.
+
+\reporttodo{выбрать $H$, привести решение уравнения Сильвестра $M$,
+проверить его невырожденность, записать $K$ и $A_M$;
+проверить собственные значения $A_M$}
+
+\noindent\textbf{Вывод по пункту:}
+\reporttodo{сформулировать результат проверки управляемости
+и синтеза стабилизирующей обратной связи}
+
+\section{Формирование регрессора задающего сигнала}
+
+\subsection{Модель генератора и параметризация сигнала}
+
+Для сигнала~\eqref{eq:reference-data} модель генератора имеет вид
+\begin{equation}
+  \ddot g+l_1\dot g+l_0g=0,
+  \qquad l_1=0,
+  \qquad l_0=1.
+  \label{eq:reference-generator}
+\end{equation}
+Параметризованное представление сигнала:
+\begin{equation}
+  g=\bm\theta_g^{\mathsf T}\bm\xi_g+\delta_g(t),
+  \qquad
+  \bm\theta_g=\begin{pmatrix}k_{g0}-l_0\\k_{g1}-l_1\end{pmatrix},
+  \qquad \lim_{t\to\infty}\delta_g(t)=0,
+  \label{eq:reference-parameterization}
+\end{equation}
+где $\delta_g(t)$ учитывает рассогласование начальных условий
+генератора и фильтра.
+
+\reporttodo{записать численный вектор $\bm\theta_g$
+и пояснить роль начальных условий в параметризации}
+
+\subsection{Построение фильтра}
+
+Регрессор $\bm\xi_g$ формируется фильтром
+\begin{equation}
+  \dot{\bm\xi}_g=A_{0g}\bm\xi_g+\bm b_{0g}g,
+  \qquad
+  \bm\xi_g=\begin{pmatrix}\xi_{g1}\\\xi_{g2}\end{pmatrix},
+  \label{eq:reference-filter}
+\end{equation}
+где
+\begin{equation}
+  K_g(s)=s^2+k_{g1}s+k_{g0},
+  \qquad
+  A_{0g}=\begin{pmatrix}0&1\\-k_{g0}&-k_{g1}\end{pmatrix},
+  \qquad \bm b_{0g}=\begin{pmatrix}0\\1\end{pmatrix}.
+  \label{eq:filter-matrices}
+\end{equation}
+\reporttodo{подставить коэффициенты фильтра, проверить гурвицевость
+$A_{0g}$ и привести скалярные уравнения реализации}
+
+\noindent\textbf{Вывод по пункту:}
+\reporttodo{указать, какие сигналы использует фильтр
+и почему его выходы ограничены}
+
+\section{Адаптивный следящий регулятор}
+
+\subsection{Закон управления и модель ошибки}
+
+Управление складывается из стабилизирующей и адаптивной частей:
+\begin{equation}
+  u=-K\bm x+u_a,
+  \qquad u_a=\hat{\bm\psi}_g^{\mathsf T}\bm\xi_g,
+  \label{eq:control}
+\end{equation}
+где $\hat{\bm\psi}_g$ является вектором настраиваемых параметров.
+Передаточная функция стабилизированной части системы:
+\begin{equation}
+  W(s)=C(sI_2-A_M)^{-1}\bm b.
+  \label{eq:stable-transfer}
+\end{equation}
+\reporttodo{вычислить $W(s)$ для выбранного выхода,
+записать модель ошибки слежения и условия её применимости}
+
+\subsection{Расширенная ошибка и алгоритм адаптации}
+
+Введём фильтрованные сигналы
+\begin{equation}
+  \bm\omega=W(s)[\bm\xi_g],
+  \qquad \nu=W(s)[u_a].
+  \label{eq:filtered-signals}
+\end{equation}
+Оператор $W(s)$ применяется к каждой компоненте $\bm\xi_g$.
+Расширенная ошибка и алгоритм настройки имеют вид
+\begin{equation}
+  \hat\varepsilon
+    =\varepsilon-\hat{\bm\psi}_g^{\mathsf T}\bm\omega+\nu,
+  \qquad
+  \dot{\hat{\bm\psi}}_g=\gamma\bm\omega\hat\varepsilon,
+  \qquad \gamma>0.
+  \label{eq:adaptation}
+\end{equation}
+\reporttodo{записать реализацию $W(s)$; пояснить смысл
+расширенной ошибки и свойства алгоритма
+с учётом начальных переходных процессов}
+
+\clearpage
+\subsection{Реализация и условия моделирования}
+
+\reporttodo{указать начальные состояния объекта и фильтров,
+начальную оценку $\hat{\bm\psi}_g(0)$, интервал моделирования,
+решатель, шаг или допуски интегрирования}
+
+Для сравнения выбираются два различных коэффициента адаптации:
+\begin{equation}
+  \gamma_1=\ldots,\qquad \gamma_2=\ldots,
+  \qquad \gamma_1\ne\gamma_2.
+  \label{eq:adaptation-gains}
+\end{equation}
+В обоих опытах сохраняются одинаковые начальные условия,
+задающее воздействие, матрицы обратной связи и параметры фильтров.
+Схема моделирования представлена на рисунке~\ref{fig:scheme}.
+
+\imageplaceholder{lab12_scheme.png}
+  {Схема адаптивной системы слежения в Simulink}
+  {fig:scheme}
+
+\clearpage
+\section{Исследование системы при первом коэффициенте адаптации}
+
+В первом опыте используется коэффициент $\gamma=\gamma_1$
+из~\eqref{eq:adaptation-gains}.
+На рисунках~\ref{fig:gamma1-error} и~\ref{fig:gamma1-control}
+представлены ошибка слежения и управляющее воздействие.
+
+\imageplaceholder{lab12_gamma1_error.png}
+  {Ошибка слежения $\varepsilon(t)$ при $\gamma=\gamma_1$}
+  {fig:gamma1-error}
+
+\imageplaceholder{lab12_gamma1_u.png}
+  {Управляющее воздействие $u(t)$ при $\gamma=\gamma_1$}
+  {fig:gamma1-control}
+
+\subsection{Анализ результатов}
+
+\reporttodo{описать изменение ошибки слежения, оценить время
+её затухания и остаточные колебания, отметить максимальное управление
+и характер его установившегося режима}
+
+\noindent\textbf{Вывод по пункту:}
+\reporttodo{оценить достижение цели слежения
+при первом коэффициенте адаптации по результатам моделирования}
+
+\clearpage
+\section{Исследование системы при втором коэффициенте адаптации}
+
+Во втором опыте используется коэффициент $\gamma=\gamma_2$
+из~\eqref{eq:adaptation-gains}.
+Результаты приведены на рисунках~\ref{fig:gamma2-error}
+и~\ref{fig:gamma2-control}.
+
+\imageplaceholder{lab12_gamma2_error.png}
+  {Ошибка слежения $\varepsilon(t)$ при $\gamma=\gamma_2$}
+  {fig:gamma2-error}
+
+\imageplaceholder{lab12_gamma2_u.png}
+  {Управляющее воздействие $u(t)$ при $\gamma=\gamma_2$}
+  {fig:gamma2-control}
+
+\subsection{Анализ результатов и сравнение опытов}
+
+\reporttodo{сравнить два значения $\gamma$ по скорости затухания ошибки,
+величине выбросов, остаточным колебаниям и амплитуде управления}
+
+\noindent\textbf{Вывод по пункту:}
+\reporttodo{сформулировать влияние коэффициента адаптации
+и обосновать выбор предпочтительного значения для данного объекта}
+
+\section{Выводы}
+
+\reporttodo{кратко перечислить результаты синтеза обратной связи,
+фильтра и адаптивного регулятора; оценить выполнение цели слежения
+по графикам и сформулировать влияние $\gamma$}

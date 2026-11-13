@@ -1,1 +1,271 @@
 % !TeX root = main.tex
+
+% Аргументы: имя файла в images, подпись, метка для ссылки.
+% После добавления файла рамка автоматически заменяется рисунком.
+% Используется стандартное размещение figure, без изменения preamble.tex.
+\newcommand{\imageplaceholder}[3]{%
+  \begin{figure}[!htbp]
+    \centering
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=0.95\textwidth,keepaspectratio]{#1}%
+    }{%
+      \fbox{%
+        \parbox[c][3cm][c]{0.9\textwidth}{%
+          \centering
+          Место для рисунка\\[0.4em]
+          \texttt{images/\detokenize{#1}}
+        }%
+      }%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+% Заменять вызовы команды готовым текстом по мере выполнения работы.
+\newcommand{\reporttodo}[1]{%
+  \par\noindent\textit{[Заполнить: #1.]}\par
+}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Освоить принцип адаптивной компенсации внешнего возмущения
+при стабилизации многомерного линейного объекта. Исследовать влияние
+коэффициента адаптации на переходные процессы состояния и управления.
+
+\section{Постановка задачи и исходные данные}
+
+Рассматривается объект с согласованным внешним возмущением
+\begin{equation}
+  \dot{\bm x}=A\bm x+\bm b u+\bm d f,
+  \qquad \bm d=\bm b,
+  \qquad \bm x\in\mathbb R^2.
+  \label{eq:plant}
+\end{equation}
+Вектор состояния $\bm x(t)$ доступен измерению, матрицы объекта известны.
+Возмущение $f(t)$ не измеряется; его амплитуда, частота и фаза
+неизвестны регулятору.
+
+Заданы
+\begin{equation}
+  A=\begin{pmatrix}3&1\\1&1\end{pmatrix},
+  \qquad
+  \bm b=\bm d=\begin{pmatrix}1\\2\end{pmatrix},
+  \qquad t_{\text{п}}=0{,}16\,\text{с},
+  \qquad \sigma=0\%.
+  \label{eq:variant}
+\end{equation}
+Используются функция возмущения
+и коэффициенты полинома фильтра:
+\begin{equation}
+  f(t)=\sin t,
+  \qquad k_{f1}=0{,}2,
+  \qquad k_{f0}=0{,}01.
+  \label{eq:disturbance-data}
+\end{equation}
+Функция $f(t)$ используется для моделирования объекта;
+в алгоритм компенсации её истинное значение не передаётся.
+
+Требуется построить управление, обеспечивающее ограниченность
+сигналов замкнутой системы и выполнение условия
+\begin{equation}
+  \lim_{t\to\infty}\norm{\bm x(t)}=0.
+  \label{eq:goal}
+\end{equation}
+
+\section{Синтез стабилизирующей обратной связи}
+
+\subsection{Проверка управляемости объекта}
+
+Матрица управляемости имеет вид
+\begin{equation}
+  \mathcal C=\begin{pmatrix}\bm b&A\bm b\end{pmatrix}.
+  \label{eq:controllability}
+\end{equation}
+\reporttodo{подставить матрицы варианта, вычислить определитель
+и ранг $\mathcal C$, сделать вывод об управляемости}
+
+\subsection{Выбор желаемой динамики}
+
+Для апериодического процесса рассматривается стандартный полином
+\begin{equation}
+  D_{\text{ж}}(s)=(s+\omega_0)^2,
+  \qquad
+  A_{\text{ж}}=
+  \begin{pmatrix}0&1\\-\omega_0^2&-2\omega_0\end{pmatrix},
+  \qquad \omega_0=\frac{t_{\text{п}}^*}{t_{\text{п}}}.
+  \label{eq:desired-dynamics}
+\end{equation}
+\reporttodo{указать полосу допуска для определения времени переходного
+процесса, найти нормированное время $t_{\text{п}}^*$,
+рассчитать $\omega_0$ и численные элементы $A_{\text{ж}}$}
+
+\subsection{Расчёт матрицы обратной связи}
+
+Матрица $K$ определяется методом модального управления:
+\begin{equation}
+  AM-MA_{\text{ж}}=\bm b H,
+  \qquad K=HM^{-1},
+  \qquad A_M=A-\bm b K.
+  \label{eq:modal-control}
+\end{equation}
+Матрица $H$ выбирается так, чтобы пара $(A_{\text{ж}},H)$
+была полностью наблюдаемой.
+
+\reporttodo{выбрать $H$, привести решение уравнения Сильвестра $M$,
+проверить его невырожденность, записать $K$ и $A_M$;
+проверить собственные значения $A_M$}
+
+\noindent\textbf{Вывод по пункту:}
+\reporttodo{сформулировать результат проверки управляемости
+и синтеза стабилизирующей обратной связи}
+
+\section{Наблюдатель состояния модели возмущения}
+
+\subsection{Модель генератора и вспомогательный фильтр}
+
+Для возмущения~\eqref{eq:disturbance-data} модель генератора имеет вид
+\begin{equation}
+  \ddot f+f=0.
+  \label{eq:disturbance-generator}
+\end{equation}
+Вспомогательный фильтр второго порядка задаётся матрицами
+\begin{equation}
+  K_f(s)=s^2+k_{f1}s+k_{f0},
+  \qquad
+  A_{0f}=\begin{pmatrix}0&1\\-k_{f0}&-k_{f1}\end{pmatrix},
+  \qquad \bm b_{0f}=\begin{pmatrix}0\\1\end{pmatrix}.
+  \label{eq:disturbance-filter}
+\end{equation}
+\reporttodo{подставить коэффициенты фильтра, проверить гурвицевость
+$A_{0f}$ и записать вектор истинных параметров $\bm\theta_f$
+для анализа результатов}
+
+\subsection{Построение наблюдателя}
+
+Используется наблюдатель с условием согласования
+$N\bm b=\bm b_{0f}$:
+\begin{equation}
+  \begin{aligned}
+    \hat{\bm\xi}_f&=\bm\eta+N\bm x,\\
+    \dot{\bm\eta}
+      &=A_{0f}\bm\eta+(A_{0f}N-NA)\bm x-N\bm b u.
+  \end{aligned}
+  \label{eq:observer}
+\end{equation}
+\reporttodo{выбрать матрицу $N$ для объекта данной работы,
+проверить $N\bm b=\bm b_{0f}$ и привести численные уравнения наблюдателя}
+
+\noindent\textbf{Вывод по пункту:}
+\reporttodo{указать, за счёт какого свойства фильтра затухает
+ошибка наблюдения и какие измерения использует наблюдатель}
+
+\section{Адаптивный компенсатор возмущения}
+
+\subsection{Закон управления и алгоритм адаптации}
+
+Управление складывается из стабилизирующей и компенсирующей частей:
+\begin{equation}
+  u=-K\bm x-\hat f,
+  \qquad
+  \hat f=\hat{\bm\theta}_f^{\mathsf T}\hat{\bm\xi}_f.
+  \label{eq:control}
+\end{equation}
+Матрица $P=P^{\mathsf T}>0$ находится из уравнения Ляпунова
+\begin{equation}
+  A_M^{\mathsf T}P+PA_M=-Q,
+  \qquad Q=I_2.
+  \label{eq:lyapunov}
+\end{equation}
+Алгоритм настройки параметров:
+\begin{equation}
+  \dot{\hat{\bm\theta}}_f
+    =\gamma\hat{\bm\xi}_f\bm b^{\mathsf T}P\bm x,
+  \qquad \gamma>0,
+  \qquad \hat{\bm\theta}_f(0)=\bm 0.
+  \label{eq:adaptation}
+\end{equation}
+\reporttodo{рассчитать $P$ и проверить, что $P>0$;
+кратко пояснить свойства замкнутой системы;
+при записи модели ошибок учесть начальную ошибку наблюдателя}
+
+\clearpage
+\subsection{Реализация и условия моделирования}
+
+\reporttodo{указать начальные состояния $\bm x(0)$ и $\bm\eta(0)$,
+интервал моделирования, решатель, шаг или допуски интегрирования}
+
+Для сравнения выбираются два различных коэффициента адаптации:
+\begin{equation}
+  \gamma_1=\ldots,\qquad \gamma_2=\ldots,
+  \qquad \gamma_1\ne\gamma_2.
+  \label{eq:adaptation-gains}
+\end{equation}
+В обоих опытах сохраняются одинаковые начальные условия,
+возмущение, матрицы обратной связи и параметры наблюдателя.
+Схема моделирования представлена на рисунке~\ref{fig:scheme}.
+
+\imageplaceholder{lab11_scheme.png}
+  {Схема системы с адаптивной компенсацией возмущения в Simulink}
+  {fig:scheme}
+
+\clearpage
+\section{Исследование системы при первом коэффициенте адаптации}
+
+В первом опыте используется коэффициент $\gamma=\gamma_1$
+из~\eqref{eq:adaptation-gains}.
+На рисунках~\ref{fig:gamma1-state} и~\ref{fig:gamma1-control}
+представлены компоненты вектора состояния и управляющее воздействие.
+
+\imageplaceholder{lab11_gamma1_x.png}
+  {Компоненты состояния $x_1(t)$ и $x_2(t)$ при $\gamma=\gamma_1$}
+  {fig:gamma1-state}
+
+\imageplaceholder{lab11_gamma1_u.png}
+  {Управляющее воздействие $u(t)$ при $\gamma=\gamma_1$}
+  {fig:gamma1-control}
+
+\subsection{Анализ результатов}
+
+\reporttodo{описать переходный процесс $x_1$ и $x_2$, оценить время
+затухания и остаточные колебания, отметить максимальное управление
+и характер его установившегося режима}
+
+\noindent\textbf{Вывод по пункту:}
+\reporttodo{оценить достижение цели стабилизации
+при первом коэффициенте адаптации по результатам моделирования}
+
+\clearpage
+\section{Исследование системы при втором коэффициенте адаптации}
+
+Во втором опыте используется коэффициент $\gamma=\gamma_2$
+из~\eqref{eq:adaptation-gains}.
+Результаты приведены на рисунках~\ref{fig:gamma2-state}
+и~\ref{fig:gamma2-control}.
+
+\imageplaceholder{lab11_gamma2_x.png}
+  {Компоненты состояния $x_1(t)$ и $x_2(t)$ при $\gamma=\gamma_2$}
+  {fig:gamma2-state}
+
+\imageplaceholder{lab11_gamma2_u.png}
+  {Управляющее воздействие $u(t)$ при $\gamma=\gamma_2$}
+  {fig:gamma2-control}
+
+\subsection{Анализ результатов и сравнение опытов}
+
+\reporttodo{описать результаты второго опыта и сравнить два значения
+$\gamma$ по скорости затухания состояния, величине выбросов,
+остаточным колебаниям и амплитуде управления}
+
+\noindent\textbf{Вывод по пункту:}
+\reporttodo{сформулировать влияние коэффициента адаптации
+и обосновать выбор предпочтительного значения для данного объекта}
+
+\section{Выводы}
+
+\reporttodo{кратко перечислить результаты синтеза обратной связи,
+наблюдателя и адаптивного компенсатора; оценить выполнение цели
+стабилизации по графикам и сформулировать влияние $\gamma$}
