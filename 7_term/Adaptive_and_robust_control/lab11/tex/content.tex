@@ -80,28 +80,97 @@
 
 \subsection{Проверка управляемости объекта}
 
-Матрица управляемости имеет вид
+Согласно критерию Калмана, объект~\eqref{eq:plant} полностью управляем,
+если ранг матрицы управляемости равен размерности вектора состояния:
 \begin{equation}
-  \mathcal C=\begin{pmatrix}\bm b&A\bm b\end{pmatrix}.
+  \mathcal C=\begin{pmatrix}\bm b&A\bm b\end{pmatrix},
+  \qquad \operatorname{rank}\mathcal C=n=2.
   \label{eq:controllability}
 \end{equation}
-\reporttodo{подставить матрицы варианта, вычислить определитель
-и ранг $\mathcal C$, сделать вывод об управляемости}
+Для матриц~\eqref{eq:variant} получаем
+\begin{equation}
+  A\bm b=
+  \begin{pmatrix}3&1\\1&1\end{pmatrix}
+  \begin{pmatrix}1\\2\end{pmatrix}
+  =\begin{pmatrix}5\\3\end{pmatrix},
+  \qquad
+  \mathcal C=\begin{pmatrix}1&5\\2&3\end{pmatrix}.
+  \label{eq:controllability-numeric}
+\end{equation}
+Определитель матрицы управляемости отличен от нуля:
+\begin{equation}
+  \det\mathcal C=1\cdot3-5\cdot2=-7\ne0,
+  \qquad \operatorname{rank}\mathcal C=2.
+  \label{eq:controllability-rank}
+\end{equation}
+Следовательно, пара $(A,\bm b)$ полностью управляема. Это позволяет
+назначить желаемые полюса замкнутой системы с помощью линейной
+обратной связи по состоянию.
 
 \subsection{Выбор желаемой динамики}
 
-Для апериодического процесса рассматривается стандартный полином
+Для заданного перерегулирования $\sigma=0\%$ выбираем стандартный
+биномиальный полином второго порядка с двумя одинаковыми
+отрицательными корнями:
 \begin{equation}
-  D_{\text{ж}}(s)=(s+\omega_0)^2,
-  \qquad
+  D_{\text{ж}}(s)=(s+\omega_0)^2
+  =s^2+2\omega_0s+\omega_0^2,
+  \qquad \omega_0>0.
+  \label{eq:desired-polynomial}
+\end{equation}
+Соответствующая матрица желаемой динамики имеет вид
+\begin{equation}
   A_{\text{ж}}=
   \begin{pmatrix}0&1\\-\omega_0^2&-2\omega_0\end{pmatrix},
-  \qquad \omega_0=\frac{t_{\text{п}}^*}{t_{\text{п}}}.
+  \qquad
+  \omega_0=\frac{t_{\text{п}}^*}{t_{\text{п}}}.
   \label{eq:desired-dynamics}
 \end{equation}
-\reporttodo{указать полосу допуска для определения времени переходного
-процесса, найти нормированное время $t_{\text{п}}^*$,
-рассчитать $\omega_0$ и численные элементы $A_{\text{ж}}$}
+Время переходного процесса определяем
+по полосе допуска $\pm2\%$. Для стандартной передаточной функции
+и её переходной характеристики получаем
+\begin{equation}
+  W_{\text{ж}}(s)=\frac{\omega_0^2}{(s+\omega_0)^2},
+  \qquad h(t)=1-(1+\omega_0t)e^{-\omega_0t}.
+  \label{eq:desired-step}
+\end{equation}
+Поскольку $\dot h(t)=\omega_0^2t e^{-\omega_0t}\ge0$ при $t\ge0$,
+переходная характеристика монотонно возрастает от нуля до единицы
+без перерегулирования. Граница полосы допуска достигается при
+\begin{equation}
+  1-h(t_{\text{п}})
+  =(1+\omega_0t_{\text{п}})e^{-\omega_0t_{\text{п}}}=0{,}02.
+  \label{eq:settling-time}
+\end{equation}
+Вводя нормированное время $t_{\text{п}}^*=\omega_0t_{\text{п}}$,
+находим положительное решение уравнения
+\begin{equation}
+  (1+t_{\text{п}}^*)e^{-t_{\text{п}}^*}=0{,}02,
+  \qquad t_{\text{п}}^*\approx5{,}8339217.
+  \label{eq:normalized-settling-time}
+\end{equation}
+При $t_{\text{п}}=0{,}16\,\text{с}$ параметры полинома равны
+\begin{equation}
+  \omega_0=\frac{5{,}8339217}{0{,}16}
+  \approx36{,}4620\,\text{с}^{-1},
+  \qquad
+  \omega_0^2\approx1329{,}4782,
+  \qquad 2\omega_0\approx72{,}9240.
+  \label{eq:desired-coefficients}
+\end{equation}
+Таким образом,
+\begin{equation}
+  A_{\text{ж}}\approx
+  \begin{pmatrix}
+    0&1\\
+    -1329{,}4782&-72{,}9240
+  \end{pmatrix}.
+  \label{eq:desired-dynamics-numeric}
+\end{equation}
+Показатели $t_{\text{п}}=0{,}16\,\text{с}$ и $\sigma=0\%$ относятся
+к выбранной стандартной переходной характеристике~\eqref{eq:desired-step}.
+Поведение компонент исходного вектора состояния при конкретных начальных
+условиях и действии возмущения исследуется при моделировании.
 
 \subsection{Расчёт матрицы обратной связи}
 
@@ -112,16 +181,110 @@
   \qquad A_M=A-\bm b K.
   \label{eq:modal-control}
 \end{equation}
-Матрица $H$ выбирается так, чтобы пара $(A_{\text{ж}},H)$
-была полностью наблюдаемой.
+Выбираем $H=\begin{pmatrix}1&0\end{pmatrix}$. Проверим полную
+наблюдаемость пары $(A_{\text{ж}},H)$:
+\begin{equation}
+  \mathcal O=\begin{pmatrix}H\\HA_{\text{ж}}\end{pmatrix}
+  =\begin{pmatrix}1&0\\0&1\end{pmatrix},
+  \qquad \operatorname{rank}\mathcal O=2.
+  \label{eq:desired-observability}
+\end{equation}
+Собственные значения матрицы объекта равны $2\pm\sqrt2$, а оба собственных
+значения матрицы $A_{\text{ж}}$ равны $-\omega_0$. Их спектры не пересекаются, поэтому
+уравнение Сильвестра~\eqref{eq:modal-control} имеет единственное решение.
 
-\reporttodo{выбрать $H$, привести решение уравнения Сильвестра $M$,
-проверить его невырожденность, записать $K$ и $A_M$;
-проверить собственные значения $A_M$}
+Представим $M$ через столбцы: $M=\begin{pmatrix}\bm m_1&\bm m_2\end{pmatrix}$.
+Тогда уравнение Сильвестра принимает вид
+\begin{equation}
+  \begin{cases}
+    A\bm m_1+\omega_0^2\bm m_2=\bm b,\\
+    \bm m_1=(A+2\omega_0I_2)\bm m_2.
+  \end{cases}
+  \label{eq:sylvester-columns}
+\end{equation}
+Подставляя второе равенство в первое, получаем
+\begin{equation}
+  \bm m_2=(A+\omega_0I_2)^{-2}\bm b,
+  \qquad
+  \bm m_1=(A+2\omega_0I_2)(A+\omega_0I_2)^{-2}\bm b.
+  \label{eq:sylvester-solution}
+\end{equation}
+Численное решение и его определитель равны
+\begin{equation}
+  M\approx
+  \begin{pmatrix}
+    0{,}04489667791&0{,}00057299348\\
+    0{,}10352761146&0{,}00139270857
+  \end{pmatrix},
+  \label{eq:sylvester-numeric}
+\end{equation}
+\begin{equation}
+  \det M=\frac{7}{(\omega_0^2+4\omega_0+2)^2}
+  \approx3{,}2073415\cdot10^{-6}\ne0.
+  \label{eq:sylvester-determinant}
+\end{equation}
+Следовательно, матрица $M$ невырождена и обратная связь определена:
+\begin{equation}
+  \begin{aligned}
+    K=HM^{-1}
+    &=\begin{pmatrix}
+      \dfrac{2\omega_0^2+10\omega_0+16}{7}&
+      \dfrac{-\omega_0^2+2\omega_0+6}{7}
+    \end{pmatrix}\\
+    &\approx\begin{pmatrix}434{,}2252&-178{,}6506\end{pmatrix}.
+  \end{aligned}
+  \label{eq:feedback-gain}
+\end{equation}
+Стабилизирующая составляющая управления имеет вид
+\begin{equation}
+  u_{\text{ст}}=-K\bm x
+  \approx-434{,}2252x_1+178{,}6506x_2.
+  \label{eq:stabilizing-control}
+\end{equation}
+Матрица замкнутой системы при отсутствии возмущения равна
+\begin{equation}
+  A_M=A-\bm bK\approx
+  \begin{pmatrix}
+    -431{,}2252&179{,}6506\\
+    -867{,}4504&358{,}3012
+  \end{pmatrix}.
+  \label{eq:closed-loop-numeric}
+\end{equation}
+Из уравнения Сильвестра и равенства $KM=H$ следует
+\begin{equation}
+  (A-\bm bK)M=MA_{\text{ж}},
+  \qquad A_M=MA_{\text{ж}}M^{-1}.
+  \label{eq:closed-loop-similarity}
+\end{equation}
+Матрицы $A_M$ и $A_{\text{ж}}$ подобны. Проверка характеристического
+полинома с использованием неокруглённых коэффициентов даёт
+\begin{equation}
+  \begin{aligned}
+    \det(sI_2-A_M)
+      &=s^2-\operatorname{tr}(A_M)s+\det A_M\\
+      &=s^2+2\omega_0s+\omega_0^2=(s+\omega_0)^2.
+  \end{aligned}
+  \label{eq:closed-loop-polynomial}
+\end{equation}
+Следовательно,
+\begin{equation}
+  \lambda_1(A_M)=\lambda_2(A_M)=-\omega_0
+  \approx-36{,}4620\,\text{с}^{-1}.
+  \label{eq:closed-loop-poles}
+\end{equation}
+Оба полюса лежат в левой полуплоскости, поэтому матрица $A_M$
+гурвицева и при $f\equiv0$ состояние объекта асимптотически стремится
+к нулю. При дальнейших расчётах используются неокруглённые значения
+коэффициентов; приведённые десятичные значения служат для представления
+результатов.
 
 \noindent\textbf{Вывод по пункту:}
-\reporttodo{сформулировать результат проверки управляемости
-и синтеза стабилизирующей обратной связи}
+По критерию Калмана объект полностью управляем:
+$\det\mathcal C=-7\ne0$, $\operatorname{rank}\mathcal C=2$.
+Методом модального управления найдена матрица обратной связи
+$K$~\eqref{eq:feedback-gain}.
+Она задаёт желаемый биномиальный характеристический полином
+и обеспечивает асимптотическую устойчивость системы без возмущения.
 
 \section{Наблюдатель состояния модели возмущения}
 
