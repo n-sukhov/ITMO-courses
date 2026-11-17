@@ -66,8 +66,6 @@
   \qquad k_{f0}=0{,}01
   \label{eq:disturbance-data}
 \end{equation}
-Функция $f(t)$ используется для моделирования объекта;
-в алгоритм компенсации её истинное значение не передаётся.
 
 Требуется построить управление, обеспечивающее ограниченность
 сигналов замкнутой системы и выполнение условия
@@ -248,14 +246,6 @@
 \end{equation}
 
 
-\noindent\textbf{Вывод по пункту:}
-По критерию Калмана объект полностью управляем:
-$\det\mathcal C=-7\ne0$, $\operatorname{rank}\mathcal C=2$
-Методом модального управления найдена матрица обратной связи
-$K$~\eqref{eq:feedback-gain}.
-Она задаёт желаемый биномиальный характеристический полином
-и обеспечивает асимптотическую устойчивость системы без возмущения.
-
 \section{Наблюдатель состояния модели возмущения}
 
 \subsection{Модель генератора и вспомогательный фильтр}
@@ -265,6 +255,12 @@ $K$~\eqref{eq:feedback-gain}.
   \ddot f+f=0
   \label{eq:disturbance-generator}
 \end{equation}
+Сравнивая это уравнение с общей формой
+$\ddot f+l_1\dot f+l_0f=0$, получаем коэффициенты
+\begin{equation}
+  l_0=1,\qquad l_1=0
+  \label{eq:disturbance-generator-coefficients}
+\end{equation}
 Вспомогательный фильтр второго порядка задаётся матрицами
 \begin{equation}
   K_f(s)=s^2+k_{f1}s+k_{f0},
@@ -273,9 +269,14 @@ $K$~\eqref{eq:feedback-gain}.
   \qquad \bm b_{0f}=\begin{pmatrix}0\\1\end{pmatrix}
   \label{eq:disturbance-filter}
 \end{equation}
-\reporttodo{подставить коэффициенты фильтра, проверить гурвицевость
-$A_{0f}$ и записать вектор истинных параметров $\bm\theta_f$
-для анализа результатов}
+Подставляя заданные коэффициенты $k_{f1}=0{,}2$ и $k_{f0}=0{,}01$,
+получаем
+\begin{equation}
+  K_f(s)=s^2+0{,}2s+0{,}01,
+  \qquad
+  A_{0f}=\begin{pmatrix}0&1\\-0{,}01&-0{,}2\end{pmatrix}
+  \label{eq:disturbance-filter-numeric}
+\end{equation}
 
 \subsection{Построение наблюдателя}
 
@@ -289,12 +290,32 @@ $N\bm b=\bm b_{0f}$:
   \end{aligned}
   \label{eq:observer}
 \end{equation}
-\reporttodo{выбрать матрицу $N$ для объекта данной работы,
-проверить $N\bm b=\bm b_{0f}$ и привести численные уравнения наблюдателя}
+Выбираем матрицу согласования в виде
+\begin{equation}
+  N=\frac{\bm b_{0f}\bm b^{\mathsf T}}{\bm b^{\mathsf T}\bm b}
+  =\frac{1}{5}\begin{pmatrix}0&0\\1&2\end{pmatrix}
+  =\begin{pmatrix}0&0\\0{,}2&0{,}4\end{pmatrix}
+  \label{eq:observer-matching-matrix}
+\end{equation}
 
-\noindent\textbf{Вывод по пункту:}
-\reporttodo{указать, за счёт какого свойства фильтра затухает
-ошибка наблюдения и какие измерения использует наблюдатель}
+Матрицы при измеряемых сигналах в уравнении наблюдателя равны
+\begin{equation}
+  A_{0f}N-NA=
+  \begin{pmatrix}0{,}2&0{,}4\\-1{,}04&-0{,}68\end{pmatrix},
+  \qquad -N\bm b=\begin{pmatrix}0\\-1\end{pmatrix}
+  \label{eq:observer-input-matrices}
+\end{equation}
+Таким образом, численные уравнения наблюдателя принимают вид
+\begin{equation}
+  \begin{aligned}
+    \dot\eta_1&=\eta_2+0{,}2x_1+0{,}4x_2,\\
+    \dot\eta_2&=-0{,}01\eta_1-0{,}2\eta_2-1{,}04x_1-0{,}68x_2-u,\\
+    \hat\xi_{f1}&=\eta_1,\\
+    \hat\xi_{f2}&=\eta_2+0{,}2x_1+0{,}4x_2
+  \end{aligned}
+  \label{eq:observer-numeric}
+\end{equation}
+
 
 \section{Адаптивный компенсатор возмущения}
 
