@@ -231,7 +231,7 @@
   \end{aligned}
   \label{eq:feedback-gain}
 \end{equation}
-Стабилизирующая составляющая управления имеет вид
+Управление имеет вид
 \begin{equation}
   u_{\text{ст}}=-K\bm x
   \approx-434{,}2252x_1+178{,}6506x_2.
@@ -246,33 +246,7 @@
   \end{pmatrix}.
   \label{eq:closed-loop-numeric}
 \end{equation}
-Из уравнения Сильвестра и равенства $KM=H$ следует
-\begin{equation}
-  (A-\bm bK)M=MA_{\text{ж}},
-  \qquad A_M=MA_{\text{ж}}M^{-1}.
-  \label{eq:closed-loop-similarity}
-\end{equation}
-Матрицы $A_M$ и $A_{\text{ж}}$ подобны. Проверка характеристического
-полинома с использованием неокруглённых коэффициентов даёт
-\begin{equation}
-  \begin{aligned}
-    \det(sI_2-A_M)
-      &=s^2-\operatorname{tr}(A_M)s+\det A_M\\
-      &=s^2+2\omega_0s+\omega_0^2=(s+\omega_0)^2.
-  \end{aligned}
-  \label{eq:closed-loop-polynomial}
-\end{equation}
-Следовательно,
-\begin{equation}
-  \lambda_1(A_M)=\lambda_2(A_M)=-\omega_0
-  \approx-36{,}4620\,\text{с}^{-1}.
-  \label{eq:closed-loop-poles}
-\end{equation}
-Оба полюса лежат в левой полуплоскости, поэтому матрица $A_M$
-гурвицева и при $f\equiv0$ состояние объекта асимптотически стремится
-к нулю. При дальнейших расчётах используются неокруглённые значения
-коэффициентов; приведённые десятичные значения служат для представления
-результатов.
+
 
 \noindent\textbf{Вывод по пункту:}
 По критерию Калмана объект полностью управляем:
