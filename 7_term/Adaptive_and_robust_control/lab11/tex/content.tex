@@ -42,7 +42,7 @@
 \begin{equation}
   \dot{\bm x}=A\bm x+\bm b u+\bm d f,
   \qquad \bm d=\bm b,
-  \qquad \bm x\in\mathbb R^2.
+  \qquad \bm x\in\mathbb R^2
   \label{eq:plant}
 \end{equation}
 Вектор состояния $\bm x(t)$ доступен измерению, матрицы объекта известны.
@@ -55,7 +55,7 @@
   \qquad
   \bm b=\bm d=\begin{pmatrix}1\\2\end{pmatrix},
   \qquad t_{\text{п}}=0{,}16\,\text{с},
-  \qquad \sigma=0\%.
+  \qquad \sigma=0\%
   \label{eq:variant}
 \end{equation}
 Используются функция возмущения
@@ -63,7 +63,7 @@
 \begin{equation}
   f(t)=\sin t,
   \qquad k_{f1}=0{,}2,
-  \qquad k_{f0}=0{,}01.
+  \qquad k_{f0}=0{,}01
   \label{eq:disturbance-data}
 \end{equation}
 Функция $f(t)$ используется для моделирования объекта;
@@ -72,7 +72,7 @@
 Требуется построить управление, обеспечивающее ограниченность
 сигналов замкнутой системы и выполнение условия
 \begin{equation}
-  \lim_{t\to\infty}\norm{\bm x(t)}=0.
+  \lim_{t\to\infty}\norm{\bm x(t)}=0
   \label{eq:goal}
 \end{equation}
 
@@ -84,7 +84,7 @@
 если ранг матрицы управляемости равен размерности вектора состояния:
 \begin{equation}
   \mathcal C=\begin{pmatrix}\bm b&A\bm b\end{pmatrix},
-  \qquad \operatorname{rank}\mathcal C=n=2.
+  \qquad \operatorname{rank}\mathcal C=n=2
   \label{eq:controllability}
 \end{equation}
 Для матриц~\eqref{eq:variant} получаем
@@ -94,13 +94,13 @@
   \begin{pmatrix}1\\2\end{pmatrix}
   =\begin{pmatrix}5\\3\end{pmatrix},
   \qquad
-  \mathcal C=\begin{pmatrix}1&5\\2&3\end{pmatrix}.
+  \mathcal C=\begin{pmatrix}1&5\\2&3\end{pmatrix}
   \label{eq:controllability-numeric}
 \end{equation}
 Определитель матрицы управляемости отличен от нуля:
 \begin{equation}
   \det\mathcal C=1\cdot3-5\cdot2=-7\ne0,
-  \qquad \operatorname{rank}\mathcal C=2.
+  \qquad \operatorname{rank}\mathcal C=2
   \label{eq:controllability-rank}
 \end{equation}
 Следовательно, пара $(A,\bm b)$ полностью управляема. Это позволяет
@@ -115,7 +115,7 @@
 \begin{equation}
   D_{\text{ж}}(s)=(s+\omega_0)^2
   =s^2+2\omega_0s+\omega_0^2,
-  \qquad \omega_0>0.
+  \qquad \omega_0>0
   \label{eq:desired-polynomial}
 \end{equation}
 Соответствующая матрица желаемой динамики имеет вид
@@ -123,15 +123,15 @@
   A_{\text{ж}}=
   \begin{pmatrix}0&1\\-\omega_0^2&-2\omega_0\end{pmatrix},
   \qquad
-  \omega_0=\frac{t_{\text{п}}^*}{t_{\text{п}}}.
+  \omega_0=\frac{t_{\text{п}}^*}{t_{\text{п}}}
   \label{eq:desired-dynamics}
 \end{equation}
 Время переходного процесса определяем
-по полосе допуска $\pm2\%$. Для стандартной передаточной функции
+по полосе допуска $\pm2\%$ Для стандартной передаточной функции
 и её переходной характеристики получаем
 \begin{equation}
   W_{\text{ж}}(s)=\frac{\omega_0^2}{(s+\omega_0)^2},
-  \qquad h(t)=1-(1+\omega_0t)e^{-\omega_0t}.
+  \qquad h(t)=1-(1+\omega_0t)e^{-\omega_0t}
   \label{eq:desired-step}
 \end{equation}
 Поскольку $\dot h(t)=\omega_0^2t e^{-\omega_0t}\ge0$ при $t\ge0$,
@@ -139,14 +139,14 @@
 без перерегулирования. Граница полосы допуска достигается при
 \begin{equation}
   1-h(t_{\text{п}})
-  =(1+\omega_0t_{\text{п}})e^{-\omega_0t_{\text{п}}}=0{,}02.
+  =(1+\omega_0t_{\text{п}})e^{-\omega_0t_{\text{п}}}=0{,}02
   \label{eq:settling-time}
 \end{equation}
 Вводя нормированное время $t_{\text{п}}^*=\omega_0t_{\text{п}}$,
 находим положительное решение уравнения
 \begin{equation}
   (1+t_{\text{п}}^*)e^{-t_{\text{п}}^*}=0{,}02,
-  \qquad t_{\text{п}}^*\approx5{,}8339217.
+  \qquad t_{\text{п}}^*\approx5{,}8339217
   \label{eq:normalized-settling-time}
 \end{equation}
 При $t_{\text{п}}=0{,}16\,\text{с}$ параметры полинома равны
@@ -155,7 +155,7 @@
   \approx36{,}4620\,\text{с}^{-1},
   \qquad
   \omega_0^2\approx1329{,}4782,
-  \qquad 2\omega_0\approx72{,}9240.
+  \qquad 2\omega_0\approx72{,}9240
   \label{eq:desired-coefficients}
 \end{equation}
 Таким образом,
@@ -164,7 +164,7 @@
   \begin{pmatrix}
     0&1\\
     -1329{,}4782&-72{,}9240
-  \end{pmatrix}.
+  \end{pmatrix}
   \label{eq:desired-dynamics-numeric}
 \end{equation}
 
@@ -174,27 +174,27 @@
 \begin{equation}
   AM-MA_{\text{ж}}=\bm b H,
   \qquad K=HM^{-1},
-  \qquad A_M=A-\bm b K.
+  \qquad A_M=A-\bm b K
   \label{eq:modal-control}
 \end{equation}
-Выбираем $H=\begin{pmatrix}1&0\end{pmatrix}$. Проверим полную
+Выбираем $H=\begin{pmatrix}1&0\end{pmatrix}$ Проверим полную
 наблюдаемость пары $(A_{\text{ж}},H)$:
 \begin{equation}
   \mathcal O=\begin{pmatrix}H\\HA_{\text{ж}}\end{pmatrix}
   =\begin{pmatrix}1&0\\0&1\end{pmatrix},
-  \qquad \operatorname{rank}\mathcal O=2.
+  \qquad \operatorname{rank}\mathcal O=2
   \label{eq:desired-observability}
 \end{equation}
 Собственные значения матрицы объекта равны $2\pm\sqrt2$, а оба собственных
-значения матрицы $A_{\text{ж}}$ равны $-\omega_0$. Их спектры не пересекаются, поэтому
+значения матрицы $A_{\text{ж}}$ равны $-\omega_0$ Их спектры не пересекаются, поэтому
 уравнение Сильвестра~\eqref{eq:modal-control} имеет единственное решение.
 
-Представим $M$ через столбцы: $M=\begin{pmatrix}\bm m_1&\bm m_2\end{pmatrix}$.
+Представим $M$ через столбцы: $M=\begin{pmatrix}\bm m_1&\bm m_2\end{pmatrix}$
 Тогда уравнение Сильвестра принимает вид
 \begin{equation}
   \begin{cases}
     A\bm m_1+\omega_0^2\bm m_2=\bm b,\\
-    \bm m_1=(A+2\omega_0I_2)\bm m_2.
+    \bm m_1=(A+2\omega_0I_2)\bm m_2
   \end{cases}
   \label{eq:sylvester-columns}
 \end{equation}
@@ -202,7 +202,7 @@
 \begin{equation}
   \bm m_2=(A+\omega_0I_2)^{-2}\bm b,
   \qquad
-  \bm m_1=(A+2\omega_0I_2)(A+\omega_0I_2)^{-2}\bm b.
+  \bm m_1=(A+2\omega_0I_2)(A+\omega_0I_2)^{-2}\bm b
   \label{eq:sylvester-solution}
 \end{equation}
 Численное решение и его определитель равны
@@ -216,7 +216,7 @@
 \end{equation}
 \begin{equation}
   \det M=\frac{7}{(\omega_0^2+4\omega_0+2)^2}
-  \approx3{,}2073415\cdot10^{-6}\ne0.
+  \approx3{,}2073415\cdot10^{-6}\ne0
   \label{eq:sylvester-determinant}
 \end{equation}
 Следовательно, матрица $M$ невырождена и обратная связь определена:
@@ -227,14 +227,14 @@
       \dfrac{2\omega_0^2+10\omega_0+16}{7}&
       \dfrac{-\omega_0^2+2\omega_0+6}{7}
     \end{pmatrix}\\
-    &\approx\begin{pmatrix}434{,}2252&-178{,}6506\end{pmatrix}.
+    &\approx\begin{pmatrix}434{,}2252&-178{,}6506\end{pmatrix}
   \end{aligned}
   \label{eq:feedback-gain}
 \end{equation}
 Управление имеет вид
 \begin{equation}
   u_{\text{ст}}=-K\bm x
-  \approx-434{,}2252x_1+178{,}6506x_2.
+  \approx-434{,}2252x_1+178{,}6506x_2
   \label{eq:stabilizing-control}
 \end{equation}
 Матрица замкнутой системы при отсутствии возмущения равна
@@ -243,14 +243,14 @@
   \begin{pmatrix}
     -431{,}2252&179{,}6506\\
     -867{,}4504&358{,}3012
-  \end{pmatrix}.
+  \end{pmatrix}
   \label{eq:closed-loop-numeric}
 \end{equation}
 
 
 \noindent\textbf{Вывод по пункту:}
 По критерию Калмана объект полностью управляем:
-$\det\mathcal C=-7\ne0$, $\operatorname{rank}\mathcal C=2$.
+$\det\mathcal C=-7\ne0$, $\operatorname{rank}\mathcal C=2$
 Методом модального управления найдена матрица обратной связи
 $K$~\eqref{eq:feedback-gain}.
 Она задаёт желаемый биномиальный характеристический полином
@@ -262,7 +262,7 @@ $K$~\eqref{eq:feedback-gain}.
 
 Для возмущения~\eqref{eq:disturbance-data} модель генератора имеет вид
 \begin{equation}
-  \ddot f+f=0.
+  \ddot f+f=0
   \label{eq:disturbance-generator}
 \end{equation}
 Вспомогательный фильтр второго порядка задаётся матрицами
@@ -270,7 +270,7 @@ $K$~\eqref{eq:feedback-gain}.
   K_f(s)=s^2+k_{f1}s+k_{f0},
   \qquad
   A_{0f}=\begin{pmatrix}0&1\\-k_{f0}&-k_{f1}\end{pmatrix},
-  \qquad \bm b_{0f}=\begin{pmatrix}0\\1\end{pmatrix}.
+  \qquad \bm b_{0f}=\begin{pmatrix}0\\1\end{pmatrix}
   \label{eq:disturbance-filter}
 \end{equation}
 \reporttodo{подставить коэффициенты фильтра, проверить гурвицевость
@@ -285,7 +285,7 @@ $N\bm b=\bm b_{0f}$:
   \begin{aligned}
     \hat{\bm\xi}_f&=\bm\eta+N\bm x,\\
     \dot{\bm\eta}
-      &=A_{0f}\bm\eta+(A_{0f}N-NA)\bm x-N\bm b u.
+      &=A_{0f}\bm\eta+(A_{0f}N-NA)\bm x-N\bm b u
   \end{aligned}
   \label{eq:observer}
 \end{equation}
@@ -304,13 +304,13 @@ $N\bm b=\bm b_{0f}$:
 \begin{equation}
   u=-K\bm x-\hat f,
   \qquad
-  \hat f=\hat{\bm\theta}_f^{\mathsf T}\hat{\bm\xi}_f.
+  \hat f=\hat{\bm\theta}_f^{\mathsf T}\hat{\bm\xi}_f
   \label{eq:control}
 \end{equation}
 Матрица $P=P^{\mathsf T}>0$ находится из уравнения Ляпунова
 \begin{equation}
   A_M^{\mathsf T}P+PA_M=-Q,
-  \qquad Q=I_2.
+  \qquad Q=I_2
   \label{eq:lyapunov}
 \end{equation}
 Алгоритм настройки параметров:
@@ -318,7 +318,7 @@ $N\bm b=\bm b_{0f}$:
   \dot{\hat{\bm\theta}}_f
     =\gamma\hat{\bm\xi}_f\bm b^{\mathsf T}P\bm x,
   \qquad \gamma>0,
-  \qquad \hat{\bm\theta}_f(0)=\bm 0.
+  \qquad \hat{\bm\theta}_f(0)=\bm 0
   \label{eq:adaptation}
 \end{equation}
 \reporttodo{рассчитать $P$ и проверить, что $P>0$;
@@ -334,7 +334,7 @@ $N\bm b=\bm b_{0f}$:
 Для сравнения выбираются два различных коэффициента адаптации:
 \begin{equation}
   \gamma_1=\ldots,\qquad \gamma_2=\ldots,
-  \qquad \gamma_1\ne\gamma_2.
+  \qquad \gamma_1\ne\gamma_2
   \label{eq:adaptation-gains}
 \end{equation}
 В обоих опытах сохраняются одинаковые начальные условия,
