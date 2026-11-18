@@ -1,0 +1,8 @@
+2026-11-18 20:41:05,757+0300 INFO  pdftotext - this process (13904) started by powershell in directory C:\Users\Nickolay\Desktop\ITMO-courses with command line: "C:\Program Files\MiKTeX\miktex\bin\x64\pdftotext.exe" -layout 7_term/Discrete_control_systems/DCS.pdf .chatgpt/dcs-lab2/DCS.txt
+2026-11-18 20:41:05,757+0300 INFO  pdftotext - running on Windows 10.0.26200
+2026-11-18 20:41:05,765+0300 INFO  pdftotext - running One MiKTeX Utility to refresh the file name database
+2026-11-18 20:41:05,767+0300 INFO  pdftotext.core - start process: miktex --enable-installer --quiet fndb refresh
+2026-11-18 20:41:05,843+0300 INFO  pdftotext - running One MiKTeX Utility to create font map files
+2026-11-18 20:41:05,843+0300 INFO  pdftotext.core - start process: miktex --enable-installer --quiet fontmaps configure
+2026-11-18 20:41:06,378+0300 INFO  pdftotext - this process (13904) finishes with exit code 0
+2026-11-18 20:41:06,379+0300 ERROR pdftotext - major issue: So far, you have not checked for updates as a MiKTeX user.
