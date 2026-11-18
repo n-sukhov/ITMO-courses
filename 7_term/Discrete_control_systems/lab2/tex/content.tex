@@ -5,6 +5,40 @@
 \setlength{\abovedisplayshortskip}{4pt}
 \setlength{\belowdisplayshortskip}{4pt}
 
+% Места для текста и рисунков заполняются после моделирования.
+\newcommand{\reporttodo}[1]{%
+  \par\smallskip\noindent\textit{[Заполнить: #1]}\par\smallskip
+}
+
+% Рисунок и подпись располагаются рядом с соответствующим текстом.
+\makeatletter
+\newenvironment{reportfigure}{%
+  \par\addvspace{8pt}\noindent
+  \begin{minipage}{\textwidth}
+    \def\@captype{figure}%
+    \centering
+}{%
+  \end{minipage}\par\vspace{4pt}
+}
+\makeatother
+
+% Аргументы: файл в images, подпись, метка. После добавления файла
+% рамка автоматически заменяется изображением.
+\newcommand{\imageplaceholder}[3]{%
+  \begin{reportfigure}
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{#1}%
+    }{%
+      \fbox{\parbox[c][3cm][c]{0.9\textwidth}{%
+        \centering Место для рисунка\\[0.4em]
+        \texttt{images/\detokenize{#1}}%
+      }}%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{reportfigure}
+}
+
 \tableofcontents
 \newpage
 
@@ -201,6 +235,17 @@
   \label{eq:stabilizing-closed-loop}
 \end{equation}
 
+\subsection{Моделирование стабилизирующей системы}
+
+\reporttodo{указать начальное состояние объекта и интервал моделирования}
+
+\imageplaceholder{task1_stabilization.png}
+  {Компоненты состояния и выход объекта при стабилизации}
+  {fig:stabilization}
+
+\reporttodo{описать переходные процессы компонент состояния и выхода;
+сопоставить полученное быстродействие с выбранной эталонной моделью}
+
 \section{Синтез следящего регулятора}
 
 \subsection{Генератор задающего воздействия}
@@ -222,6 +267,12 @@
   \qquad \zeta(0)=2{,}8
   \label{eq:reference-generator}
 \end{equation}
+
+\reporttodo{указать интервал моделирования генератора}
+
+\imageplaceholder{task2_generator.png}
+  {Задающее воздействие, сформированное дискретным генератором}
+  {fig:reference-generator}
 
 \subsection{Расширенная модель объекта}
 
@@ -326,6 +377,19 @@
   \label{eq:tracking-control-numeric}
 \end{equation}
 
+\subsection{Моделирование следящей системы}
+
+\reporttodo{указать начальные состояния объекта и встроенной модели,
+а также интервал моделирования}
+
+\imageplaceholder{task2_tracking.png}
+  {Выход объекта и ошибка слежения при полной информации о состоянии}
+  {fig:tracking}
+
+
+Моделирование показало, что синтезированный следящий регулятор обеспечивает достижение постоянного задающего воздействия \(g(k)=2{,}8\) за три периода дискретизации. В переходном процессе наблюдается перерегулирование, однако начиная с третьего такта выход совпадает с задающим сигналом, а ошибка слежения становится равной нулю. Полученные результаты соответствуют выбранной оптимальной по быстродействию эталонной модели.
+
+
 \section{Регуляторы при неполной информации}
 
 \subsection{Устройство оценки пониженной размерности}
@@ -411,6 +475,16 @@ $n-1=1$, то есть скалярный наблюдатель.
   \label{eq:estimated-stabilizing-controller}
 \end{equation}
 
+\reporttodo{указать начальное состояние объекта и интервал моделирования
+стабилизирующей системы с устройством оценки}
+
+\imageplaceholder{task3_stabilization_observer.png}
+  {Состояние объекта, его оценка, невязка наблюдателя и выход при стабилизации}
+  {fig:stabilization-observer}
+
+\reporttodo{сравнить состояние объекта с его оценкой, описать невязку
+и выход; сопоставить процесс стабилизации с вариантом полной информации}
+
 \subsection{Слежение с устройством оценки}
 
 В следящем регуляторе используется то же устройство оценки.
@@ -434,3 +508,18 @@ $n-1=1$, то есть скалярный наблюдатель.
   \end{aligned}
   \label{eq:estimated-tracking-controller}
 \end{equation}
+
+\reporttodo{указать начальные состояния объекта и встроенной модели,
+а также интервал моделирования следящей системы с устройством оценки}
+
+\imageplaceholder{task3_tracking_observer.png}
+  {Состояние объекта, его оценка, невязка наблюдателя и выход при слежении}
+  {fig:tracking-observer}
+
+\reporttodo{сравнить состояние объекта с его оценкой, описать невязку
+и выход; сопоставить результаты слежения с вариантом полной информации}
+
+\section{Выводы}
+
+\reporttodo{по результатам моделирования оценить работу стабилизирующего
+и следящего регуляторов, а также влияние устройства оценки на переходные процессы}

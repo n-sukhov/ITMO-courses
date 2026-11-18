@@ -1,1 +1,326 @@
 % !TeX root = main.tex
+
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlength{\abovedisplayshortskip}{4pt}
+\setlength{\belowdisplayshortskip}{4pt}
+
+% Места для текста и рисунков заполняются после моделирования.
+\newcommand{\reporttodo}[1]{%
+  \par\smallskip\noindent\textit{[Заполнить: #1]}\par\smallskip
+}
+
+% Рисунок и подпись располагаются рядом с соответствующим текстом.
+\makeatletter
+\newenvironment{reportfigure}{%
+  \par\addvspace{8pt}\noindent
+  \begin{minipage}{\textwidth}
+    \def\@captype{figure}%
+    \centering
+}{%
+  \end{minipage}\par\vspace{4pt}
+}
+\makeatother
+
+% Аргументы: файл в images, подпись, метка. После добавления файла
+% рамка автоматически заменяется изображением.
+\newcommand{\imageplaceholder}[3]{%
+  \begin{reportfigure}
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{#1}%
+    }{%
+      \fbox{\parbox[c][3cm][c]{0.9\textwidth}{%
+        \centering Место для рисунка\\[0.4em]
+        \texttt{images/\detokenize{#1}}%
+      }}%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{reportfigure}
+}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Синтезировать апериодический регулятор, регулятор Далина и регулятор
+с заданным расположением полюсов замкнутой системы. Исследовать
+переходные процессы и точность воспроизведения задающих воздействий.
+
+\section{Исходные данные}
+
+Для варианта 3 непрерывный объект задан передаточной функцией
+\begin{equation}
+  G(s)=\frac{e^{-as}}{1+bs}
+      =\frac{e^{-2s}}{1+4s},
+  \qquad a=2\,\text{с},\qquad b=4\,\text{с}
+  \label{eq:continuous-plant}
+\end{equation}
+При синтезе апериодического регулятора и регулятора Далина принимаем
+$T=1\,\text{с}$ согласно заданию. В задаче с заданным расположением
+полюсов используем $T=0{,}2\,\text{с}$ согласно варианту.
+
+Обозначим через $G_{\text{д}}(z)$ передаточную функцию объекта
+с экстраполятором нулевого порядка, а через $\Phi(z)$ обозначим
+желаемую передаточную функцию замкнутой системы.
+При единичной отрицательной обратной связи имеем
+\begin{equation}
+  \Phi(z)=\frac{Y(z)}{R(z)},
+  \qquad D(z)=\frac{1}{G_{\text{д}}(z)}\frac{\Phi(z)}{1-\Phi(z)}
+  \label{eq:controller-formula}
+\end{equation}
+
+\section{Апериодический регулятор}
+
+\subsection{Дискретная модель объекта}
+
+Запаздывание составляет два периода дискретизации. Введём обозначения
+\begin{equation}
+  d=\frac{a}{T}=2,
+  \qquad p=e^{-T/b}=e^{-0{,}25}\approx0{,}77880078,
+  \qquad 1-p\approx0{,}22119922
+  \label{eq:zoh-coefficients}
+\end{equation}
+Точная дискретизация объекта с удержанием управления даёт
+\begin{equation}
+  G_{\text{д}}(z)
+  =\frac{(1-p)z^{-(d+1)}}{1-pz^{-1}}
+  \approx\frac{0{,}22119922z^{-3}}{1-0{,}77880078z^{-1}}
+  \label{eq:zoh-plant}
+\end{equation}
+Дополнительный сдвиг на один отсчёт обусловлен строго правильной
+передаточной функцией апериодического звена.
+
+\subsection{Синтез регулятора}
+
+Для установления выхода за конечное число отсчётов выбираем
+\begin{equation}
+  \Phi(z)=z^{-N}
+  \label{eq:deadbeat-reference}
+\end{equation}
+После подстановки в~\eqref{eq:controller-formula} получаем
+\begin{equation}
+  D(z)=\frac{1-pz^{-1}}{1-p}
+       \frac{z^{3-N}}{1-z^{-N}}
+  \label{eq:deadbeat-family}
+\end{equation}
+Физическая реализуемость требует отсутствия опережения,
+поэтому минимально допустимым является значение $N=3$ отсчёта.
+Для этого значения регулятор имеет вид
+\begin{equation}
+  D(z)=\frac{1-pz^{-1}}{(1-p)(1-z^{-3})}
+      =\frac{z^3-pz^2}{(1-p)(z^3-1)}
+  \label{eq:deadbeat-controller}
+\end{equation}
+Численно получаем
+\begin{equation}
+  D(z)\approx\frac{4{,}52081166z^3-3{,}52081166z^2}{z^3-1}
+  \label{eq:deadbeat-controller-numeric}
+\end{equation}
+Желаемая передаточная функция замкнутой системы равна
+\begin{equation}
+  \Phi(z)=z^{-3}
+  \label{eq:deadbeat-closed-loop}
+\end{equation}
+
+\subsection{Моделирование}
+
+\reporttodo{указать начальные условия, интервал моделирования
+и реализацию непрерывного объекта с дискретным регулятором}
+
+\imageplaceholder{task1_deadbeat.png}
+  {Выход системы и управление с апериодическим регулятором}
+  {fig:deadbeat}
+
+\reporttodo{по графикам оценить установление выхода в моменты выборки,
+поведение между отсчётами и величину управляющего воздействия}
+
+\section{Регулятор Далина}
+
+\subsection{Желаемая передаточная функция}
+
+Для того же объекта~\eqref{eq:zoh-plant} задаём экспоненциальную
+реакцию с запаздыванием. Постоянную времени желаемого процесса
+принимаем равной постоянной времени объекта:
+\begin{equation}
+  q=b=4\,\text{с},
+  \qquad \lambda=e^{-T/q}=e^{-0{,}25}=p\approx0{,}77880078
+  \label{eq:dahlin-coefficient}
+\end{equation}
+Желаемая передаточная функция имеет вид
+\begin{equation}
+  \Phi(z)=\frac{(1-\lambda)z^{-3}}{1-\lambda z^{-1}}
+  \label{eq:dahlin-reference}
+\end{equation}
+
+\subsection{Расчёт регулятора}
+
+Из~\eqref{eq:controller-formula} получаем
+\begin{equation}
+  D(z)=\frac{1-\lambda}{1-p}
+       \frac{1-pz^{-1}}{1-\lambda z^{-1}-(1-\lambda)z^{-3}}
+  \label{eq:dahlin-controller}
+\end{equation}
+При выбранном значении $q$ множитель $(1-\lambda)/(1-p)$ равен единице.
+В положительных степенях переменной $z$ получаем
+\begin{equation}
+  D(z)=\frac{z^3-pz^2}{z^3-pz^2-(1-p)}
+    \approx\frac{z^3-0{,}77880078z^2}
+       {z^3-0{,}77880078z^2-0{,}22119922}
+  \label{eq:dahlin-controller-numeric}
+\end{equation}
+Порядки числителя и знаменателя равны, поэтому полученный регулятор
+физически реализуем.
+
+\subsection{Моделирование}
+
+\reporttodo{указать начальные условия и интервал моделирования;
+сохранить те же условия, что при исследовании апериодического регулятора}
+
+\imageplaceholder{task2_dahlin.png}
+  {Выход системы и управление с регулятором Далина}
+  {fig:dahlin}
+
+\reporttodo{сравнить с апериодическим регулятором длительность
+переходного процесса, поведение выхода между отсчётами
+и величину управляющего воздействия}
+
+\section{Регулятор с заданным расположением полюсов}
+
+\subsection{Объект и требования к замкнутой системе}
+
+В этой части дискретный объект задан непосредственно:
+\begin{equation}
+  G_{\text{д}}(z)=\frac{0{,}03(z+0{,}75)}{z^2-1{,}5z+0{,}5}
+  \label{eq:pole-placement-plant}
+\end{equation}
+Параметры варианта 3 равны
+\begin{equation}
+  T=0{,}2\,\text{с},\qquad \zeta=0{,}7,
+  \qquad \omega_d=5\,\text{рад/с},\qquad K_v=0{,}25
+  \label{eq:pole-placement-data}
+\end{equation}
+Здесь согласно заданию $K_v$ обозначает требуемую установившуюся
+ошибку при $r(k)=kT$ для единичного линейно нарастающего воздействия.
+Ошибка при единичном ступенчатом воздействии должна быть нулевой.
+
+\subsection{Желаемые полюса}
+
+Собственная частота и желаемые полюса определяются выражениями
+\begin{equation}
+  \omega_n=\frac{\omega_d}{\sqrt{1-\zeta^2}}
+       \approx7{,}00140042\,\text{рад/с},
+  \qquad
+  z_{1,2}=e^{-\zeta\omega_nT}
+        \bigl(\cos(\omega_dT)\pm j\sin(\omega_dT)\bigr)
+  \label{eq:desired-poles}
+\end{equation}
+После подстановки численных параметров получаем
+\begin{equation}
+  z_{1,2}\approx0{,}20274170\pm j\,0{,}31575149
+  \label{eq:desired-poles-numeric}
+\end{equation}
+Соответствующий полином равен
+\begin{equation}
+  P(z)=(z-z_1)(z-z_2)
+       \approx z^2-0{,}40548340z+0{,}14080320
+  \label{eq:desired-polynomial}
+\end{equation}
+Желаемую передаточную функцию выбираем в виде
+\begin{equation}
+  \Phi(z)=\frac{b_1z+b_2}{P(z)}
+  \label{eq:pole-placement-reference}
+\end{equation}
+
+\subsection{Расчёт числителя по условиям точности}
+
+Для единичного ступенчатого воздействия условие нулевой
+установившейся ошибки даёт
+\begin{equation}
+  \Phi(1)=1,
+  \qquad b_1+b_2=P(1)\approx0{,}73531980
+  \label{eq:step-accuracy}
+\end{equation}
+Для линейного воздействия $r(k)=kT$ имеем
+\begin{equation}
+  R(z)=\frac{Tz}{(z-1)^2},
+  \qquad E(z)=R(z)\bigl(1-\Phi(z)\bigr)
+  \label{eq:ramp-error}
+\end{equation}
+По теореме о конечном значении получаем второе условие:
+\begin{equation}
+  e_{\text{уст}}=-T\Phi'(1)=K_v,
+  \qquad \Phi'(1)=-\frac{0{,}25}{0{,}2}=-1{,}25
+  \label{eq:ramp-accuracy}
+\end{equation}
+Подстановка~\eqref{eq:pole-placement-reference} даёт
+\begin{equation}
+  \Phi'(1)
+    =\frac{b_1-P'(1)}{P(1)}=-1{,}25
+  \label{eq:numerator-equation}
+\end{equation}
+Решая совместно~\eqref{eq:step-accuracy} и~\eqref{eq:numerator-equation},
+получаем
+\begin{equation}
+  b_1\approx0{,}67536685,
+  \qquad b_2\approx0{,}05995295
+  \label{eq:numerator-coefficients}
+\end{equation}
+Таким образом,
+\begin{equation}
+  \Phi(z)\approx
+  \frac{0{,}67536685z+0{,}05995295}
+       {z^2-0{,}40548340z+0{,}14080320}
+  \label{eq:pole-placement-reference-numeric}
+\end{equation}
+
+\subsection{Передаточная функция регулятора}
+
+Подставляем желаемую функцию в~\eqref{eq:controller-formula}:
+\begin{equation}
+  D(z)=\frac{(z^2-1{,}5z+0{,}5)(b_1z+b_2)}
+  {0{,}03(z+0{,}75)\bigl(P(z)-b_1z-b_2\bigr)}
+  \label{eq:pole-placement-controller}
+\end{equation}
+Условие~\eqref{eq:step-accuracy} позволяет выделить общий множитель:
+\begin{equation}
+  P(z)-b_1z-b_2=(z-1)(z-c),
+  \qquad c=1-\frac{K_v}{T}P(1)\approx0{,}08085025
+  \label{eq:controller-factorization}
+\end{equation}
+Учитывая $z^2-1{,}5z+0{,}5=(z-1)(z-0{,}5)$,
+после сокращения получаем
+\begin{equation}
+  D(z)=\frac{(z-0{,}5)(b_1z+b_2)}
+             {0{,}03(z+0{,}75)(z-c)}
+  \label{eq:pole-placement-controller-reduced}
+\end{equation}
+Численная передаточная функция регулятора имеет вид
+\begin{equation}
+  D(z)\approx
+  \frac{22{,}51222837z^2-9{,}25768253z-0{,}99921583}
+       {z^2+0{,}66914975z-0{,}06063769}
+  \label{eq:pole-placement-controller-numeric}
+\end{equation}
+Полученный регулятор физически реализуем, поскольку порядки
+числителя и знаменателя совпадают.
+
+\subsection{Моделирование}
+
+\reporttodo{указать начальные условия и интервалы моделирования
+при единичном ступенчатом и линейном воздействиях}
+
+\imageplaceholder{task3_poles.png}
+  {Выход и ошибка системы с заданными полюсами при ступенчатом и линейном воздействиях}
+  {fig:pole-placement}
+
+\reporttodo{по графикам оценить колебательный характер переходного
+процесса, определить установившиеся ошибки при ступенчатом и линейном
+воздействиях и сопоставить их с требуемыми значениями}
+
+\section{Выводы}
+
+\reporttodo{по результатам моделирования сравнить апериодический
+регулятор и регулятор Далина, оценить работу системы с заданными
+полюсами и выполнение требований к установившимся ошибкам}

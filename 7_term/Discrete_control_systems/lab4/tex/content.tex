@@ -1,1 +1,458 @@
 % !TeX root = main.tex
+
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlength{\abovedisplayshortskip}{4pt}
+\setlength{\belowdisplayshortskip}{4pt}
+
+% Места для текста и рисунков заполняются после моделирования.
+\newcommand{\reporttodo}[1]{%
+  \par\smallskip\noindent\textit{[Заполнить: #1]}\par\smallskip
+}
+
+% Рисунок и подпись располагаются рядом с соответствующим текстом.
+\makeatletter
+\newenvironment{reportfigure}{%
+  \par\addvspace{8pt}\noindent
+  \begin{minipage}{\textwidth}
+    \def\@captype{figure}%
+    \centering
+}{%
+  \end{minipage}\par\vspace{4pt}
+}
+\makeatother
+
+% Аргументы: файл в images, подпись, метка. После добавления файла
+% рамка автоматически заменяется изображением.
+\newcommand{\imageplaceholder}[3]{%
+  \begin{reportfigure}
+    \IfFileExists{images/#1}{%
+      \includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{#1}%
+    }{%
+      \fbox{\parbox[c][3cm][c]{0.9\textwidth}{%
+        \centering Место для рисунка\\[0.4em]
+        \texttt{images/\detokenize{#1}}%
+      }}%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{reportfigure}
+}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Получить дискретные алгоритмы ПИД-регулирования и исследовать влияние
+метода аппроксимации, периода дискретизации и неточности модели объекта
+на переходные процессы при наличии шума измерения.
+Построить модель нерегулярной качки и синтезировать фильтры Калмана.
+
+\section{Непрерывный ПИД-регулятор}
+
+\subsection{Модель объекта и исходные данные}
+
+Для варианта 3 заданы постоянные времени
+\begin{equation}
+  T_1=0{,}6\,\text{с},\qquad T_2=0{,}9\,\text{с}
+  \label{eq:plant-data}
+\end{equation}
+Объект состоит из двух последовательно соединённых апериодических звеньев
+с единичными коэффициентами передачи:
+\begin{equation}
+  W_0(s)=\frac{1}{(T_1s+1)(T_2s+1)}
+    =\frac{1}{0{,}54s^2+1{,}5s+1}
+  \label{eq:plant-transfer}
+\end{equation}
+При обозначении задания через $r$, истинного выхода через $y$
+и шума измерения через $v$ получаем
+\begin{equation}
+  y_{\text{и}}(k)=y(k)+v(k),
+  \qquad e(k)=r(k)-y_{\text{и}}(k)
+  \label{eq:measurement-error}
+\end{equation}
+
+\subsection{Компенсация полюсов объекта}
+
+Непрерывный регулятор записывается в виде
+\begin{equation}
+  W_{\text{ПИД}}(s)=q_0\left(k_p+\frac{k_i}{s}+k_ds\right)
+  \label{eq:continuous-controller}
+\end{equation}
+Здесь $q_0$ является общим коэффициентом усиления регулятора.
+Для компенсации полюсов объекта выбираем
+\begin{equation}
+  k_p=T_1+T_2=1{,}5,
+  \qquad k_i=1,
+  \qquad k_d=T_1T_2=0{,}54
+  \label{eq:pid-gains}
+\end{equation}
+Передаточная функция регулятора принимает вид
+\begin{equation}
+  W_{\text{ПИД}}(s)
+  =q_0\frac{0{,}54s^2+1{,}5s+1}{s}
+  =q_0\frac{(0{,}6s+1)(0{,}9s+1)}{s}
+  \label{eq:continuous-controller-numeric}
+\end{equation}
+Для номинального объекта передаточные функции разомкнутой
+и замкнутой систем равны
+\begin{equation}
+  W_{\text{ПИД}}(s)W_0(s)=\frac{q_0}{s},
+  \qquad W_{\text{зам}}(s)=\frac{q_0}{s+q_0}
+  \label{eq:continuous-closed-loop}
+\end{equation}
+
+\section{Дискретные алгоритмы ПИД-регулирования}
+
+\subsection{Рекуррентные уравнения}
+
+В реализуемых алгоритмах производная ошибки аппроксимируется обратной
+разностью, а способы интегрирования различаются. Обозначим через $I(k)$
+интегральную составляющую без общего усиления регулятора:
+\begin{equation}
+  u(k)=q_0\left[k_pe(k)+I(k)
+    +\frac{k_d}{T}\bigl(e(k)-e(k-1)\bigr)\right]
+  \label{eq:pid-components}
+\end{equation}
+При прямом методе Эйлера используется предыдущее значение ошибки:
+\begin{equation}
+  I(k)=I(k-1)+k_iT e(k-1)
+  \label{eq:forward-integral}
+\end{equation}
+Для обратного метода Эйлера имеем
+\begin{equation}
+  I(k)=I(k-1)+k_iT e(k)
+  \label{eq:backward-integral}
+\end{equation}
+При методе трапеций, соответствующем интегрированию по Тастину,
+получаем
+\begin{equation}
+  I(k)=I(k-1)+\frac{k_iT}{2}\bigl(e(k)+e(k-1)\bigr)
+  \label{eq:tustin-integral}
+\end{equation}
+После вычитания соседних значений управления все три алгоритма
+принимают форму
+\begin{equation}
+  u(k)=u(k-1)+q_0\left[c_0e(k)+c_1e(k-1)+c_2e(k-2)\right]
+  \label{eq:incremental-pid}
+\end{equation}
+Коэффициенты $c_0,c_1,c_2$ определяют веса отсчётов ошибки;
+общий коэффициент $q_0$ вынесен отдельно.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Коэффициенты рекуррентного ПИД-регулятора}
+  \label{tab:pid-general}
+  \begin{tabular}{c c c c}
+    \toprule
+    Метод & $c_0$ & $c_1$ & $c_2$\\
+    \midrule
+    Прямой Эйлер & $k_p+k_d/T$ & $-k_p+k_iT-2k_d/T$ & $k_d/T$\\
+    Обратный Эйлер & $k_p+k_iT+k_d/T$ & $-k_p-2k_d/T$ & $k_d/T$\\
+    Трапеции & $k_p+k_iT/2+k_d/T$ & $-k_p+k_iT/2-2k_d/T$ & $k_d/T$\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Численные коэффициенты}
+
+Периоды дискретизации для сравнения равны
+\begin{equation}
+  T=\frac{T_1}{2}=0{,}3\,\text{с},
+  \qquad T=\frac{T_1}{4}=0{,}15\,\text{с}
+  \label{eq:sample-periods}
+\end{equation}
+Подстановка коэффициентов~\eqref{eq:pid-gains} даёт значения,
+приведённые в таблице~\ref{tab:pid-numeric}.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Численные веса отсчётов ошибки}
+  \label{tab:pid-numeric}
+  \begin{tabular}{c c r r r}
+    \toprule
+    $T$, с & Метод & $c_0$ & $c_1$ & $c_2$\\
+    \midrule
+    $0{,}3$ & Прямой Эйлер & $3{,}3$ & $-4{,}8$ & $1{,}8$\\
+    $0{,}3$ & Обратный Эйлер & $3{,}6$ & $-5{,}1$ & $1{,}8$\\
+    $0{,}3$ & Трапеции & $3{,}45$ & $-4{,}95$ & $1{,}8$\\
+    \midrule
+    $0{,}15$ & Прямой Эйлер & $5{,}1$ & $-8{,}55$ & $3{,}6$\\
+    $0{,}15$ & Обратный Эйлер & $5{,}25$ & $-8{,}7$ & $3{,}6$\\
+    $0{,}15$ & Трапеции & $5{,}175$ & $-8{,}625$ & $3{,}6$\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Исследование замкнутой системы}
+
+\subsection{Подбор усиления и сравнение методов}
+
+В первом опыте используется период $T=0{,}3\,\text{с}$,
+а дисперсия аддитивного шума измерения задана условием
+\begin{equation}
+  \operatorname{Var}v(k)=0{,}01
+  \label{eq:pid-measurement-variance}
+\end{equation}
+Коэффициент $q_0$ подбирается экспериментально для устойчивого
+слабоколебательного процесса. В последующих сравнениях для каждого
+способа сохраняется найденное для него усиление.
+
+\reporttodo{указать подобранные значения $q_0$, параметры ступенчатого
+задания, начальные состояния, интервал моделирования и условия генерации шума}
+
+\imageplaceholder{task2_pid_methods.png}
+  {Процессы в замкнутой системе при трёх способах аппроксимации и $T=0{,}3$ с}
+  {fig:pid-methods}
+
+\reporttodo{сравнить переходные процессы, их колебательность,
+длительность и чувствительность к шуму измерения}
+
+\subsection{Изменение периода дискретизации}
+
+Для второго опыта принимается $T=0{,}15\,\text{с}$, причём коэффициенты
+непрерывного ПИД-регулятора и подобранное усиление сохраняются,
+а веса дискретного алгоритма берутся из таблицы~\ref{tab:pid-numeric}.
+
+\imageplaceholder{task3_sample_period.png}
+  {Процессы при уменьшении периода дискретизации до $T=0{,}15$ с}
+  {fig:sample-period}
+
+\reporttodo{сопоставить результаты при двух периодах дискретизации
+для каждого метода при одинаковом усилении и шуме измерения}
+
+\subsection{Неточность компенсации полюсов}
+
+Постоянную времени объекта изменяем относительно номинального значения:
+\begin{equation}
+  T_2^-=0{,}8T_2=0{,}72\,\text{с},
+  \qquad T_2^+=1{,}2T_2=1{,}08\,\text{с}
+  \label{eq:uncertain-time-constants}
+\end{equation}
+Передаточные функции изменённого объекта равны
+\begin{equation}
+  W_0^-(s)=\frac{1}{0{,}432s^2+1{,}32s+1},
+  \qquad
+  W_0^+(s)=\frac{1}{0{,}648s^2+1{,}68s+1}
+  \label{eq:uncertain-plants}
+\end{equation}
+Коэффициенты регулятора сохраняются рассчитанными для номинального
+объекта; период и усиление принимаются из первого опыта.
+
+\imageplaceholder{task4_pole_compensation.png}
+  {Сравнение процессов при номинальном и изменённых значениях $T_2$}
+  {fig:pole-compensation}
+
+\reporttodo{оценить влияние увеличения и уменьшения $T_2$ на качество
+процессов при неизменных коэффициентах регулятора}
+
+\section{Модель нерегулярной качки}
+
+По данным варианта 3 параметры модели и шумов равны
+\begin{equation}
+  \omega_0=0{,}9,\qquad \alpha=0{,}05,\qquad G_0=2,
+  \qquad Q=1{,}5,\qquad R=0{,}8
+  \label{eq:pitching-data}
+\end{equation}
+Формирующий фильтр задаётся передаточной функцией
+\begin{equation}
+  \Phi(s)=\frac{\omega_0^2}{s^2+2\alpha s+\omega_0^2}
+    =\frac{0{,}81}{s^2+0{,}1s+0{,}81}
+  \label{eq:pitching-transfer}
+\end{equation}
+Параметр $G_0$ определяет уровень спектральной плотности белого шума
+на входе непрерывного формирующего фильтра.
+Для дискретной модели дисперсия входного шума задаётся отдельно
+величиной $Q$ из таблицы исходных данных.
+
+При выборе состояний $\bm x=(y,\dot y)^{\mathsf T}$ непрерывные матрицы равны
+\begin{equation}
+  A_{\text{к}}=\begin{pmatrix}0&1\\-0{,}81&-0{,}1\end{pmatrix},
+  \qquad
+  B_{\text{к}}=\begin{pmatrix}0\\0{,}81\end{pmatrix},
+  \qquad C_{\text{к}}=\begin{pmatrix}1&0\end{pmatrix}
+  \label{eq:pitching-continuous-matrices}
+\end{equation}
+Принимаем период дискретизации $h=0{,}1\,\text{с}$ и используем
+точную дискретизацию с удержанием входа:
+\begin{equation}
+  A_h=e^{A_{\text{к}}h},
+  \qquad
+  B_h=A_{\text{к}}^{-1}(A_h-I_2)B_{\text{к}}
+  \label{eq:pitching-discretization}
+\end{equation}
+Численные матрицы равны
+\begin{equation}
+  A_h\approx\begin{pmatrix}
+    0{,}99596619&0{,}09936739\\
+    -0{,}08048759&0{,}98602945
+  \end{pmatrix},
+  \qquad
+  B_h\approx\begin{pmatrix}0{,}00403381\\0{,}08048759\end{pmatrix}
+  \label{eq:pitching-discrete-matrices}
+\end{equation}
+Модель с шумами записывается в виде
+\begin{equation}
+  \bm x(k+1)=A_h\bm x(k)+B_hw(k),
+  \qquad y_{\text{и}}(k)=C_{\text{к}}\bm x(k)+v(k)
+  \label{eq:pitching-discrete-model}
+\end{equation}
+Шумы $w$ и $v$ имеют нулевые средние, не коррелированы друг с другом
+и удовлетворяют условиям
+\begin{equation}
+  \operatorname{Var}w(k)=Q=1{,}5,
+  \qquad \operatorname{Var}v(k)=R=0{,}8
+  \label{eq:pitching-noise-variance}
+\end{equation}
+
+\reporttodo{указать начальное состояние, интервал моделирования
+и условия генерации шумов}
+
+\imageplaceholder{task5_pitching.png}
+  {Истинный процесс нерегулярной качки и зашумлённое измерение}
+  {fig:pitching-model}
+
+\reporttodo{описать полученный случайный процесс и влияние шума измерения}
+
+\section{Фильтр Калмана для модели качки}
+
+Ковариация возмущения в уравнении состояния равна
+\begin{equation}
+  Q_x=B_hQB_h^{\mathsf T}
+  \label{eq:pitching-state-covariance}
+\end{equation}
+Обозначим через $P^-$ стационарную ковариацию ошибки прогноза.
+Она находится из дискретного уравнения Риккати
+\begin{equation}
+  \begin{aligned}
+    P^-={}&A_hP^-A_h^{\mathsf T}+Q_x\\
+      &-A_hP^-C_{\text{к}}^{\mathsf T}
+        \bigl(C_{\text{к}}P^-C_{\text{к}}^{\mathsf T}+R\bigr)^{-1}
+        C_{\text{к}}P^-A_h^{\mathsf T}
+  \end{aligned}
+  \label{eq:pitching-riccati}
+\end{equation}
+Коэффициент коррекции текущей оценки определяется выражением
+\begin{equation}
+  K_{\text{к}}=P^-C_{\text{к}}^{\mathsf T}
+    \bigl(C_{\text{к}}P^-C_{\text{к}}^{\mathsf T}+R\bigr)^{-1}
+  \label{eq:pitching-kalman-gain}
+\end{equation}
+Решение уравнения~\eqref{eq:pitching-riccati} и коэффициент фильтра равны
+\begin{equation}
+  P^-\approx\begin{pmatrix}
+    0{,}08111358&0{,}03913941\\
+    0{,}03913941&0{,}10320731
+  \end{pmatrix},
+  \qquad
+  K_{\text{к}}\approx\begin{pmatrix}0{,}09205803\\0{,}04442039\end{pmatrix}
+  \label{eq:pitching-kalman-numeric}
+\end{equation}
+Алгоритм включает коррекцию по текущему измерению и прогноз
+на следующий отсчёт:
+\begin{equation}
+  \begin{aligned}
+    \hat{\bm x}_{k|k}
+      &=\hat{\bm x}_{k|k-1}
+        +K_{\text{к}}\bigl(y_{\text{и}}(k)-C_{\text{к}}\hat{\bm x}_{k|k-1}\bigr),\\
+    \hat{\bm x}_{k+1|k}&=A_h\hat{\bm x}_{k|k},\\
+    \hat y(k)&=C_{\text{к}}\hat{\bm x}_{k|k}
+  \end{aligned}
+  \label{eq:pitching-kalman-algorithm}
+\end{equation}
+
+\reporttodo{указать начальную оценку состояния и условия опыта}
+
+\imageplaceholder{task7_pitching_kalman.png}
+  {Процесс качки, его измерение и оценка фильтра Калмана}
+  {fig:pitching-kalman}
+
+\reporttodo{сравнить истинный сигнал, зашумлённое измерение и оценку;
+оценить ошибку восстановления по результатам моделирования}
+
+\section{Фильтр Калмана в контуре ПИД-регулирования}
+
+Для нечётного варианта 3 используем ПИД-алгоритм прямого Эйлера
+при периоде $T=0{,}3\,\text{с}$ из первого опыта.
+Для расчёта фильтра выберем состояния объекта
+$\bm x=(y,\dot y)^{\mathsf T}$ и запишем непрерывные матрицы:
+\begin{equation}
+  A_0=\begin{pmatrix}0&1\\-1/0{,}54&-1{,}5/0{,}54\end{pmatrix},
+  \qquad B_0=\begin{pmatrix}0\\1/0{,}54\end{pmatrix},
+  \qquad C=\begin{pmatrix}1&0\end{pmatrix}
+  \label{eq:temperature-continuous-matrices}
+\end{equation}
+При удержании управления между отсчётами точная дискретная модель
+объекта имеет матрицы
+\begin{equation}
+  \begin{aligned}
+    A_{\text{д}}&=e^{A_0T}
+      \approx\begin{pmatrix}
+        0{,}93653261&0{,}19800117\\
+        -0{,}36666884&0{,}38652936
+      \end{pmatrix},\\
+    B_{\text{д}}&=A_0^{-1}(A_{\text{д}}-I_2)B_0
+      \approx\begin{pmatrix}0{,}06346739\\0{,}36666884\end{pmatrix}
+  \end{aligned}
+  \label{eq:temperature-discrete-matrices}
+\end{equation}
+Фильтр использует измеренный выход и известное фактически приложенное
+управление. Расчётная модель имеет вид
+\begin{equation}
+  \bm x(k+1)=A_{\text{д}}\bm x(k)+B_{\text{д}}u(k)+\bm w_x(k),
+  \qquad y_{\text{и}}(k)=C\bm x(k)+v(k)
+  \label{eq:temperature-kalman-model}
+\end{equation}
+Дисперсия шума измерения для варианта 3 равна
+\begin{equation}
+  R_{\text{ПИД}}=0{,}03
+  \label{eq:temperature-measurement-variance}
+\end{equation}
+При заданной ковариации $Q_{\text{ПИД}}$ возмущения состояния
+ковариация прогноза и коэффициент коррекции находятся из уравнений
+\begin{equation}
+  \begin{aligned}
+    P^-_{\text{ПИД}}={}&A_{\text{д}}P^-_{\text{ПИД}}A_{\text{д}}^{\mathsf T}
+      +Q_{\text{ПИД}}\\
+      &-A_{\text{д}}P^-_{\text{ПИД}}C^{\mathsf T}
+        \bigl(CP^-_{\text{ПИД}}C^{\mathsf T}+R_{\text{ПИД}}\bigr)^{-1}
+        CP^-_{\text{ПИД}}A_{\text{д}}^{\mathsf T},\\
+    K_{\text{ПИД}}={}&P^-_{\text{ПИД}}C^{\mathsf T}
+      \bigl(CP^-_{\text{ПИД}}C^{\mathsf T}+R_{\text{ПИД}}\bigr)^{-1}
+  \end{aligned}
+  \label{eq:temperature-riccati}
+\end{equation}
+Уравнения фильтра:
+\begin{equation}
+  \begin{aligned}
+    \hat{\bm x}_{k|k}
+      &=\hat{\bm x}_{k|k-1}
+        +K_{\text{ПИД}}\bigl(y_{\text{и}}(k)-C\hat{\bm x}_{k|k-1}\bigr),\\
+    \hat{\bm x}_{k+1|k}&=A_{\text{д}}\hat{\bm x}_{k|k}+B_{\text{д}}u(k),\\
+    \hat y(k)&=C\hat{\bm x}_{k|k}
+  \end{aligned}
+  \label{eq:temperature-kalman-algorithm}
+\end{equation}
+В регулятор поступает ошибка $e(k)=r(k)-\hat y(k)$;
+коэффициенты ПИД-регулятора сохраняются из опыта с прямым методом Эйлера.
+
+Ковариация $Q_{\text{ПИД}}$ оставляется параметром для этапа моделирования.
+
+\reporttodo{выбрать ковариацию $Q_{\text{ПИД}}$ и рассчитать численный
+коэффициент фильтра; указать начальную оценку и условия опыта;
+для сравнения с фильтром и без него использовать одинаковую дисперсию
+шума измерения $R_{\text{ПИД}}=0{,}03$ в обоих опытах}
+
+\imageplaceholder{task8_pid_kalman.png}
+  {Переходные процессы в ПИД-системе с фильтром Калмана и без него}
+  {fig:pid-kalman}
+
+\reporttodo{сравнить качество переходного процесса и влияние шума
+измерения при использовании фильтра и без фильтра}
+
+\section{Выводы}
+
+\reporttodo{по результатам моделирования сопоставить методы
+аппроксимации, влияние периода дискретизации и ошибки компенсации
+полюсов; оценить работу фильтров Калмана}
