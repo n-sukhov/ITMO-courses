@@ -1,1 +1,436 @@
 % !TeX root = main.tex
+
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlength{\abovedisplayshortskip}{4pt}
+\setlength{\belowdisplayshortskip}{4pt}
+
+\tableofcontents
+\newpage
+
+\section{Цель работы}
+
+Синтезировать дискретные стабилизирующий и следящий регуляторы
+методом модального управления. Построить устройство оценки
+пониженной размерности и получить законы управления при неполной
+информации о состоянии объекта.
+
+\section{Модель объекта управления}
+
+\subsection{Исходные данные}
+
+Для варианта 3 задан объект третьего типа с параметрами
+\begin{equation}
+  k_1=3{,}26,\qquad k_2=1,\qquad
+  a_0^1=a_0^2=1,\qquad T_1=9{,}5,\qquad
+  \xi=0{,}36,\qquad T=1\,\text{с}
+  \label{eq:plant-data}
+\end{equation}
+Передаточная функция объекта имеет вид
+\begin{equation}
+  W_{\text{н}}(s)
+  =\frac{k_1k_2}{T_1^2s^2+2T_1\xi s+a_0^1a_0^2}
+  =\frac{3{,}26}{90{,}25s^2+6{,}84s+1}
+  \label{eq:continuous-transfer}
+\end{equation}
+Соответствующее дифференциальное уравнение:
+\begin{equation}
+  90{,}25\ddot y+6{,}84\dot y+y=3{,}26u
+  \label{eq:continuous-equation}
+\end{equation}
+Выбираем вектор состояния
+\begin{equation}
+  \bm x=\begin{pmatrix}y\\\dot y\end{pmatrix},
+  \qquad y=C\bm x,\qquad C=\begin{pmatrix}1&0\end{pmatrix}
+  \label{eq:state-choice}
+\end{equation}
+Непрерывная модель объекта записывается в виде
+\begin{equation}
+  \dot{\bm x}=A_{\text{н}}\bm x+B_{\text{н}}u,
+  \qquad
+  A_{\text{н}}=
+  \begin{pmatrix}
+    0&1\\
+    -\dfrac{1}{90{,}25}&-\dfrac{6{,}84}{90{,}25}
+  \end{pmatrix},
+  \qquad
+  B_{\text{н}}=\begin{pmatrix}0\\\dfrac{3{,}26}{90{,}25}\end{pmatrix}
+  \label{eq:continuous-state-space}
+\end{equation}
+
+\subsection{Точная дискретизация}
+
+При удержании управления на каждом интервале дискретизации получаем
+\begin{equation}
+  \bm x(k+1)=A\bm x(k)+Bu(k),
+  \qquad y(k)=C\bm x(k)
+  \label{eq:discrete-plant}
+\end{equation}
+Матрицы дискретной модели определяются выражениями
+\begin{equation}
+  A=e^{A_{\text{н}}T},
+  \qquad
+  B=\int_0^T e^{A_{\text{н}}\tau}B_{\text{н}}\,d\tau
+    =A_{\text{н}}^{-1}(A-I_2)B_{\text{н}}
+  \label{eq:discretization}
+\end{equation}
+Для заданного периода $T=1\,\text{с}$ получаем
+\begin{equation}
+  A\approx
+  \begin{pmatrix}
+    0{,}99460215&0{,}96126742\\
+    -0{,}01065116&0{,}92174819
+  \end{pmatrix},
+  \qquad
+  B\approx\begin{pmatrix}0{,}01759701\\0{,}03472279\end{pmatrix}
+  \label{eq:discrete-matrices}
+\end{equation}
+
+\subsection{Проверка структурных свойств}
+
+Матрица управляемости равна
+\begin{equation}
+  \mathcal C=\begin{pmatrix}B&AB\end{pmatrix}
+  \approx
+  \begin{pmatrix}
+    0{,}01759701&0{,}05087991\\
+    0{,}03472279&0{,}03181824
+  \end{pmatrix}
+  \label{eq:controllability}
+\end{equation}
+Её определитель отличен от нуля:
+\begin{equation}
+  \det\mathcal C\approx-0{,}00120679\ne0,
+  \qquad \operatorname{rank}\mathcal C=2
+  \label{eq:controllability-rank}
+\end{equation}
+Следовательно, пара $(A,B)$ полностью управляема.
+
+Матрица наблюдаемости имеет вид
+\begin{equation}
+  \mathcal O=\begin{pmatrix}C\\CA\end{pmatrix}
+  \approx
+  \begin{pmatrix}
+    1&0\\
+    0{,}99460215&0{,}96126742
+  \end{pmatrix}
+  \label{eq:observability}
+\end{equation}
+Поскольку
+\begin{equation}
+  \det\mathcal O\approx0{,}96126742\ne0,
+  \qquad \operatorname{rank}\mathcal O=2
+  \label{eq:observability-rank}
+\end{equation}
+пара $(C,A)$ полностью наблюдаема.
+
+\section{Синтез стабилизирующего регулятора}
+
+\subsection{Эталонная модель}
+
+Управление выбирается в виде линейной обратной связи по состоянию:
+\begin{equation}
+  u(k)=-K_{\text{с}}\bm x(k),
+  \qquad F_{\text{с}}=A-BK_{\text{с}}
+  \label{eq:stabilizing-control}
+\end{equation}
+Для оптимальной по быстродействию дискретной системы назначаем
+оба желаемых корня в начале координат:
+\begin{equation}
+  z_1^*=z_2^*=0,
+  \qquad D_{\text{с}}(z)=z^2
+  \label{eq:stabilizing-polynomial}
+\end{equation}
+Матрицы эталонной модели выбираем следующим образом:
+\begin{equation}
+  \Gamma_{\text{с}}=\begin{pmatrix}0&1\\0&0\end{pmatrix},
+  \qquad H_{\text{с}}=\begin{pmatrix}1&0\end{pmatrix}
+  \label{eq:stabilizing-reference}
+\end{equation}
+Матрица наблюдаемости пары $(H_{\text{с}},\Gamma_{\text{с}})$ равна
+\begin{equation}
+  \begin{pmatrix}H_{\text{с}}\\H_{\text{с}}\Gamma_{\text{с}}\end{pmatrix}
+  =I_2
+  \label{eq:stabilizing-reference-observability}
+\end{equation}
+
+\subsection{Расчёт обратной связи}
+
+В методе модального управления матрица обратной связи определяется
+из уравнения Сильвестра:
+\begin{equation}
+  A M_{\text{с}}-M_{\text{с}}\Gamma_{\text{с}}=BH_{\text{с}},
+  \qquad K_{\text{с}}=H_{\text{с}}M_{\text{с}}^{-1}
+  \label{eq:stabilizing-sylvester}
+\end{equation}
+Представляя $M_{\text{с}}$ через столбцы, получаем
+\begin{equation}
+  A\bm m_1=B,
+  \qquad A\bm m_2=\bm m_1,
+  \qquad
+  M_{\text{с}}=\begin{pmatrix}A^{-1}B&A^{-2}B\end{pmatrix}
+  \label{eq:stabilizing-sylvester-columns}
+\end{equation}
+Численное решение имеет вид
+\begin{equation}
+  M_{\text{с}}\approx
+  \begin{pmatrix}
+    -0{,}01850881&-0{,}05724458\\
+    0{,}03745670&0{,}03997511
+  \end{pmatrix},
+  \qquad \det M_{\text{с}}\approx0{,}00140430\ne0
+  \label{eq:stabilizing-sylvester-numeric}
+\end{equation}
+Следовательно,
+\begin{equation}
+  K_{\text{с}}\approx\begin{pmatrix}28{,}46618609&40{,}76373719\end{pmatrix}
+  \label{eq:stabilizing-gain}
+\end{equation}
+Закон управления принимает вид
+\begin{equation}
+  u(k)\approx-28{,}46618609x_1(k)-40{,}76373719x_2(k)
+  \label{eq:stabilizing-control-numeric}
+\end{equation}
+Матрица замкнутой системы равна
+\begin{equation}
+  F_{\text{с}}\approx
+  \begin{pmatrix}
+    0{,}49368248&0{,}24394766\\
+    -0{,}99907656&-0{,}49368248
+  \end{pmatrix}
+  \label{eq:stabilizing-closed-loop}
+\end{equation}
+
+\section{Синтез следящего регулятора}
+
+\subsection{Генератор задающего воздействия}
+
+По данным варианта 3 параметры задания равны
+\begin{equation}
+  g_0=2{,}8,\qquad g_1=0,\qquad A_g=0,\qquad \omega_g=0
+  \label{eq:reference-data}
+\end{equation}
+Таким образом, требуется воспроизводить постоянный сигнал
+\begin{equation}
+  g(k)=2{,}8
+  \label{eq:reference-signal}
+\end{equation}
+Дискретный генератор этого сигнала имеет описание
+\begin{equation}
+  \zeta(k+1)=\zeta(k),
+  \qquad g(k)=\zeta(k),
+  \qquad \zeta(0)=2{,}8
+  \label{eq:reference-generator}
+\end{equation}
+
+\subsection{Расширенная модель объекта}
+
+Определим ошибку слежения и встроенную модель постоянного задания:
+\begin{equation}
+  e(k)=g(k)-y(k),
+  \qquad \eta(k+1)=\eta(k)+e(k)
+  \label{eq:internal-model}
+\end{equation}
+Для расширенного вектора состояния получаем
+\begin{equation}
+  \bar{\bm x}(k)=\begin{pmatrix}\eta(k)\\\bm x(k)\end{pmatrix},
+  \qquad
+  \bar{\bm x}(k+1)
+    =\bar A\bar{\bm x}(k)+\bar B u(k)+\bar B_g g(k)
+  \label{eq:augmented-plant}
+\end{equation}
+Матрицы расширенной модели имеют вид
+\begin{equation}
+  \bar A=\begin{pmatrix}1&-C\\0&A\end{pmatrix},
+  \qquad
+  \bar B=\begin{pmatrix}0\\B\end{pmatrix},
+  \qquad
+  \bar B_g=\begin{pmatrix}1\\0\\0\end{pmatrix}
+  \label{eq:augmented-matrices}
+\end{equation}
+Проверим управляемость расширенной системы:
+\begin{equation}
+  \bar{\mathcal C}
+    =\begin{pmatrix}\bar B&\bar A\bar B&\bar A^2\bar B\end{pmatrix},
+  \qquad
+  \det\bar{\mathcal C}\approx4{,}19417256\cdot10^{-5}\ne0
+  \label{eq:augmented-controllability}
+\end{equation}
+Следовательно, её ранг равен трём и можно назначить все три корня
+характеристического полинома.
+
+\subsection{Расчёт коэффициентов регулятора}
+
+Для расширенной системы выбираем
+\begin{equation}
+  D_{\text{сл}}(z)=z^3,
+  \qquad
+  \Gamma_{\text{сл}}=
+  \begin{pmatrix}0&1&0\\0&0&1\\0&0&0\end{pmatrix},
+  \qquad
+  H_{\text{сл}}=\begin{pmatrix}1&0&0\end{pmatrix}
+  \label{eq:tracking-reference}
+\end{equation}
+Для выбранной эталонной модели матрица наблюдаемости является
+единичной матрицей третьего порядка. Матрицу обратной связи
+находим из уравнений
+\begin{equation}
+  \bar A M_{\text{сл}}-M_{\text{сл}}\Gamma_{\text{сл}}
+    =\bar B H_{\text{сл}},
+  \qquad \bar K=H_{\text{сл}}M_{\text{сл}}^{-1}
+  \label{eq:tracking-sylvester}
+\end{equation}
+Аналогично расчёту~\eqref{eq:stabilizing-sylvester-columns} получаем
+\begin{equation}
+  M_{\text{сл}}=
+  \begin{pmatrix}
+    \bar A^{-1}\bar B&\bar A^{-2}\bar B&\bar A^{-3}\bar B
+  \end{pmatrix}
+  \label{eq:tracking-sylvester-solution}
+\end{equation}
+Численное решение равно
+\begin{equation}
+  M_{\text{сл}}\approx
+  \begin{pmatrix}
+    -0{,}01850881&-0{,}07575339&-0{,}17412527\\
+    -0{,}01850881&-0{,}05724458&-0{,}09837188\\
+    0{,}03745670&0{,}03997511&0{,}04223207
+  \end{pmatrix}
+  \label{eq:tracking-sylvester-numeric}
+\end{equation}
+Определитель этой матрицы отличен от нуля:
+\begin{equation}
+  \det M_{\text{сл}}\approx-5{,}26491235\cdot10^{-5}\ne0
+  \label{eq:tracking-sylvester-determinant}
+\end{equation}
+Матрица обратной связи равна
+\begin{equation}
+  \bar K=\begin{pmatrix}-K_\eta&\kappa_1&\kappa_2\end{pmatrix}
+  \approx
+  \begin{pmatrix}-28{,}77293455&71{,}44381439&47{,}78282739\end{pmatrix}
+  \label{eq:tracking-gain}
+\end{equation}
+Следящий регулятор записывается в виде
+\begin{equation}
+  \begin{aligned}
+    \eta(k+1)&=\eta(k)+g(k)-y(k),\\
+    u(k)&=\kappa_1g(k)+K_\eta\eta(k)
+      -\kappa_1x_1(k)-\kappa_2x_2(k)
+  \end{aligned}
+  \label{eq:tracking-controller}
+\end{equation}
+После подстановки численных коэффициентов получаем
+\begin{equation}
+  u(k)\approx71{,}44381439\bigl(g(k)-y(k)\bigr)
+    +28{,}77293455\eta(k)-47{,}78282739x_2(k)
+  \label{eq:tracking-control-numeric}
+\end{equation}
+
+\section{Регуляторы при неполной информации}
+
+\subsection{Устройство оценки пониженной размерности}
+
+Считаем доступным для измерения только выход объекта.
+Для нечётного варианта 3 строим устройство оценки размерности
+$n-1=1$, то есть скалярный наблюдатель.
+Выбираем матрицы его описания
+\begin{equation}
+  F_{\text{н}}=0,\qquad G=1
+  \label{eq:observer-dynamics}
+\end{equation}
+Матрицу преобразования находим из уравнения
+\begin{equation}
+  M_{\text{н}}A-F_{\text{н}}M_{\text{н}}=GC
+  \label{eq:observer-sylvester}
+\end{equation}
+При выбранных коэффициентах получаем
+\begin{equation}
+  M_{\text{н}}=CA^{-1}
+  \approx\begin{pmatrix}0{,}99432245&-1{,}03695324\end{pmatrix},
+  \qquad
+  M_{\text{н}}B\approx-0{,}01850881
+  \label{eq:observer-matrices}
+\end{equation}
+Уравнение устройства оценки принимает вид
+\begin{equation}
+  \begin{aligned}
+    \hat z(k+1)&=F_{\text{н}}\hat z(k)+Gy(k)+M_{\text{н}}Bu(k)\\
+      &\approx y(k)-0{,}01850881u(k)
+  \end{aligned},
+  \qquad \hat z(0)=0
+  \label{eq:observer}
+\end{equation}
+Для невязки $\tilde z(k)=\hat z(k)-M_{\text{н}}\bm x(k)$ имеем
+\begin{equation}
+  \tilde z(k+1)=F_{\text{н}}\tilde z(k)=0
+  \label{eq:observer-error}
+\end{equation}
+Вектор состояния восстанавливается по измерению и состоянию наблюдателя:
+\begin{equation}
+  \hat{\bm x}(k)
+  =\begin{pmatrix}C\\M_{\text{н}}\end{pmatrix}^{-1}
+    \begin{pmatrix}y(k)\\\hat z(k)\end{pmatrix}
+  \label{eq:state-estimate}
+\end{equation}
+Матрица восстановления невырождена:
+\begin{equation}
+  \det\begin{pmatrix}C\\M_{\text{н}}\end{pmatrix}
+    \approx-1{,}03695324\ne0
+  \label{eq:reconstruction-determinant}
+\end{equation}
+Таким образом,
+\begin{equation}
+  \hat x_1(k)=y(k),
+  \qquad
+  \hat x_2(k)\approx
+    \frac{\hat z(k)-0{,}99432245y(k)}{-1{,}03695324}
+  \label{eq:state-estimate-numeric}
+\end{equation}
+
+\subsection{Стабилизация с устройством оценки}
+
+В законе~\eqref{eq:stabilizing-control} заменяем состояние его оценкой:
+\begin{equation}
+  u(k)=-K_{\text{с}}\hat{\bm x}(k)
+      =-E_{\text{с}}y(k)-D_{\text{с}}\hat z(k)
+  \label{eq:estimated-stabilizing-control}
+\end{equation}
+Коэффициенты регулятора определяются соотношением
+\begin{equation}
+  \begin{pmatrix}E_{\text{с}}&D_{\text{с}}\end{pmatrix}
+    =K_{\text{с}}\begin{pmatrix}C\\M_{\text{н}}\end{pmatrix}^{-1}
+    \approx\begin{pmatrix}67{,}55406166&-39{,}31106609\end{pmatrix}
+  \label{eq:estimated-stabilizing-gains}
+\end{equation}
+Для реализации получаем
+\begin{equation}
+  \begin{aligned}
+    \hat z(k+1)&\approx y(k)-0{,}01850881u(k),\\
+    u(k)&\approx-67{,}55406166y(k)+39{,}31106609\hat z(k)
+  \end{aligned}
+  \label{eq:estimated-stabilizing-controller}
+\end{equation}
+
+\subsection{Слежение с устройством оценки}
+
+В следящем регуляторе используется то же устройство оценки.
+Состояние встроенной модели формируется внутри регулятора
+по измеренной ошибке слежения. Коэффициенты при измерении
+и состоянии наблюдателя равны
+\begin{equation}
+  \begin{pmatrix}E_{\text{сл}}&D_{\text{сл}}\end{pmatrix}
+    =\begin{pmatrix}\kappa_1&\kappa_2\end{pmatrix}
+      \begin{pmatrix}C\\M_{\text{н}}\end{pmatrix}^{-1}
+    \approx\begin{pmatrix}117{,}26221428&-46{,}08002148\end{pmatrix}
+  \label{eq:estimated-tracking-gains}
+\end{equation}
+Итоговые уравнения регулятора:
+\begin{equation}
+  \begin{aligned}
+    \eta(k+1)&=\eta(k)+g(k)-y(k),\\
+    \hat z(k+1)&\approx y(k)-0{,}01850881u(k),\\
+    u(k)&\approx71{,}44381439g(k)+28{,}77293455\eta(k)\\
+      &\hphantom{{}\approx{}}-117{,}26221428y(k)+46{,}08002148\hat z(k)
+  \end{aligned}
+  \label{eq:estimated-tracking-controller}
+\end{equation}
