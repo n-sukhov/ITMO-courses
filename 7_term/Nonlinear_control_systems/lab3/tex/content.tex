@@ -1,0 +1,247 @@
+% !TeX root = main.tex
+
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\setlength{\abovedisplayshortskip}{4pt}
+\setlength{\belowdisplayshortskip}{4pt}
+
+\tableofcontents
+\newpage
+
+\section{Линеаризация по входу-выходу}
+
+Рассмотрим систему
+\begin{equation}
+  \begin{cases}
+    \dot x_1=-x_1+x_2-x_3,\\
+    \dot x_2=-x_1x_3-x_2+u,\\
+    \dot x_3=-x_1+u,\\
+    y=x_3
+  \end{cases}
+\end{equation}
+Поскольку $\dot y=-x_1+u$, относительная степень равна $\rho=1$
+во всём $\mathbb R^3$. Обратная связь $u=x_1+v$ даёт $\dot y=v$,
+поэтому система линеаризуема по входу-выходу.
+
+Выберем внутренние координаты с $L_g\eta_i=0$:
+\begin{equation}
+  \eta_1=x_1,\qquad \eta_2=x_2-x_3,\qquad \xi=y=x_3
+\end{equation}
+Преобразование определено во всём $\mathbb R^3$, его якобиан имеет
+определитель $1$. Обратное преобразование задаётся формулами
+$x_1=\eta_1$, $x_2=\eta_2+\xi$, $x_3=\xi$.
+Нормальная форма исходной системы имеет вид
+\begin{equation}
+  \begin{cases}
+    \dot\eta_1=-\eta_1+\eta_2,\\
+    \dot\eta_2=\eta_1-\eta_2-(\eta_1+1)\xi,\\
+    \dot \xi=-\eta_1+u
+  \end{cases}
+\end{equation}
+При $\xi=0$, $v=0$ получаем нуль-динамику
+\begin{equation}
+  \begin{pmatrix}\dot\eta_1\\\dot\eta_2\end{pmatrix}
+  =\begin{pmatrix}-1&1\\1&-1\end{pmatrix}
+   \begin{pmatrix}\eta_1\\\eta_2\end{pmatrix},
+  \qquad \lambda_1=0,\quad \lambda_2=-2
+\end{equation}
+Она устойчива, но не асимптотически устойчива: любая точка
+$\eta_1=\eta_2$ является равновесием. Следовательно, система
+не является минимально-фазовой.
+
+\section{Глобальная стабилизация}
+
+Исходная система имеет вид
+\begin{equation}
+  \begin{cases}
+    \dot x_1=-x_1+x_2,\\
+    \dot x_2=x_1-x_2-x_1x_3+u,\\
+    \dot x_3=x_1+x_1x_2-2x_3
+  \end{cases}
+\end{equation}
+Выберем $y=x_1$. Тогда
+\begin{equation}
+  \dot y=-x_1+x_2,\qquad
+  \ddot y=2x_1-2x_2-x_1x_3+u
+\end{equation}
+Относительная степень равна двум. Введём координаты
+\begin{equation}
+  \eta=x_3-\frac{x_1^2}{2},\qquad
+  \xi_1=x_1,\qquad \xi_2=-x_1+x_2
+\end{equation}
+Это глобальный диффеоморфизм с определителем якобиана $1$
+и обратным преобразованием
+\begin{equation}
+  x_1=\xi_1,\qquad x_2=\xi_1+\xi_2,\qquad
+  x_3=\eta+\frac{\xi_1^2}{2}
+\end{equation}
+В новых координатах получаем
+\begin{equation}
+  \begin{cases}
+    \dot\eta=\xi_1-2\eta,\\
+    \dot \xi_1=\xi_2,\\
+    \dot \xi_2=-2\xi_2-x_1x_3+u
+  \end{cases}
+\end{equation}
+Выбирая $u=x_1x_3+2\xi_2+v$ и $v=-\xi_1-2\xi_2$, получаем
+итоговый закон управления
+\begin{equation}
+  u=x_1x_3-x_1
+\end{equation}
+Замкнутая система принимает вид
+\begin{equation}
+  \begin{pmatrix}\dot\eta\\\dot \xi_1\\\dot \xi_2\end{pmatrix}
+  =\begin{pmatrix}-2&1&0\\0&0&1\\0&-1&-2\end{pmatrix}
+   \begin{pmatrix}\eta\\\xi_1\\\xi_2\end{pmatrix},
+  \qquad \lambda_1=-2,\quad \lambda_{2,3}=-1
+\end{equation}
+Матрица гурвицева, а преобразование глобально обратимо и переводит
+нуль в нуль. Поэтому начало координат исходной системы глобально
+асимптотически устойчиво.
+
+\section{Неустойчивая внутренняя динамика}
+
+Рассмотрим систему
+\begin{equation}
+  \begin{cases}
+    \dot x_1=x_2,\\
+    \dot x_2=-x_1+x_3+u,\\
+    \dot x_3=x_3+x_1^2,\\
+    y=x_1
+  \end{cases}
+\end{equation}
+Производные выхода равны
+\begin{equation}
+  \dot y=x_2,\qquad \ddot y=-x_1+x_3+u
+\end{equation}
+Следовательно, $\rho=2$ во всём $\mathbb R^3$. Обратная связь
+$u=x_1-x_3+v$ даёт $\ddot y=v$.
+В координатах $\eta=x_3$, $\xi_1=x_1$, $\xi_2=x_2$
+нормальная форма исходной системы имеет вид
+\begin{equation}
+  \begin{cases}
+    \dot\eta=\eta+\xi_1^2,\\
+    \dot \xi_1=\xi_2,\\
+    \dot \xi_2=-\xi_1+\eta+u
+  \end{cases}
+\end{equation}
+При $\xi_1=\xi_2=0$, $v=0$ нуль-динамика равна
+\begin{equation}
+  \dot\eta=\eta,\qquad \eta(t)=\eta(0)e^t
+\end{equation}
+Она неустойчива, поэтому система не является минимально-фазовой.
+
+Даже при устойчивой внешней динамике
+$v=-k_1\xi_1-k_2\xi_2$, $k_1,k_2>0$, начальные условия
+$\xi_1(0)=\xi_2(0)=0$, $\eta(0)\ne0$ дают $y(t)\equiv0$ и
+$x_3(t)=\eta(0)e^t$. Таким образом, устойчивость выхода
+не обеспечивает устойчивость всей замкнутой системы.
+
+\section{Область линеаризующего преобразования}
+
+Для системы
+\begin{equation}
+  \begin{cases}
+    \dot x_1=x_2,\\
+    \dot x_2=-x_1+x_3u,\\
+    \dot x_3=-x_3+u,\\
+    y=x_1
+  \end{cases}
+\end{equation}
+при $f=(x_2,-x_1,-x_3)^T$, $g=(0,x_3,1)^T$, $h=x_1$
+необходимые производные Ли равны
+\begin{equation}
+  L_gh=0,\qquad L_fh=x_2,\qquad
+  L_f^2h=-x_1,\qquad L_gL_fh=x_3
+\end{equation}
+Поэтому относительная степень $\rho=2$ определена на
+$D_0=\{\bm x:x_3\ne0\}$. При $x_3=0$ регулярная относительная
+степень не определена.
+
+Для внутренней координаты $\eta=x_2-\tfrac12x_3^2$ имеем
+\begin{equation}
+  L_g\eta=x_3-x_3=0,\qquad L_f\eta=-x_1+x_3^2
+\end{equation}
+Следовательно, $\dot\eta$ не содержит управления. Преобразование
+и его якобиан имеют вид
+\begin{equation}
+  T(\bm x)=\begin{pmatrix}x_2-\tfrac12x_3^2\\x_1\\x_2\end{pmatrix}
+  =\begin{pmatrix}\eta\\\xi_1\\\xi_2\end{pmatrix},\qquad
+  DT=\begin{pmatrix}0&1&-x_3\\1&0&0\\0&1&0\end{pmatrix},\qquad
+  \det DT=-x_3
+\end{equation}
+Оно является локальным диффеоморфизмом во всех точках $D_0$.
+На каждой из областей $D_\sigma=\{\bm x:\sigma x_3>0\}$,
+$\sigma=\pm1$, обратное преобразование задаётся формулами
+\begin{equation}
+  x_1=\xi_1,\qquad x_2=\xi_2,\qquad
+  x_3=\sigma\sqrt{2(\xi_2-\eta)},\qquad \eta<\xi_2
+\end{equation}
+Нормальная форма на выбранной ветви:
+\begin{equation}
+  \begin{cases}
+    \dot\eta=-\xi_1+2\xi_2-2\eta,\\
+    \dot \xi_1=\xi_2,\\
+    \dot \xi_2=-\xi_1+\sigma\sqrt{2(\xi_2-\eta)}\,u
+  \end{cases}
+\end{equation}
+Обратная связь $u=(x_1+v)/x_3$ даёт $\dot \xi_2=v$.
+При $\xi_1=\xi_2=0$, $v=0$ получаем $u=0$ и нуль-динамику
+\begin{equation}
+  \dot\eta=-2\eta,\qquad \eta<0,\qquad
+  \eta(t)=\eta(0)e^{-2t}
+\end{equation}
+Здесь $\dot x_3=-x_3$, $x_3(t)=x_3(0)e^{-t}$, то есть
+продолженная нуль-динамика экспоненциально устойчива.
+При $x_3=0$ ($\eta=0$) $T$ вырождается,
+а обратная связь не определена.
+
+\section{Синтез управления с заданными полюсами}
+
+Рассмотрим систему
+\begin{equation}
+  \begin{cases}
+    \dot x_1=x_2,\\
+    \dot x_2=x_3+x_1^2,\\
+    \dot x_3=-x_1x_2+(1+x_1^2)u,\\
+    y=x_1
+  \end{cases}
+\end{equation}
+Для $h=x_1$ получаем
+\begin{equation}
+  \begin{gathered}
+    L_gh=L_gL_fh=0,\qquad
+    L_fh=x_2,\qquad L_f^2h=x_3+x_1^2,\\
+    L_f^3h=x_1x_2,\qquad L_gL_f^2h=1+x_1^2>0
+  \end{gathered}
+\end{equation}
+Следовательно, относительная степень равна $\rho=3$ во всём
+$\mathbb R^3$. Введём координаты
+\begin{equation}
+  z_1=y=x_1,\qquad z_2=\dot y=x_2,\qquad
+  z_3=\ddot y=x_3+x_1^2
+\end{equation}
+Тогда
+\begin{equation}
+  \dot z_1=z_2,\qquad \dot z_2=z_3,\qquad
+  \dot z_3=x_1x_2+(1+x_1^2)u
+\end{equation}
+Искомая обратная связь имеет вид
+\begin{equation}
+  u=\alpha(\bm x)+\beta(\bm x)v,\qquad
+  \alpha(\bm x)=-\frac{x_1x_2}{1+x_1^2},\qquad
+  \beta(\bm x)=\frac{1}{1+x_1^2}
+\end{equation}
+Она преобразует систему в цепочку
+$\dot z_1=z_2$, $\dot z_2=z_3$, $\dot z_3=v$.
+
+Для $v=-K\bm z$ характеристический полином равен
+$s^3+k_3s^2+k_2s+k_1$. Из условия
+\begin{equation}
+  (s+2)^2(s+3)=s^3+7s^2+16s+12
+\end{equation}
+получаем $K=\begin{pmatrix}12&16&7\end{pmatrix}$.
+Итоговое управление в исходных координатах:
+\begin{equation}
+  u=\frac{-x_1x_2-12x_1-16x_2-7x_3-7x_1^2}{1+x_1^2}
+\end{equation}
