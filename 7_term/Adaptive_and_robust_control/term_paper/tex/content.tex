@@ -8,7 +8,7 @@
 \end{cases}
 \label{eq:plant}
 \end{equation}
-где $x\in\mathbb{R}^2$ - измеряемый вектор состояния, $u,y$ - измеряемые вход и выход объекта. Матрицы $A,b,C$ имеют вид:
+где $x\in\mathbb{R}^2$ --- измеряемый вектор состояния, $u,y$ --- измеряемые вход и выход объекта. Матрицы $A,b,C$ имеют вид:
 \begin{equation}
 A=
 \begin{bmatrix}
@@ -33,7 +33,7 @@ C=
 \lim_{t\to\infty}\left(g\left(t\right)-y\left(t\right)\right)=0,
 \label{eq:tracking}
 \end{equation}
-где $g$ - мультисинусоидальное задающее воздействие с априори неизвестными амплитудами, частотами и
+где $g$ --- мультисинусоидальное задающее воздействие с априори неизвестными амплитудами, частотами и
 фазами гармоник. Для обеспечения ускоренной параметрической сходимости используется схема Лайона.
 
 Параметры задающего воздействия $g(t)$:
@@ -110,7 +110,7 @@ $$$$
 \end{bmatrix}.
 $$
 
-$\xi_g$ - вектор измеряемого состояния фильтра
+$\xi_g$ --- вектор измеряемого состояния фильтра
 \begin{equation}
     \dot{\xi_g}=A_{0g}\xi_g+b_{0g}g
     \label{eq:filter_xi}
@@ -135,6 +135,107 @@ b_{0g}=
 \label{eq:observer_matrices}
 \end{equation}
 --- известные матрицы.
+
+После подстановки \eqref{eq:parametrization} в \eqref{eq:filter_xi} получаем каноническую
+управляему форму ВСВ генератора \eqref{eq:energy}:
+\begin{equation}
+\begin{aligned}
+    \dot{\xi}_g &= \left(A_{0g}+b_{0g}\theta_g^T\right)\xi_g, \\
+    g &= \theta_g^T\xi_g.
+\end{aligned}
+\label{eq:reference_model}
+\end{equation}
+
+\subsection{Модель ошибки слежения}
+
+Введём вектор ошибки состояния $e$ и ошибку выхода $\varepsilon$:
+\begin{align}
+    e &= M_g\xi_g-x, \label{eq:state_error_def}\\
+    \varepsilon &= g-y, \label{eq:output_error_def}
+\end{align}
+где $M_g\in\mathbb{R}^{2\times r}$ --- матрица преобразования
+состояния генератора задающего воздействия в состояние объекта
+на траектории точного слежения.
+
+Если параметры $\theta_g$ известны, управление представляется
+в виде суммы стабилизирующей обратной связи и прямой связи:
+\[
+    u=-Kx+\bar{\psi}_g^T\xi_g.
+\]
+Вектор $K$ выбирается так, чтобы матрица $A_M=A-bK$ была гурвицевой.
+Выведем условия для матрицы $M_g$ и вектора $\bar{\psi}_g$.
+Обозначим $S_g=A_{0g}+b_{0g}\theta_g^T$. Тогда из
+\eqref{eq:reference_model} имеем $\dot{\xi}_g=S_g\xi_g$.
+
+Дифференцируя $e=M_g\xi_g-x$ и подставляя закон управления
+$u=-Kx+\bar{\psi}_g^T\xi_g$ в уравнение объекта \eqref{eq:plant},
+получаем
+\begin{align*}
+    \dot e
+    &= M_g\dot{\xi}_g-Ax-bu= M_gS_g\xi_g-Ax+bKx-b\bar{\psi}_g^T\xi_g= M_gS_g\xi_g-A_Mx-b\bar{\psi}_g^T\xi_g.
+\end{align*}
+Из определения ошибки следует $x=M_g\xi_g-e$:
+\begin{align*}
+    \dot e
+    &= M_gS_g\xi_g-A_M(M_g\xi_g-e)-b\bar{\psi}_g^T\xi_g= A_Me+
+       \bigl(M_gS_g-A_MM_g-b\bar{\psi}_g^T\bigr)\xi_g.
+\end{align*}
+Чтобы динамика ошибки определялась уравнением $\dot e=A_Me$
+при любом состоянии генератора $\xi_g$, потребуем, чтобы матрица
+в скобках была нулевой.
+
+Кроме того, на траектории $e=0$ имеем $x=M_g\xi_g$.
+Для точного слежения должно выполняться равенство
+$y=CM_g\xi_g=g=\theta_g^T\xi_g$ при любом $\xi_g$.
+Отсюда следует второе условие $CM_g=\theta_g^T$.
+
+Таким образом, матрица $M_g$ и вектор $\bar{\psi}_g$
+должны удовлетворять системе
+\begin{equation}
+\begin{aligned}
+    M_g(A_{0g}+b_{0g}\theta_g^T)-A_MM_g
+        &= b\bar{\psi}_g^T,\\
+    CM_g &= \theta_g^T.
+\end{aligned}
+\label{eq:matching_conditions}
+\end{equation}
+
+В адаптивной системе закон управления запишем в виде
+\begin{equation}
+    u=-Kx+u_a,
+    \label{eq:control_structure}
+\end{equation}
+где $u_a$ --- адаптивная составляющая управления.
+
+При переходе от идеальной составляющей $\bar{\psi}_g^T\xi_g$
+к адаптивной составляющей $u_a$ выражение для $\dot e$
+изменяется на $b(\bar{\psi}_g^T\xi_g-u_a)$.
+Поскольку при выполнении условий \eqref{eq:matching_conditions}
+для идеального управления $\dot e=A_Me$, получаем
+\begin{equation}
+    \dot e=A_Me+b\bigl(\bar{\psi}_g^T\xi_g-u_a\bigr).
+    \label{eq:state_error}
+\end{equation}
+Поскольку вектор $e$ неизмеряем, для синтеза управления используем
+ошибку выхода $\varepsilon=g-y$. Из \eqref{eq:state_error_def}
+и второго уравнения \eqref{eq:matching_conditions} следует
+\[
+    \varepsilon
+    =\theta_g^T\xi_g-Cx
+    =\theta_g^T\xi_g-C(M_g\xi_g-e)
+    =Ce.
+\]
+
+Объединяя $\varepsilon=Ce$ с \eqref{eq:state_error}, получаем
+модель ошибки в форме передаточной функции:
+\begin{equation}
+    \varepsilon=W(s)\bigl[\bar{\psi}_g^T\xi_g-u_a\bigr],
+    \qquad
+    W(s)=C(sI-A_M)^{-1}b,
+    \label{eq:output_error}
+\end{equation}
+где $W(s)$ --- устойчивая передаточная функция
+стабилизированной части системы.
 
 \subsection{Наблюдатель}
 
