@@ -107,9 +107,11 @@ $$$$
 \xi_g^T=
 \begin{bmatrix}
     \frac{1}{K_g(s)}\left[g\right] &\frac{s}{K_g(s)}\left[g\right] & \dots & \frac{s^{r-1}}{K_g(s)}\left[g\right]
-\end{bmatrix}.
+\end{bmatrix},
+$$$$
+K_g(s)=s^r+k_{g,r-1}s^{r-1}+\cdots+k_{g,0}.
 $$
-
+Полином $K_g(s)$ выбирается гурвицевым.
 $\xi_g$ --- вектор измеряемого состояния фильтра
 \begin{equation}
     \dot{\xi_g}=A_{0g}\xi_g+b_{0g}g
@@ -137,7 +139,7 @@ b_{0g}=
 --- известные матрицы.
 
 После подстановки \eqref{eq:parametrization} в \eqref{eq:filter_xi} получаем каноническую
-управляему форму ВСВ генератора \eqref{eq:energy}:
+управляему форму "вход-состояние-выход" генератора \eqref{eq:energy}:
 \begin{equation}
 \begin{aligned}
     \dot{\xi}_g &= \left(A_{0g}+b_{0g}\theta_g^T\right)\xi_g, \\
@@ -200,6 +202,97 @@ $y=CM_g\xi_g=g=\theta_g^T\xi_g$ при любом $\xi_g$.
 \label{eq:matching_conditions}
 \end{equation}
 
+Проверим, что система \eqref{eq:matching_conditions} совместна.
+Сигнал содержит две гармоники с различными частотами, поэтому
+порядок модели генератора равен $r=4$. Обозначим
+\[
+    S_g=A_{0g}+b_{0g}\theta_g^T\in\mathbb{R}^{4\times4},
+    \qquad
+    M_g=\begin{bmatrix}M_1\\M_2\end{bmatrix},
+    \qquad M_1,M_2\in\mathbb{R}^{1\times4},
+    \qquad \bar{\psi}_g^T\in\mathbb{R}^{1\times4}.
+\]
+Для объекта имеем
+\[
+    b\bar{\psi}_g^T=
+    \begin{bmatrix}
+        0_{1\times4}\\
+        3\bar{\psi}_g^T
+    \end{bmatrix},
+    \qquad
+    A_M=
+    \begin{bmatrix}
+        0 & 3\\
+        4-3k_1 & 7-3k_2
+    \end{bmatrix},
+    \qquad
+    C=\begin{bmatrix}5 & 1\end{bmatrix},
+\]
+где $K=\begin{bmatrix}k_1 & k_2\end{bmatrix}$.
+
+Запишем систему \eqref{eq:matching_conditions} по строкам:
+\begin{align}
+    M_1S_g &= 3M_2, \label{eq:matching_first_row}\\
+    M_2S_g-(4-3k_1)M_1-(7-3k_2)M_2
+        &= 3\bar{\psi}_g^T, \label{eq:matching_second_row}\\
+    5M_1+M_2 &= \theta_g^T. \label{eq:matching_output_row}
+\end{align}
+
+Из \eqref{eq:matching_first_row} получаем $M_2=\frac{1}{3}M_1S_g$.
+Подставляя это выражение в \eqref{eq:matching_output_row}, имеем
+$$
+5M_1+\frac{1}{3}M_1S_g=\theta_g^T,
+\qquad
+M_1(15I_4+S_g)=3\theta_g^T.
+$$
+
+Покажем, что характеристический полином матрицы $S_g$
+совпадает с полиномом уравнения \eqref{eq:energy}.
+При сложении $A_{0g}$ и $b_{0g}\theta_g^T$ изменяется только
+последняя строка. Её элементы равны
+$-k_{g,j}+(k_{g,j}-l_j)=-l_j$, поэтому
+$$
+S_g=
+\begin{bmatrix}
+        0   &  1   &  0   &  0\\
+        0   &  0   &  1   &  0\\
+        0   &  0   &  0   &  1\\
+    -l_0 & -l_1 & -l_2 & -l_3
+\end{bmatrix}.
+$$
+Для этой матрицы
+$$
+    \det(sI_4-S_g)=s^4+l_3s^3+l_2s^2+l_1s+l_0.
+$$
+Полученный полином совпадает с характеристическим полиномом
+уравнения \eqref{eq:energy} при $r=4$.
+
+Так как все собственные числа $S_g$ лежат на мнимой оси,
+$-15$ не является собственным числом $S_g$. Следовательно,
+матрица $15I_4+S_g$ обратима, откуда
+$$
+    M_1=3\theta_g^T(15I_4+S_g)^{-1}.
+$$
+
+Подставляя найденную строку $M_1$ в \eqref{eq:matching_first_row},
+находим $M_2=\frac{1}{3}M_1S_g$. Затем из
+\eqref{eq:matching_second_row} получаем
+\[
+    \bar{\psi}_g^T=
+    \frac{1}{3}\bigl(M_2S_g-(4-3k_1)M_1-(7-3k_2)M_2\bigr).
+\]
+Таким образом, для выбранного $K$ строки $M_1$, $M_2$ и вектор
+$\bar{\psi}_g$ определяются однозначно. Следовательно, система
+\eqref{eq:matching_conditions} совместна и имеет единственное решение.
+
+
+
+
+
+
+
+
+
 В адаптивной системе закон управления запишем в виде
 \begin{equation}
     u=-Kx+u_a,
@@ -237,15 +330,68 @@ $y=CM_g\xi_g=g=\theta_g^T\xi_g$ при любом $\xi_g$.
 где $W(s)$ --- устойчивая передаточная функция
 стабилизированной части системы.
 
-\subsection{Наблюдатель}
-
-
+Последнее выражение позволяет синтезировать настраиваемый регулятор в виде:
+\begin{equation}
+    u_a=\hat{\psi}^T_g\xi_g,
+    \label{eq:reg_control}
+\end{equation}
+где $\hat{\psi}^T_g$ --- вектор настраиваемых параметров. После подстановки
+\eqref{eq:reg_control} в \eqref{eq:output_error} получаем модель ошибки:
+\begin{equation}
+    \varepsilon=W(s)\bigl[\tilde{\psi}_g^T\xi_g\bigr],
+\end{equation}
+в которой $\tilde{\psi}_g=\psi_g-\hat{\psi}_g$.
 
 \subsection{Модель расширенной ошибки}
 
+Подставляя $u_a=\hat{\psi}_g^T\xi_g$ в модель ошибки
+\eqref{eq:output_error}, получаем
+\begin{align*}
+    \varepsilon
+    &= W(s)\bigl[\bar{\psi}_g^T\xi_g-\hat{\psi}_g^T\xi_g\bigr]= W(s)\bigl[\bar{\psi}_g^T\xi_g\bigr]
+       -W(s)\bigl[\hat{\psi}_g^T\xi_g\bigr]= \bar{\psi}_g^T W(s)[\xi_g]
+       -W(s)\bigl[\hat{\psi}_g^T\xi_g\bigr].
+\end{align*}
 
+Введём расширенную ошибку
+\begin{equation}
+    \hat{\varepsilon}
+    = \varepsilon
+      +W(s)\bigl[\hat{\psi}_g^T\xi_g\bigr]
+      -\hat{\psi}_g^T W(s)[\xi_g].
+    \label{eq:augmented_error}
+\end{equation}
+Подставляя выражение для $\varepsilon$ в
+\eqref{eq:augmented_error}, получаем
+\begin{equation}
+    \hat{\varepsilon}
+    =(\bar{\psi}_g-\hat{\psi}_g)^T W(s)[\xi_g]
+    =\tilde{\psi}_g^T W(s)[\xi_g],
+    \label{eq:augmented_error_model}
+\end{equation}
 
 \subsection{Алгоритм адаптации}
+
+Выберем функцию Ляпунова
+\[
+    V(t)=\frac{1}{2}\tilde{\psi}_g^T\tilde{\psi}_g\geq0.
+\]
+Поскольку $\bar{\psi}_g$ постоянен, имеем
+$\dot{\tilde{\psi}}_g=-\dot{\hat{\psi}}_g$. Тогда
+$$
+\dot V(t)=\tilde{\psi}_g^T\dot{\tilde{\psi}}_g=-\tilde{\psi}_g^T\dot{\hat{\psi}}_g=
+-\hat{\varepsilon}W^{-1}(s)[\xi_g]\dot{\hat{\psi}}_g
+$$
+Выберем $\dot{\hat{\psi}}_g=\gamma W(s)[\xi_g]\hat{\varepsilon}$. Подставляя в выражение для $\dot V$, получаем
+$$
+\dot V(t)
+=-\gamma\hat{\varepsilon}W^{-1}(s)[\xi_g]W(s)[\xi_g]\hat{\varepsilon}
+=-\gamma\hat{\varepsilon}^2
+\leq 0.
+$$
+
+
+\subsection{Наблюдатель}
 
 
 
