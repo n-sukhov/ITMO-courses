@@ -285,14 +285,6 @@ $$
 $\bar{\psi}_g$ определяются однозначно. Следовательно, система
 \eqref{eq:matching_conditions} совместна и имеет единственное решение.
 
-
-
-
-
-
-
-
-
 В адаптивной системе закон управления запишем в виде
 \begin{equation}
     u=-Kx+u_a,
@@ -382,7 +374,11 @@ $$
 \dot V(t)=\tilde{\psi}_g^T\dot{\tilde{\psi}}_g
 =-\tilde{\psi}_g^T\dot{\hat{\psi}}_g.
 $$
-Выберем $\dot{\hat{\psi}}_g=\gamma W(s)[\xi_g]\hat{\varepsilon}$,
+Выберем AA:
+\begin{equation}
+    \dot{\hat{\psi}}_g=\gamma W(s)[\xi_g]\hat{\varepsilon}
+    \label{eq:qwe}
+\end{equation}
 где $\gamma>0$. Подставляя в выражение для $\dot V$ и учитывая,
 что $\tilde{\psi}_g^T W(s)[\xi_g]=\hat{\varepsilon}$, получаем
 $$
@@ -392,15 +388,186 @@ $$
 \leq 0.
 $$
 
+\subsection{Алгоритм адаптации с ускоренной параметрической сходимостью по схеме Лайона}
+Запишем статическую модель расширенной ошибки в виде
+$$
+    \hat{\varepsilon}=\omega^T\tilde{\psi}_g,
+    \qquad \omega=W(s)[\xi_g],
+    \qquad \tilde{\psi}_g=\bar{\psi}_g-\hat{\psi}_g.
+$$
+Поскольку $\bar{\psi}_g$ постоянен, из градиентного закона
+адаптации получаем
+$$
+    \dot{\tilde{\psi}}_g
+    =-\dot{\hat{\psi}}_g
+    =-\gamma\omega\hat{\varepsilon}
+    =-\gamma\omega\omega^T\tilde{\psi}_g.
+$$
 
-\subsection{Наблюдатель}
+Для ускорения параметрической сходимости выполним динамическое
+расширение регрессора $\omega$. Пропустим его компоненты через
+фильтры $H_i(s)$, $i=1,\ldots,q$, и составим матрицу
+\begin{equation}
+    \Xi=
+    \begin{bmatrix}
+        H_1(s)[\omega^T]\\
+        \vdots\\
+        H_q(s)[\omega^T]
+    \end{bmatrix}
+    \in\mathbb{R}^{q\times4}.
+    \label{eq:lion_extended_regressor}
+\end{equation}
+Модифицированную модель параметрической ошибки запишем в виде
+\begin{equation}
+    \dot{\tilde{\psi}}_g=-\gamma\Xi^T\Xi\tilde{\psi}_g.
+    \label{eq:lion_error_dynamics}
+\end{equation}
 
+Выразим $\Xi\tilde{\psi}_g$ через доступные сигналы. Из
+$\hat{\varepsilon}=\omega^T(\bar{\psi}_g-\hat{\psi}_g)$ следует
+$$
+    \hat{\varepsilon}+\omega^T\hat{\psi}_g
+    =\omega^T\bar{\psi}_g.
+$$
+Применяя к обеим частям равенства фильтр $H_i(s)$, получаем
+$$
+    H_i(s)[\hat{\varepsilon}]
+    +H_i(s)[\omega^T\hat{\psi}_g]
+    =H_i(s)[\omega^T]\bar{\psi}_g,
+$$
+где постоянный вектор $\bar{\psi}_g$ вынесен за знак фильтра.
+Обозначим
+$$
+    \Xi_{\hat{\varepsilon}}=
+    \begin{bmatrix}
+        H_1(s)[\hat{\varepsilon}]\\
+        \vdots\\
+        H_q(s)[\hat{\varepsilon}]
+    \end{bmatrix},
+    \qquad
+    \Xi_{\psi}=
+    \begin{bmatrix}
+        H_1(s)[\omega^T\hat{\psi}_g]\\
+        \vdots\\
+        H_q(s)[\omega^T\hat{\psi}_g]
+    \end{bmatrix}.
+$$
+Тогда $\Xi_{\hat{\varepsilon}}+\Xi_{\psi}=\Xi\bar{\psi}_g$ и
+$$
+    \Xi\tilde{\psi}_g
+    =\Xi(\bar{\psi}_g-\hat{\psi}_g)
+    =\Xi_{\hat{\varepsilon}}+\Xi_{\psi}-\Xi\hat{\psi}_g.
+$$
+Подставляя это выражение в \eqref{eq:lion_error_dynamics} и
+учитывая, что $\dot{\hat{\psi}}_g=-\dot{\tilde{\psi}}_g$,
+получаем модифицированный закон адаптации
+\begin{equation}
+    \dot{\hat{\psi}}_g
+    =\gamma\Xi^T
+    \bigl(\Xi_{\hat{\varepsilon}}+\Xi_{\psi}-\Xi\hat{\psi}_g\bigr),
+    \qquad \gamma>0.
+    \label{eq:lion_adaptation}
+\end{equation}
 
+Для функции Ляпунова
+$V=\frac{1}{2}\tilde{\psi}_g^T\tilde{\psi}_g$
+из \eqref{eq:lion_error_dynamics} получаем
+$$
+    \dot V
+    =-\gamma\tilde{\psi}_g^T\Xi^T\Xi\tilde{\psi}_g
+    =-\gamma\|\Xi\tilde{\psi}_g\|^2
+    \leq 0.
+$$
+Если для выбранных фильтров выполняется условие
+\begin{equation}
+    \Xi^T(t)\Xi(t)\succeq\lambda_0 I_4,
+    \qquad \lambda_0>0,
+    \qquad t\geq t_0,
+    \label{eq:lion_rank_condition}
+\end{equation}
+то
+$$
+    \dot V\leq-\gamma\lambda_0\|\tilde{\psi}_g\|^2
+    =-2\gamma\lambda_0 V,
+    \qquad t\geq t_0.
+$$
+Здесь $\lambda_0>0$ --- нижняя граница наименьшего собственного числа матрицы $\Xi^T(t)\Xi(t)$ для всех $t\geq t_0$.
+Следовательно, при выполнении \eqref{eq:lion_rank_condition}
+параметрическая ошибка сходится к нулю экспоненциально.
 
-\subsection{Закон управления}
+\subsection{Выбор численных значений параметров}
 
+Для фильтра задающего сигнала выберем полином Ньютона
+четвёртого порядка. Примем все его корни равными $-1$. Тогда
+\begin{equation}
+    K_g(s)=(s+1)^4=s^4+4s^3+6s^2+4s+1.
+    \label{eq:reference_filter_polynomial}
+\end{equation}
+Все корни $K_g(s)$ лежат в левой полуплоскости, поэтому полином
+является гурвицевым. Подставляя его коэффициенты в матрицу
+фильтра, получаем
+$$
+A_{0g}=
+\begin{bmatrix}
+     0 &  1 &  0 &  0\\
+     0 &  0 &  1 &  0\\
+     0 &  0 &  0 &  1\\
+    -1 & -4 & -6 & -4
+\end{bmatrix},
+\qquad
+b_{0g}=
+\begin{bmatrix}
+    0\\0\\0\\1
+\end{bmatrix}.
+$$
 
+Найдём матрицу обратной связи $K=\begin{bmatrix}k_1 & k_2\end{bmatrix}$
+из условия гурвицевости матрицы $A_M=A-bK$. Имеем
+$$
+A_M=
+\begin{bmatrix}
+    0 & 3\\
+    4-3k_1 & 7-3k_2
+\end{bmatrix},
+\qquad
+\det(sI_2-A_M)=s^2+(3k_2-7)s+9k_1-12.
+$$
 
+Для полинома $s^2+a_1s+a_0$ матрица Гурвица и её угловые главные
+миноры имеют вид
+$$
+\mathcal{H}=
+\begin{bmatrix}
+    a_1 & 0\\
+    1   & a_0
+\end{bmatrix},
+\qquad
+\Delta_1=a_1,
+\qquad
+\Delta_2=a_1a_0.
+$$
+По критерию Гурвица необходимо и достаточно, чтобы
+$\Delta_1>0$ и $\Delta_2>0$. Подставляя
+$a_1=3k_2-7$ и $a_0=9k_1-12$, получаем
+$$
+3k_2-7>0,
+\qquad
+(3k_2-7)(9k_1-12)>0
+\quad\Longleftrightarrow\quad
+k_2>\frac{7}{3},\qquad k_1>\frac{4}{3}.
+$$
+
+Выберем $k_1=4$ и $k_2=7$. Тогда
+\begin{equation}
+    K=\begin{bmatrix}4 & 7\end{bmatrix},
+    \qquad
+    A_M=
+    \begin{bmatrix}
+         0 &   3\\
+        -8 & -14
+    \end{bmatrix}.
+    \label{eq:feedback_gain}
+\end{equation}
 
 \section{Схема моделирования САУ с листингами расчётов}
 \section{Переходные процессы САУ с градиентным АА}
