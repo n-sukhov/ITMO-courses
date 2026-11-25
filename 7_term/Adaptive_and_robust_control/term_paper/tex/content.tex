@@ -373,19 +373,21 @@ $\bar{\psi}_g$ определяются однозначно. Следовате
 \subsection{Алгоритм адаптации}
 
 Выберем функцию Ляпунова
-\[
-    V(t)=\frac{1}{2}\tilde{\psi}_g^T\tilde{\psi}_g\geq0.
-\]
+$$
+V(t)=\frac{1}{2}\tilde{\psi}_g^T\tilde{\psi}_g\geq0.
+$$
 Поскольку $\bar{\psi}_g$ постоянен, имеем
 $\dot{\tilde{\psi}}_g=-\dot{\hat{\psi}}_g$. Тогда
 $$
-\dot V(t)=\tilde{\psi}_g^T\dot{\tilde{\psi}}_g=-\tilde{\psi}_g^T\dot{\hat{\psi}}_g=
--\hat{\varepsilon}W^{-1}(s)[\xi_g]\dot{\hat{\psi}}_g
+\dot V(t)=\tilde{\psi}_g^T\dot{\tilde{\psi}}_g
+=-\tilde{\psi}_g^T\dot{\hat{\psi}}_g.
 $$
-Выберем $\dot{\hat{\psi}}_g=\gamma W(s)[\xi_g]\hat{\varepsilon}$. Подставляя в выражение для $\dot V$, получаем
+Выберем $\dot{\hat{\psi}}_g=\gamma W(s)[\xi_g]\hat{\varepsilon}$,
+где $\gamma>0$. Подставляя в выражение для $\dot V$ и учитывая,
+что $\tilde{\psi}_g^T W(s)[\xi_g]=\hat{\varepsilon}$, получаем
 $$
 \dot V(t)
-=-\gamma\hat{\varepsilon}W^{-1}(s)[\xi_g]W(s)[\xi_g]\hat{\varepsilon}
+=-\gamma\tilde{\psi}_g^T W(s)[\xi_g]\hat{\varepsilon}
 =-\gamma\hat{\varepsilon}^2
 \leq 0.
 $$
