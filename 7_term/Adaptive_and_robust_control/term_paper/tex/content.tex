@@ -77,10 +77,6 @@ $$
 и система наблюдаема.
 
 \section{Перечень компонентов САУ и их параметры}
-%  Определение и реализация требуемых компонентов системы 
-%  автоматического управления (наблюдатели, модель расширенной ошибки, 
-%  алгоритмы адаптации, закон управления). Выбор их структуры и 
-%  параметров.
 Функция  $g$ может быть представлена в виде решения линейного однородного дифференциального
 уравнения:
 \begin{equation}
@@ -594,8 +590,102 @@ $$
 и набора фильтров. Начальные условия, матрица $K$ и полином
 $K_g(s)$ во всех прогонах одинаковы.
 
-
 \section{Схема моделирования САУ с листингами расчётов}
+
+Общая схема САУ представлена на рисунке~\ref{fig:simulink_overview}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth,height=0.78\textheight,keepaspectratio]
+        {images/scheme_all.png}
+    \caption{Общая схема моделирования САУ}
+    \label{fig:simulink_overview}
+\end{figure}
+
+На рисунке~\ref{fig:reference_filter} показан фильтр,
+формирующий вектор $\xi_g$ из задающего сигнала $g$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\linewidth]{images/scheme_ksi_g.png}
+    \caption{Фильтр задающего сигнала}
+    \label{fig:reference_filter}
+\end{figure}
+
+В подсистеме управления вычисляется сигнал
+$u=-Kx+\hat{\psi}_g^T\xi_g$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.78\linewidth]{images/scheme_control.png}
+    \caption{Подсистема формирования управляющего воздействия}
+    \label{fig:control_subsystem}
+\end{figure}
+
+Ошибка слежения $\varepsilon=g-y$ поступает в подсистему
+формирования расширенной ошибки.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\linewidth]{images/scheme_hat_epsilon.png}
+    \caption{Подсистема формирования расширенной ошибки $\hat{\varepsilon}$}
+    \label{fig:augmented_error_subsystem}
+\end{figure}
+
+В подсистеме на рисунке~\ref{fig:adaptation_selector} индексы Selector $1$--$4$
+соответствуют градиентному алгоритму, а индексы $5$--$8$
+соответствуют схеме Лайона.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\linewidth]{images/scheme_hat_psi_g.png}
+    \caption{Подсистема выбора алгоритма адаптации}
+    \label{fig:adaptation_selector}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.84\linewidth]{images/scheme_hat_psi_g_st.png}
+    \caption{Градиентный алгоритм адаптации}
+    \label{fig:gradient_adaptation}
+\end{figure}
+
+Модифицированный закон адаптации реализован в подсистеме
+на рисунке~\ref{fig:lion_adaptation}. Матрица $\Xi$ и векторы
+$\Xi_{\hat{\varepsilon}}$, $\Xi_\psi$ формируются в подсистемах
+на рисунках~\ref{fig:lion_regressor}--\ref{fig:lion_filtered_psi}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{images/scheme_hat_psi_g_lion.png}
+    \caption{Модифицированный алгоритм адаптации по схеме Лайона}
+    \label{fig:lion_adaptation}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/scheme_hat_psi_g_lion_Theta.png}
+    \caption{Формирование матрицы расширенного регрессора $\Xi$}
+    \label{fig:lion_regressor}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/scheme_hat_psi_g_lion_Theta_epsilon.png}
+    \caption{Формирование вектора $\Xi_{\hat{\varepsilon}}$}
+    \label{fig:lion_filtered_epsilon}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/scheme_hat_psi_g_lion_Theta_psi.png}
+    \caption{Формирование вектора $\Xi_\psi$}
+    \label{fig:lion_filtered_psi}
+\end{figure}
+
+
+
+
 \section{Переходные процессы САУ с градиентным АА}
 \section{Переходные процессы САУ с модифицированным АА}
 \section{Выводы}
