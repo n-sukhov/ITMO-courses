@@ -494,9 +494,9 @@ $$
 \subsection{Выбор численных значений параметров}
 
 Для фильтра задающего сигнала выберем полином Ньютона
-четвёртого порядка. Примем все его корни равными $-1$. Тогда
+четвёртого порядка. Примем все его корни равными $-10$. Тогда
 \begin{equation}
-    K_g(s)=(s+1)^4=s^4+4s^3+6s^2+4s+1.
+    K_g(s)=(s+10)^4=s^4+40s^3+600s^2+4000s+10000.
     \label{eq:reference_filter_polynomial}
 \end{equation}
 Все корни $K_g(s)$ лежат в левой полуплоскости, поэтому полином
@@ -508,7 +508,7 @@ A_{0g}=
      0 &  1 &  0 &  0\\
      0 &  0 &  1 &  0\\
      0 &  0 &  0 &  1\\
-    -1 & -4 & -6 & -4
+    -10000 & -4000 & -600 & -40
 \end{bmatrix},
 \qquad
 b_{0g}=
@@ -568,27 +568,27 @@ $$
 Для динамического расширения регрессора используем четыре фильтра
 первого порядка
 $$
-    H_i(s)=\frac{1}{s+a_i},\qquad i=1,\ldots,4.
+    H_i(s)=\frac{a_i}{s+a_i},\qquad i=1,\ldots,4.
 $$
 Рассмотрим три набора параметров фильтров
 \begin{equation}
     (a_1,a_2,a_3,a_4)
-    \in \bigl\{(1,2,3,4),\ (2,3,4,5),\ (3,4,5,6)\bigr\}.
+    \in \bigl\{(2,4,8,16),\ (50,70,85,100),\ (10,20,30,50)\bigr\}.
     \label{eq:lion_filter_sets}
 \end{equation}
 Во всех наборах $a_i>0$, поэтому фильтры устойчивы.
 
 Для моделирования выберем три значения коэффициента адаптации
 \begin{equation}
-    \gamma_0=1,\qquad
-    \gamma_1=2\gamma_0=2,\qquad
-    \gamma_2=4\gamma_0=4.
+    \gamma_0=10^7,\qquad
+    \gamma_1=4\cdot10^7,\qquad
+    \gamma_2=10^8.
     \label{eq:adaptation_gain_values}
 \end{equation}
 Градиентный алгоритм моделируется при каждом значении $\gamma$,
 а модифицированный алгоритм --- при каждом сочетании $\gamma$
 и набора фильтров. Начальные условия, матрица $K$ и полином
-$K_g(s)$ во всех прогонах одинаковы.
+$K_g(s)$ во всех прогонах одинаковы. Продолжительность каждого прогона составляет $50$~с.
 
 \section{Схема моделирования САУ с листингами расчётов}
 
@@ -671,14 +671,14 @@ $\Xi_{\hat{\varepsilon}}$, $\Xi_\psi$ формируются в подсисте
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{images/scheme_hat_psi_g_lion_Theta_epsilon.png}
+    \includegraphics[width=0.5\linewidth]{images/scheme_hat_psi_g_lion_Theta_epsilon.png}
     \caption{Формирование вектора $\Xi_{\hat{\varepsilon}}$}
     \label{fig:lion_filtered_epsilon}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{images/scheme_hat_psi_g_lion_Theta_psi.png}
+    \includegraphics[width=0.5\linewidth]{images/scheme_hat_psi_g_lion_Theta_psi.png}
     \caption{Формирование вектора $\Xi_\psi$}
     \label{fig:lion_filtered_psi}
 \end{figure}
